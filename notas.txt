@@ -1,0 +1,63 @@
+Conexión con Firebird (en producción lo hice todo con usuario root)
+
+Instalamos fdb y django-firebird
+
+pip3 install fdb
+pip3 install django-firebird
+
+
+Después actualizamos los driver
+
+cd /tmp
+git clone git://github.com/maxirobaina/django-firebird.git
+cd django-firebird
+python3 setup.py install
+
+esto instalará todo en (dependiendo de la versión de python):
+
+[directorio virtual]/lib/python3.6/site-packages/django_firebird-2.0a0-py3.6.egg
+[directorio virtual]/lib/python3.6/site-packages/django_firebird-2.0a0-py3.6.egg/firebird
+
+ahora creamos un enlace a nuestra carpeta firebird
+
+cd [directorio virtual]/lib/python3.6/site-packages/django/db/backends
+ln -s [directorio virtual]/lib/python3.6/site-packages/django_firebird-2.0a0-py3.6.egg/firebird
+
+con esto ya tendremos nuestro backend, ahora realizamos las siguientes modificaciones que me dieron error:
+
+modificar el archivo introspection.py
+
+nano [directorio virtual]/lib/python3.6/site-packages/django/db/backends/firebird/introspection.py
+
+Comentamos la línea 6
+# from django.utils.deprecation import RemovedInDjango21Warning
+
+Reemplazamos la línea 154
+       warnings.warn(
+            "get_indexes() is deprecated in favor of get_constraints().",
+            RemovedInDjango21Warning, stacklevel=2
+        )
+
+por esta
+        warnings.warn("get_indexes() is deprecated in favor of get_constraints().")
+
+
+Para probar si funciona la conexión, utilizaremos este comando:
+
+$ python manage.py dbshell --database firebird
+
+También podemos realizar la prueba desde el shell de python:
+
+$ python manage.py shell
+
+from django.db import connections
+from django.db.utils import OperationalError
+db_conn = connections['firebird']
+try:
+    c = db_conn.cursor()
+    print('conexión correcta')
+except OperationalError:
+    print('error de conexión')
+else:
+    connected = True
+

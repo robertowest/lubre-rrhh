@@ -1,0 +1,14 @@
+django==2.2.4
+django-crispy-forms==1.7.2
+django-debug-toolbar==2.0
+fdb==2.0.1
+
+# el instalador de django-firebird es antiguo y no funciona con la versión 2.5
+# por lo que habrá que instalarlo manualmente
+# django-firebird==2.0
+#
+# activamos nuestro entorno virtual y desde la carpeta donde se encuentran los fuentes
+# (descargados de: https://github.com/maxirobaina/django-firebird)
+# ejecutamos el comando `python setup.py install`
+# esto nos dejará instalado en nuestro directorio virtual el controlador firebird-2.0
+# despues hacemos lo que dice el archivo notas.txt ...

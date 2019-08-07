@@ -1,0 +1,74 @@
+{% extends "base_clientes.html" %}
+
+{# ICONOS: https://getbootstrap.com/docs/3.3/components/ #}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="col-sm-10">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-list-alt"></span> Tabla de Clientes
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div align="right" class="btn_crear mb-3">
+                    <a href="crear" type="button" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> Crear </a>
+                </div>
+
+                <font size="2">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Actividad</th>
+                            <th>Califica</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for object in object_list %}
+                        <tr>
+                            <td>{{object.nombre}}</td>
+                            <td>{{object.actividad.descripcion}}</td>
+                            <td>{{object.califica.descripcion}}</td>
+                            <td>{{object.estadocliente.descripcion}}</td>
+                            <td>
+                                <a href="{% url 'clientes:detail' object.idcliente %}"><span class="glyphicon glyphicon-eye-open"></span></a> |
+                                <a href="{% url 'clientes:edit' object.idcliente %}"><span class="glyphicon glyphicon-pencil"></span></a> |
+                                <a href="{% url 'clientes:delete' object.idcliente %}"><span class="glyphicon glyphicon-trash"></span></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                </font>
+                {# paginación #}
+                {% include 'paginator.html' %}
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-2">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-filter"></span> Filtro
+                </h3>
+            </div>
+            <div class="panel-body">
+                <form class="form-inline search" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control">
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-default">
+                        <span class="glyphicon glyphicon-search"></span> Filtrar
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

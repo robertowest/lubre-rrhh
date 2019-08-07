@@ -1,0 +1,77 @@
+from django.views.generic import ListView, DetailView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+
+# Nos sirve para redireccionar despues de una acción revertiendo patrones de expresiones regulares
+from django.urls import reverse
+
+# Habilitamos el uso de mensajes en Django
+from django.contrib import messages
+
+# Habilitamos los mensajes para class-based views
+from django.contrib.messages.views import SuccessMessageMixin
+
+# Habilitamos los formularios en Django
+from django import forms
+
+from . import forms
+from . import models
+
+class Listado(ListView):
+    model = models.Clientes
+    template_name = 'listado.html'
+    paginate_by = 20
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['califica.idcalifica'] = 1   # activo
+    #     return context
+
+
+class Crear(SuccessMessageMixin, CreateView):
+    # model = models.Clientes
+    # form_class = forms.CientesForm
+    template_name = 'crear.html'
+    form = forms.CientesForm
+    # fields = "__all__"
+    success_message = 'Registro creado correctamente !'
+
+    # Redireccionamos a la página principal luego de crear un registro o postre
+    def get_success_url(self):
+        return reverse('clientes:listado')
+
+
+class Detalle(DetailView):
+    model = models.Clientes
+    template_name = 'detalle.html'
+
+    def get_context_data(self, **kwargs):
+        # context = super(MyDetailView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
+        context['form'] = forms.CientesForm
+        return context
+
+
+class Actualizar(SuccessMessageMixin, UpdateView):
+    model = models.Clientes
+    template_name = 'actualizar.html'
+    # form = Postres
+    fields = "__all__"
+    success_message = 'Registro actualizado correctamente !'
+
+    # Redireccionamos a la página principal luego de actualizar un registro o postre
+    def get_success_url(self):
+        return reverse('clientes:listado')
+
+
+class Eliminar(SuccessMessageMixin, DeleteView):
+    model = models.Clientes
+    template_name = 'eliminar.html'
+    # form = Postres
+    fields = "__all__"
+
+    # Redireccionamos a la página principal luego de eliminar un registro o postre
+    def get_success_url(self):
+        success_message = 'Registro eliminado correctamente !'
+        messages.success(self.request, (success_message))
+        return reverse('clientes:listado')
+

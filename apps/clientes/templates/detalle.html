@@ -1,0 +1,28 @@
+{% extends "base_clientes.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="col-sm-6 col-sm-push-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-eye-open"></span> {{ object.nombre }}
+                </h3>
+            </div>
+            <div class="panel-body">
+                {% for f in object.get_fields %}
+                    <dt>{{f.name|capfirst}}</dt>
+                    <dd>{{f.value|escape|urlize|linebreaks}}</dd>
+                {% endfor %}
+                <legend></legend>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-10 col-sm-2">
+                        <a href="{% url 'clientes:show' %}" type="submit" class="btn btn-primary">Regresar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
