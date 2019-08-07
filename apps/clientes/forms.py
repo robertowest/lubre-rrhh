@@ -1,7 +1,7 @@
 from django import forms
 
 from .models import Clientes
-from .models import Actividades, Provincias
+from .models import Actividades, Califica, Estadocliente, Provincias
 
 class ClienteFormulario(forms.ModelForm):
     class Meta:
@@ -11,22 +11,24 @@ class ClienteFormulario(forms.ModelForm):
         exclude = ('idcliente',)
 
 
-    nombre = forms.CharField(label='Nombre', max_length=60)
-    fantasia = forms.CharField(label='Razón Social', max_length=60)
-    direc_d = forms.CharField(label='Domicilio', max_length=60)
-    telef_d = forms.CharField(label='Teléfono', max_length=20)
-    email_d = forms.CharField(label='Correo Electrónico', max_length=90)
-    actividad = forms.ModelChoiceField(queryset=Actividades.objects.all().order_by('descripcion'))
-    provincia = forms.ModelChoiceField(queryset=Provincias.objects.all().order_by('nombre'))
+    nombre = forms.CharField(label='Razón Social', max_length=60, required=False)
+    fantasia = forms.CharField(label='Fantasía', max_length=60, required=False)
+    direc_d = forms.CharField(label='Domicilio', max_length=60, required=False)
+    telef_d = forms.CharField(label='Teléfono', max_length=20, required=False)
+    email_d = forms.CharField(label='Correo Electrónico', max_length=90, required=False)
+    actividad = forms.ModelChoiceField(queryset=Actividades.objects.all().order_by('descripcion'), required=False)
+    provincia = forms.ModelChoiceField(queryset=Provincias.objects.all().order_by('nombre'), required=False)
 
-    # form = YourForm(initial={'field1': instance_of_mymodel})
-    # field1 = forms.ModelChoiceField(queryset=..., initial=0)
 
-    # actividad = models.ForeignKey(Actividades, models.DO_NOTHING, db_column='idactividad')
-    # califica = models.ForeignKey(Califica, models.DO_NOTHING, db_column='idcalifica')
-    # estadocliente = models.ForeignKey('Estadocliente', models.DO_NOTHING, db_column='idestadocliente')
-    # directivos = models.CharField(max_length=60, blank=True, null=True)
-    # idprovincias = models.CharField(max_length=15, blank=True, null=True)
-    # localidad = models.CharField(max_length=60, blank=True, null=True)
-    # direccion = models.CharField(max_length=60, blank=True, null=True)
+class ClienteFiltro(forms.ModelForm):
+    class Meta:
+        model = Clientes
+        fields = ('nombre','actividad', 'califica', 'estadocliente')
 
+    nombre = forms.CharField(label='Fantasía / Razón Social', max_length=60, required=False)
+    califica = forms.ModelChoiceField(label='Calificación',
+                                      queryset=Califica.objects.all().order_by('descripcion'),
+                                      required=False)
+    estadocliente = forms.ModelChoiceField(label='Estado',
+                                           queryset=Estadocliente.objects.all().order_by('descripcion'),
+                                           required=False)

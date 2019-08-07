@@ -46,42 +46,28 @@ class Estadocliente(models.Model):
 
 
 class Provincias(models.Model):
-    idprovincias = models.IntegerField(primary_key=True)
+    idprovincias = models.CharField(primary_key=True, max_length=15)
     nombre = models.CharField(max_length=40, blank=True, null=True)
-
-    def __str__(self):
-        return self.nombre
 
     class Meta:
         managed = False
         app_label = 'firebird'
         db_table = 'provincia'
 
+    def __str__(self):
+        return self.nombre
+
 
 class Clientes(models.Model):
-    idcliente = models.IntegerField(primary_key=True)
-    nombre = models.CharField(max_length=60, blank=True, null=True)
-    fantasia = models.CharField(max_length=60, blank=True, null=True)
-    actividad = models.ForeignKey(Actividades, models.DO_NOTHING, db_column='idactividad')
-    califica = models.ForeignKey(Califica, models.DO_NOTHING, db_column='idcalifica')
-    estadocliente = models.ForeignKey(Estadocliente, models.DO_NOTHING, db_column='idestadocliente')
-    direc_d = models.CharField(max_length=60, blank=True, null=True)
-    directivos = models.CharField(max_length=60, blank=True, null=True)
-    telef_d = models.CharField(max_length=20, blank=True, null=True)
-    email_d = models.CharField(max_length=90, blank=True, null=True)
-    provincia = models.ForeignKey(Provincias, models.DO_NOTHING, db_column='idprovincias')
-    localidad = models.CharField(max_length=60, blank=True, null=True)
-    direccion = models.CharField(max_length=60, blank=True, null=True)
-
-    def __str__(self):
-        return self.fantasia
-
     class Meta:
         managed = False
         app_label = 'firebird'
         db_table = 'clientes'
         verbose_name = 'Cliente'
         verbose_name_plural = 'Clientes'
+
+    def __str__(self):
+        return self.fantasia
 
     def get_fields(self):
         """Returns a list of all field names on the instance."""
@@ -98,3 +84,20 @@ class Clientes(models.Model):
                 fields.append({'name':fname, 'value':value,})
 
         return fields
+
+    idcliente = models.IntegerField(primary_key=True)
+    nombre = models.CharField(max_length=60, blank=True, null=True)
+    fantasia = models.CharField(max_length=60, blank=True, null=True)
+    # models.DO_NOTHING
+    actividad = models.ForeignKey(Actividades, on_delete=models.CASCADE, db_column='idactividad', blank=True)
+    califica = models.ForeignKey(Califica, on_delete=models.CASCADE, db_column='idcalifica', blank=True)
+    estadocliente = models.ForeignKey(Estadocliente, on_delete=models.CASCADE, db_column='idestadocliente', blank=True)
+    direc_d = models.CharField(max_length=60, blank=True, null=True)
+    directivos = models.CharField(max_length=60, blank=True, null=True)
+    telef_d = models.CharField(max_length=20, blank=True, null=True)
+    email_d = models.CharField(max_length=90, blank=True, null=True)
+    provincia = models.ForeignKey(Provincias, on_delete=models.CASCADE, db_column='idprovincias')
+    localidad = models.CharField(max_length=60, blank=True, null=True)
+    direccion = models.CharField(max_length=60, blank=True, null=True)
+
+

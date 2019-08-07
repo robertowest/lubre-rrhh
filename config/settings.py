@@ -169,6 +169,7 @@ if DEBUG:
 INSTALLED_APPS += [
     # aplicacione de terceros
     'crispy_forms',
+    'django_filters',
     # mis aplicaciones
     'apps.homepage',
     'apps.clientes',
