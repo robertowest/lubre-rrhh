@@ -21,19 +21,19 @@
                         <tr>
                             <th class="priority-1">Nombre</th>
                             <th class="priority-2">Actividad</th>
-                            <th class="priority-2">Califica</th>
-                            <th class="priority-2">Estado</th>
+                            <th class="priority-3">Califica</th>
+                            <th class="priority-4">Estado</th>
                             <th class="priority-1">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for object in object_list %}
                         <tr>
-                            <td>{{object.fantasia}}</td>
-                            <td>{{object.actividad.descripcion}}</td>
-                            <td>{{object.califica.descripcion}}</td>
-                            <td>{{object.estadocliente.descripcion}}</td>
-                            <td>
+                            <td class="priority-1">{{object.fantasia}}</td>
+                            <td class="priority-2">{{object.actividad.descripcion}}</td>
+                            <td class="priority-3">{{object.califica.descripcion}}</td>
+                            <td class="priority-4">{{object.estadocliente.descripcion}}</td>
+                            <td class="priority-1">
                                 <a href="{% url 'clientes:detail' object.idcliente %}"><span class="glyphicon glyphicon-eye-open"></span></a> |
                                 <a href="{% url 'clientes:edit' object.idcliente %}"><span class="glyphicon glyphicon-pencil"></span></a> |
                                 <a href="{% url 'clientes:delete' object.idcliente %}"><span class="glyphicon glyphicon-trash"></span></a>
