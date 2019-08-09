@@ -1,0 +1,80 @@
+{% extends "base_clientes.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    {# canales #}
+    <div class="col-sm-6">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-list-alt"></span> Tabla de Canales
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div align="right" class="btn_crear mb-3">
+                    <a href="#" type="button" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> Crear </a>
+                </div>
+
+                <table class="table table-responsive table-striped">
+                    <thead>
+                        <tr>
+                            <th>Descripción</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for object in object_list %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'clientes:act_filter' object.idcanales %}">
+                                    {{object.descripcion}}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="#"><span class="glyphicon glyphicon-pencil"></span></a> |
+                                <a href="#"><span class="glyphicon glyphicon-trash"></span></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {# actividades #}
+    <div class="col-sm-6">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-list-alt"></span> Tabla de Actividades
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div align="right" class="btn_crear mb-3">
+                    <a href="#" type="button" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> Crear </a>
+                </div>
+
+                <table class="table table-responsive table-striped">
+                    <thead>
+                        <tr>
+                            <th>Descripción</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for object in actividades %}
+                        <tr>
+                            <td>{{object.descripcion}}</td>
+                            <td>
+                                <a href="#"><span class="glyphicon glyphicon-pencil"></span></a> |
+                                <a href="#"><span class="glyphicon glyphicon-trash"></span></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

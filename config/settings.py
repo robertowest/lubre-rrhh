@@ -34,8 +34,9 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
+    'django.contrib.humanize',
     'django.contrib.messages',
+    'django.contrib.sessions',
     'django.contrib.staticfiles',
 ]
 
@@ -74,9 +75,18 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+    'default': {},
+    'sqlite': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    },
+    'mysql': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'lubre_dev',
+        'USER': 'roberto',
+        'PASSWORD': 'roberto',
+        'HOST': '192.168.1.2',
+        'PORT': '3306',
     },
     'firebird': {
         'ENGINE': 'django.db.backends.firebird',
@@ -87,18 +97,10 @@ DATABASES = {
         'PORT': '3050',
         'OPTIONS': {'charset': 'ISO8859_1'}
     },
-    'firebird_lubre': {
-        'ENGINE': 'django.db.backends.firebird',
-        'NAME': 'P:\PRUEBA\DATOS\GESTION.FDB',
-        'USER': 'SYSDBA',
-        'PASSWORD': 'masterkey',
-        'HOST': '192.168.1.254',
-        'PORT': '3050',
-        'OPTIONS': {'charset': 'ISO8859_1'}
-    },
 }
 
-DATABASE_ROUTERS = ['config.routers.DefaultRouter']
+DATABASE_ROUTERS = ['config.routers.DefaultRouter',
+                    'config.routers.MySQLRouter']
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -173,4 +175,6 @@ INSTALLED_APPS += [
     # mis aplicaciones
     'apps.homepage',
     'apps.clientes',
+    'apps.juridico',
+    'apps.rrhh',
 ]

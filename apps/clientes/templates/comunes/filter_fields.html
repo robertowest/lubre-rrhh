@@ -1,0 +1,11 @@
+{% for field in form %}
+<dl>
+    <dt>{{ field.label }}</dt>
+    <dd>{{ field }}</dd>
+</dl>
+{% endfor %}
+
+<hr>
+<button type="submit" class="btn btn-default">
+    <span class="glyphicon glyphicon-search"></span> Filtrar
+</button>

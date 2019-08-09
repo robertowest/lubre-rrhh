@@ -1,0 +1,67 @@
+{% extends "base_rrhh.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="col-sm-9">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-list-alt"></span> Tabla de Clientes
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div align="right" class="btn_crear mb-3">
+                    <a href="#" type="button" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> Crear </a>
+                </div>
+
+                <table class="table table-responsive table-striped">
+                    <thead>
+                        <tr>
+                            <th class="priority-1">Legajo</th>
+                            <th class="priority-1">Nombre</th>
+                            <th class="priority-2">F.Ingreso</th>
+                            <th class="priority-3">F.Egreso</th>
+                            <th class="priority-1">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for object in object_list %}
+                        <tr>
+                            <td class="priority-1">{{object.legajo}}</td>
+                            <td class="priority-1">
+                                <a href="{% url 'rrhh:empl_detail' object.id %}">{{object}}</a>
+                            </td>
+                            <td class="priority-3">{{object.fec_ing|date:"d/m/Y"}}</td>
+                            <td class="priority-4">{{object.fec_egr|date:"d/m/Y"}}</td>
+                            <td class="priority-1">
+                                {# url 'clientes:detail' object.idcliente #}
+                                <a href="{% url 'rrhh:empl_detail' object.id %}"><span class="glyphicon glyphicon-pencil"></span></a> |
+                                <a href="#"><span class="glyphicon glyphicon-trash"></span></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                {# paginación #}
+                {% include 'paginator.html' %}
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-filter"></span> Filtro
+                </h3>
+            </div>
+            <div class="panel-body">
+                <form method="post" enctype="multipart/form-data" class="form-horizontal">
+                    {% csrf_token %}
+                    {% include 'comunes/filter_fields.html' %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

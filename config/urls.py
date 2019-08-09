@@ -22,6 +22,10 @@ urlpatterns = [
     path('home/', include('apps.homepage.urls')),
     # Clientes
     path('clientes/', include('apps.clientes.urls')),
+    # Juridico
+    path('juridico/', include('apps.juridico.urls')),
+    # RRHH
+    path('rrhh/', include('apps.rrhh.urls')),
 ]
 
 # -----------------------------------------------------------------------------

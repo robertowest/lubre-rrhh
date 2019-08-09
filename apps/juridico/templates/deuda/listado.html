@@ -1,0 +1,58 @@
+{% extends "base_juridico.html" %}
+{% load humanize %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="col-sm-9">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-list-alt"></span> Clientes Morosos
+                </h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-responsive table-striped">
+                    <thead>
+                        <tr>
+                            <th class="priority-1">Cliente</th>
+                            <th class="priority-4">Comprobante</th>
+                            <th class="priority-3">Fecha</th>
+                            <th class="priority-2">Total</th>
+                            <th class="priority-1">Vencida</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for object in object_list %}
+                        <tr>
+                            <td class="priority-1">{{object.cliente.fantasia}}</td>
+                            <td class="priority-4">{{object.comprobante}}</td>
+                            <td class="priority-3">{{object.fecha|date:'d M Y'}}</td>
+                            <td class="priority-2">{{object.total|intcomma}}</td>
+                            <td class="priority-1">{{object.dias}} días</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                {# paginación #}
+                {% include 'paginator.html' %}
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-filter"></span> Filtro
+                </h3>
+            </div>
+            <div class="panel-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% include 'comunes/filter_fields.html' %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
