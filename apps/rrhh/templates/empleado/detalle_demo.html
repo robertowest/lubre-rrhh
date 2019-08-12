@@ -1,149 +1,81 @@
-{% extends "base_rrhh.html" %}
-{% load humanize %}
+{% extends "base_clientes.html" %}
 
 {% block content %}
+<hr>
 <div class="container bootstrap snippet">
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-9">
             <h1>{{ object }}</h1>
         </div>
+        <div class="col-sm-3">
+        </div>
     </div>
-    <hr>
+
     <div class="row">
         <div class="col-sm-9">
             <ul class="nav nav-tabs" id="myTab">
-                <li class="active"><a href="#datos" data-toggle="tab">Datos Personales</a></li>
-                <li><a href="#canales" data-toggle="tab">Caneles de Comunicación</a></li>
-                <li><a href="#mensajes" data-toggle="tab">Mensages</a></li>
+                <li class="active"><a href="#settings" data-toggle="tab">Settings</a></li>
+                <li><a href="#home" data-toggle="tab">Home</a></li>
+                <li><a href="#messages" data-toggle="tab">Messages</a></li>
             </ul>
 
             <div class="tab-content">
-                <div class="tab-pane active" id="datos">
+                <div class="tab-pane active" id="settings">
                     <form class="form" action="##" method="post" id="registrationForm">
                         <div class="form-group">
+
                             <div class="col-xs-6">
-                                <label for="nombre">
-                                    <h4>Nombre</h4>
-                                </label>
-                                <input type="text" class="form-control"
-                                       name="nombre" id="nombre"
-                                       value="{{object.persona.nombre}}"
-                                       placeholder="nombres" title="ingrese nombre completo">
+                                <label for="first_name">
+                                    <h4>First name</h4></label>
+                                <input type="text" class="form-control" name="first_name" id="first_name" placeholder="first name" title="enter your first name if any.">
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                            <div class="col-xs-6">
+                                <label for="last_name">
+                                    <h4>Last name</h4></label>
+                                <input type="text" class="form-control" name="last_name" id="last_name" placeholder="last name" title="enter your last name if any.">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+
+                            <div class="col-xs-6">
+                                <label for="phone">
+                                    <h4>Phone</h4></label>
+                                <input type="text" class="form-control" name="phone" id="phone" placeholder="enter phone" title="enter your phone number if any.">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-xs-6">
-                                <label for="apellido">
-                                    <h4>Apellido</h4>
-                                </label>
-                                <input type="text" class="form-control"
-                                       name="apellido" id="apellido"
-                                       value="{{object.persona.apellido}}"
-                                       placeholder="apellidos" title="ingrese sus apellidos">
+                                <label for="mobile">
+                                    <h4>Mobile</h4></label>
+                                <input type="text" class="form-control" name="mobile" id="mobile" placeholder="enter mobile number" title="enter your mobile number if any.">
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <div class="col-xs-6">
-                                <label for="dni">
-                                    <h4>DNI</h4>
-                                </label>
-                                <input type="text" class="form-control"
-                                       name="dni" id="dni"
-                                       value="{{object.persona.dni}}"
-                                       placeholder="dni 20.123.456" title="ingrese número de documento">
-                            </div>
-                        </div>
 
-                        <div class="form-group">
-                            <div class="col-xs-6">
-                                <label for="cuil">
-                                    <h4>CUIL</h4></label>
-                                <input type="text" class="form-control"
-                                       name="cuil" id="cuil"
-                                       value="{{object.persona.cuil}}"
-                                       placeholder="cuil 20-12345678-0" title="ingrese número de cuil">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-xs-6">
-                                <label for="sexo">
-                                    <h4>Sexo</h4>
-                                </label>
-                                <input type="text" class="form-control"
-                                       name="sexo" id="sexo"
-                                       value="{{object.persona.sexo}}"
-                                       placeholder="sexo (Masc / Fem)" title="ingrese sexo">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-xs-6">
-                                <label for="fnac">
-                                    <h4>Fec. Nacimiento</h4>
-                                </label>
-                                <input type="text" class="form-control"
-                                       name="fnac" id="fnac"
-                                       value="{{object.persona.fec_nac|date:'d/m/Y'}}"
-                                       placeholder="f. nac. 30/01/2019" title="fecha de nacimiento">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-xs-6">
-                                <label for="fec_ing">
-                                    <h4>Fec. Ingreso</h4>
-                                </label>
-                                <input type="text" class="form-control"
-                                       name="fec_ing" id="fec_ing"
-                                       value="{{object.fec_ing|date:'d/m/Y'}}"
-                                       placeholder="f. ing. 30/01/2019" title="fecha de ingreso">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-xs-6">
-                                <label for="fec_egr">
-                                    <h4>Fec. Egreso</h4>
-                                </label>
-                                <input type="text" class="form-control"
-                                       name="fec_egr" id="fec_egr"
-                                       value="{{object.fec_egr|date:'d/m/Y'}}"
-                                       placeholder="f. egr. 30/01/2019" title="fecha de egreso">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-xs-6">
-                                <label for="legajo">
-                                    <h4>Legajo</h4>
-                                </label>
-                                <input type="text" class="form-control"
-                                       name="legajo" id="legajo"
-                                       value="{{object.legajo}}"
-                                       placeholder="legajo" title="ingrese legajo">
-                            </div>
-                        </div>
-
-                        <!--
-                        <div class="form-group">
                             <div class="col-xs-6">
                                 <label for="email">
-                                    <h4>Correo-E</h4>
-                                </label>
-                                <input type="email" class="form-control"
-                                       name="email" id="email"
-                                       placeholder="tu@correo.com" title="ingreso correo electrónico">
+                                    <h4>Email</h4></label>
+                                <input type="email" class="form-control" name="email" id="email" placeholder="you@email.com" title="enter your email.">
                             </div>
                         </div>
-
                         <div class="form-group">
+
+                            <div class="col-xs-6">
+                                <label for="email">
+                                    <h4>Location</h4></label>
+                                <input type="email" class="form-control" id="location" placeholder="somewhere" title="enter a location">
+                            </div>
+                        </div>
+                        <div class="form-group">
+
                             <div class="col-xs-6">
                                 <label for="password">
-                                    <h4>Password</h4>
-                                </label>
+                                    <h4>Password</h4></label>
                                 <input type="password" class="form-control" name="password" id="password" placeholder="password" title="enter your password.">
                             </div>
                         </div>
@@ -155,22 +87,17 @@
                                 <input type="password" class="form-control" name="password2" id="password2" placeholder="password2" title="enter your password2.">
                             </div>
                         </div>
-                        -->
                         <div class="form-group">
                             <div class="col-xs-12">
                                 <br>
-                                <button class="btn btn-lg btn-success" type="submit">
-                                    <i class="glyphicon glyphicon-ok-sign"></i> Grabar
-                                </button>
-                                <button class="btn btn-lg btn-default" type="reset">
-                                    <i class="glyphicon glyphicon-repeat"></i> Limpiar
-                                </button>
+                                <button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
+                                <button class="btn btn-lg" type="reset"><i class="glyphicon glyphicon-repeat"></i> Reset</button>
                             </div>
                         </div>
                     </form>
                 </div>
 
-                <div class="tab-pane" id="canales">
+                <div class="tab-pane" id="home">
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead>
@@ -290,7 +217,7 @@
 
                 </div>
 
-                <div class="tab-pane" id="mensajes">
+                <div class="tab-pane" id="messages">
 
                     <h2></h2>
 
@@ -310,9 +237,8 @@
                 </div>
             </div>
         </div>
-
         <div class="col-sm-3">
-            <div class="panel panel-info">
+            <div class="panel panel-default">
                 <div class="panel-heading">
                     Foto <i class="fa fa-link fa-1x"></i>
                 </div>
@@ -324,16 +250,14 @@
             </div>
 
             <ul class="list-group">
-                <li class="list-group-item text-muted">Comunicación</li>
-                <li class="list-group-item text-right">
-                    <span class="pull-left"><strong>Joined</strong></span> 2.13.2014
-                </li>
+                <li class="list-group-item text-muted">Profile</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>Joined</strong></span> 2.13.2014</li>
                 <li class="list-group-item text-right"><span class="pull-left"><strong>Last seen</strong></span> Yesterday</li>
                 <li class="list-group-item text-right"><span class="pull-left"><strong>Real name</strong></span> Joseph Doe</li>
 
             </ul>
 
-            <div class="panel panel-success">
+            <div class="panel panel-default">
                 <div class="panel-heading">Website <i class="fa fa-link fa-1x"></i></div>
                 <div class="panel-body"><a href="https://bootdey.com">https://bootdey.com</a></div>
             </div>
@@ -346,7 +270,7 @@
                 <li class="list-group-item text-right"><span class="pull-left"><strong>Followers</strong></span> 78</li>
             </ul>
 
-            <div class="panel panel-info">
+            <div class="panel panel-default">
                 <div class="panel-heading">Social Media</div>
                 <div class="panel-body">
                     <i class="fa fa-facebook fa-2x"></i> <i class="fa fa-github fa-2x"></i> <i class="fa fa-twitter fa-2x"></i> <i class="fa fa-pinterest fa-2x"></i> <i class="fa fa-google-plus fa-2x"></i>
