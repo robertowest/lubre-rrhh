@@ -3,11 +3,12 @@ from django.db import models
 from apps.comunes.models import Provincias, Zonas
 
 # Create your models here.
-class Vendedores(models.Model):
+class Comercial(models.Model):
     class Meta:
-        managed = False
-        db_table = 'vendedor'
+        # abstract = True
         app_label = 'firebird'
+        db_table = 'vendedor'
+        managed = False
         verbose_name = 'Vendedor'
         verbose_name_plural = 'Vendedores'
 

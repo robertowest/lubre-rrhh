@@ -3,9 +3,9 @@ from django.db import models
 # Create your models here.
 class Provincias(models.Model):
     class Meta:
-        managed = False
+        app_label = 'clientes'
         db_table = 'provincia'
-        app_label = 'firebird'
+        managed = False
         verbose_name = 'Provincia'
         verbose_name_plural = 'Provincias'
 
@@ -23,9 +23,9 @@ class Provincias(models.Model):
 
 class Zonas(models.Model):
     class Meta:
-        managed = False
+        app_label = 'clientes'
         db_table = 'zonas'
-        app_label = 'firebird'
+        managed = False
         verbose_name = 'Zona'
         verbose_name_plural = 'Zonas'
 
@@ -38,4 +38,3 @@ class Zonas(models.Model):
     fechaalta = models.DateTimeField(blank=True, null=True)
     datospc = models.CharField(max_length=60, blank=True, null=True)
     idopera = models.IntegerField(blank=True, null=True)
-

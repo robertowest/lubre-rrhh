@@ -1,12 +1,12 @@
 from django import forms
 
-from apps.vendedores.models import Vendedores
+from apps.comerciales.models import Comercial
 
 class DeudaFiltro(forms.ModelForm):
     class Meta:
-        model = Vendedores
+        model = Comercial
         fields = ('vendedor',)
 
     vendedor = forms.ModelChoiceField(label='Comercial',
-                                      queryset=Vendedores.objects.all().order_by('nombre'),
+                                      queryset=Comercial.objects.all().order_by('nombre'),
                                       required=False)

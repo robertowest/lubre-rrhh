@@ -99,8 +99,8 @@ DATABASES = {
     },
 }
 
-DATABASE_ROUTERS = ['config.routers.DefaultRouter',
-                    'config.routers.MySQLRouter']
+DATABASE_ROUTERS = ['config.routers.MySQLRouter',
+                    'config.routers.FirebirdRouter']
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators

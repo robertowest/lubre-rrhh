@@ -4,9 +4,9 @@ from apps.comunes.models import Provincias
 
 class Canales(models.Model):
     class Meta:
-        managed = False
-        app_label = 'firebird'
+        # app_label = 'firebird'
         db_table = 'canales'
+        managed = False
         verbose_name = 'Canal'
         verbose_name_plural = 'Canales'
 
@@ -18,6 +18,16 @@ class Canales(models.Model):
 
 
 class Actividades(models.Model):
+    class Meta:
+        # app_label = 'firebird'
+        db_table = 'actividades'
+        managed = False
+        verbose_name = 'Actividad'
+        verbose_name_plural = 'Actividades'
+
+    def __str__(self):
+        return self.descripcion
+
     idactividad = models.IntegerField(primary_key=True)
     descripcion = models.CharField(max_length=60, blank=True, null=True)
     idcanales = models.ForeignKey('Canales', models.DO_NOTHING, db_column='idcanales')
@@ -26,51 +36,41 @@ class Actividades(models.Model):
     datospc = models.CharField(max_length=60, blank=True, null=True)
     idopera = models.IntegerField(blank=True, null=True)
 
+
+class Califica(models.Model):
+    class Meta:
+        # app_label = 'firebird'
+        db_table = 'califica'
+        managed = False
+
     def __str__(self):
         return self.descripcion
 
-    class Meta:
-        managed = False
-        app_label = 'firebird'
-        db_table = 'actividades'
-        verbose_name = 'Actividad'
-        verbose_name_plural = 'Actividades'
-
-
-class Califica(models.Model):
     idcalifica = models.IntegerField(primary_key=True)
     descripcion = models.CharField(max_length=30, blank=True, null=True)
 
+
+class Estadocliente(models.Model):
+    class Meta:
+        # app_label = 'firebird'
+        db_table = 'estadocliente'
+        managed = False
+
     def __str__(self):
         return self.descripcion
 
-    class Meta:
-        managed = False
-        app_label = 'firebird'
-        db_table = 'califica'
-
-
-class Estadocliente(models.Model):
     idestadocliente = models.IntegerField(primary_key=True)
     descripcion = models.CharField(max_length=40, blank=True, null=True)
     fechaalta = models.DateTimeField(blank=True, null=True)
     datospc = models.CharField(max_length=60, blank=True, null=True)
     idopera = models.IntegerField(blank=True, null=True)
 
-    def __str__(self):
-        return self.descripcion
-
-    class Meta:
-        managed = False
-        app_label = 'firebird'
-        db_table = 'estadocliente'
-
 
 class Clientes(models.Model):
     class Meta:
-        managed = False
-        app_label = 'firebird'
+        # app_label = 'firebird'
         db_table = 'clientes'
+        managed = False
         verbose_name = 'Cliente'
         verbose_name_plural = 'Clientes'
 
