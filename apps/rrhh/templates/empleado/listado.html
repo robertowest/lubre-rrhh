@@ -11,7 +11,8 @@
             </div>
             <div class="panel-body">
                 <div align="right" class="btn_crear mb-3">
-                    <a href="#" type="button" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> Crear </a>
+                    <a href="#" type="button" class="btn btn-primary">
+                        <i class="glyphicon glyphicon-plus"></i> Crear </a>
                 </div>
 
                 <table class="table table-responsive table-striped">
@@ -35,7 +36,9 @@
                             <td class="priority-4">{{object.fec_egr|date:"d/m/Y"}}</td>
                             <td class="priority-1">
                                 {# url 'clientes:detail' object.idcliente #}
-                                <a href="{% url 'rrhh:empl_detail' object.id %}"><span class="glyphicon glyphicon-pencil"></span></a> |
+                                <a href="{% url 'rrhh:empl_update' object.id %}">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                </a> |
                                 <a href="#"><span class="glyphicon glyphicon-trash"></span></a>
                             </td>
                         </tr>

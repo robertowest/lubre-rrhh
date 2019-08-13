@@ -1,6 +1,13 @@
 {% extends "base_rrhh.html" %}
 {% load humanize %}
 
+{% block base_css %}
+    <style>
+        .form-control { font-size: unset; }
+        .btn-lg, .btn-group-lg > .btn { font-size: unset; }
+    </style>
+{% endblock %}
+
 {% block content %}
 <div class="container bootstrap snippet">
     <div class="row">
@@ -19,154 +26,10 @@
 
             <div class="tab-content">
                 <div class="tab-pane active" id="datos">
-                    <form class="form" action="##" method="post" id="registrationForm">
-                        <div class="form-group">
-                            <div class="col-xs-6">
-                                <label for="nombre">
-                                    <h4>Nombre</h4>
-                                </label>
-                                <input type="text" class="form-control"
-                                       name="nombre" id="nombre"
-                                       value="{{object.persona.nombre}}"
-                                       placeholder="nombres" title="ingrese nombre completo">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-xs-6">
-                                <label for="apellido">
-                                    <h4>Apellido</h4>
-                                </label>
-                                <input type="text" class="form-control"
-                                       name="apellido" id="apellido"
-                                       value="{{object.persona.apellido}}"
-                                       placeholder="apellidos" title="ingrese sus apellidos">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-xs-6">
-                                <label for="dni">
-                                    <h4>DNI</h4>
-                                </label>
-                                <input type="text" class="form-control"
-                                       name="dni" id="dni"
-                                       value="{{object.persona.dni}}"
-                                       placeholder="dni 20.123.456" title="ingrese número de documento">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-xs-6">
-                                <label for="cuil">
-                                    <h4>CUIL</h4></label>
-                                <input type="text" class="form-control"
-                                       name="cuil" id="cuil"
-                                       value="{{object.persona.cuil}}"
-                                       placeholder="cuil 20-12345678-0" title="ingrese número de cuil">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-xs-6">
-                                <label for="sexo">
-                                    <h4>Sexo</h4>
-                                </label>
-                                <input type="text" class="form-control"
-                                       name="sexo" id="sexo"
-                                       value="{{object.persona.sexo}}"
-                                       placeholder="sexo (Masc / Fem)" title="ingrese sexo">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-xs-6">
-                                <label for="fnac">
-                                    <h4>Fec. Nacimiento</h4>
-                                </label>
-                                <input type="text" class="form-control"
-                                       name="fnac" id="fnac"
-                                       value="{{object.persona.fec_nac|date:'d/m/Y'}}"
-                                       placeholder="f. nac. 30/01/2019" title="fecha de nacimiento">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-xs-6">
-                                <label for="fec_ing">
-                                    <h4>Fec. Ingreso</h4>
-                                </label>
-                                <input type="text" class="form-control"
-                                       name="fec_ing" id="fec_ing"
-                                       value="{{object.fec_ing|date:'d/m/Y'}}"
-                                       placeholder="f. ing. 30/01/2019" title="fecha de ingreso">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-xs-6">
-                                <label for="fec_egr">
-                                    <h4>Fec. Egreso</h4>
-                                </label>
-                                <input type="text" class="form-control"
-                                       name="fec_egr" id="fec_egr"
-                                       value="{{object.fec_egr|date:'d/m/Y'}}"
-                                       placeholder="f. egr. 30/01/2019" title="fecha de egreso">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-xs-6">
-                                <label for="legajo">
-                                    <h4>Legajo</h4>
-                                </label>
-                                <input type="text" class="form-control"
-                                       name="legajo" id="legajo"
-                                       value="{{object.legajo}}"
-                                       placeholder="legajo" title="ingrese legajo">
-                            </div>
-                        </div>
-
-                        <!--
-                        <div class="form-group">
-                            <div class="col-xs-6">
-                                <label for="email">
-                                    <h4>Correo-E</h4>
-                                </label>
-                                <input type="email" class="form-control"
-                                       name="email" id="email"
-                                       placeholder="tu@correo.com" title="ingreso correo electrónico">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-xs-6">
-                                <label for="password">
-                                    <h4>Password</h4>
-                                </label>
-                                <input type="password" class="form-control" name="password" id="password" placeholder="password" title="enter your password.">
-                            </div>
-                        </div>
-                        <div class="form-group">
-
-                            <div class="col-xs-6">
-                                <label for="password2">
-                                    <h4>Verify</h4></label>
-                                <input type="password" class="form-control" name="password2" id="password2" placeholder="password2" title="enter your password2.">
-                            </div>
-                        </div>
-                        -->
-                        <div class="form-group">
-                            <div class="col-xs-12">
-                                <br>
-                                <button class="btn btn-lg btn-success" type="submit">
-                                    <i class="glyphicon glyphicon-ok-sign"></i> Grabar
-                                </button>
-                                <button class="btn btn-lg btn-default" type="reset">
-                                    <i class="glyphicon glyphicon-repeat"></i> Limpiar
-                                </button>
-                            </div>
-                        </div>
+                    {# include 'empleado/formulario_html.html' #}
+                    <form method="post" class="form" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% include 'empleado/formulario.html' %}
                     </form>
                 </div>
 
@@ -175,106 +38,19 @@
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>Label 1</th>
-                                    <th>Label 2</th>
-                                    <th>Label 3</th>
-                                    <th>Label </th>
-                                    <th>Label </th>
-                                    <th>Label </th>
+                                    <th style="width: 10%">#</th>
+                                    <th style="width: 30%">Tipo</th>
+                                    <th>Texto</th>
                                 </tr>
                             </thead>
                             <tbody id="items">
+                                {% for obj in comunicaciones %}
                                 <tr>
-                                    <td>1</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
+                                    <td>{{obj.id}}</td>
+                                    <td>{{obj.get_tipo_display}}</td>
+                                    <td>{{obj.texto}}</td>
                                 </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                </tr>
-                                <tr>
-                                    <td>6</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                </tr>
-                                <tr>
-                                    <td>7</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                </tr>
-                                <tr>
-                                    <td>8</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                </tr>
-                                <tr>
-                                    <td>9</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                </tr>
-                                <tr>
-                                    <td>10</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                    <td>Table cell</td>
-                                </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                         <hr>
@@ -295,15 +71,15 @@
                     <h2></h2>
 
                     <ul class="list-group">
-                        <li class="list-group-item text-muted">Inbox</li>
-                        <li class="list-group-item text-right"><a href="#" class="pull-left">Here is your a link to the latest summary report from the..</a> 2.13.2014</li>
-                        <li class="list-group-item text-right"><a href="#" class="pull-left">Hi Joe, There has been a request on your account since that was..</a> 2.11.2014</li>
-                        <li class="list-group-item text-right"><a href="#" class="pull-left">Nullam sapien massaortor. A lobortis vitae, condimentum justo...</a> 2.11.2014</li>
-                        <li class="list-group-item text-right"><a href="#" class="pull-left">Thllam sapien massaortor. A lobortis vitae, condimentum justo...</a> 2.11.2014</li>
-                        <li class="list-group-item text-right"><a href="#" class="pull-left">Wesm sapien massaortor. A lobortis vitae, condimentum justo...</a> 2.11.2014</li>
-                        <li class="list-group-item text-right"><a href="#" class="pull-left">For therepien massaortor. A lobortis vitae, condimentum justo...</a> 2.11.2014</li>
-                        <li class="list-group-item text-right"><a href="#" class="pull-left">Also we, havesapien massaortor. A lobortis vitae, condimentum justo...</a> 2.11.2014</li>
-                        <li class="list-group-item text-right"><a href="#" class="pull-left">Swedish chef is assaortor. A lobortis vitae, condimentum justo...</a> 2.11.2014</li>
+                        <li class="list-group-item text-muted">Recibidos</li>
+                        <li class="list-group-item text-right"><a href="#" class="pull-left">Dolor sit amet, consectetur adipiscing elit. Nulla imperdiet fermentum lacus...</a> 24/01/2019</li>
+                        <li class="list-group-item text-right"><a href="#" class="pull-left">Nam augue felis, gravida ullamcorper enim at, ornare maximus purus...</a> 18/01/2019</li>
+                        <li class="list-group-item text-right"><a href="#" class="pull-left">Vestibulum vel neque quis sapien posuere faucibus...</a> 18/01/2019</li>
+                        <li class="list-group-item text-right"><a href="#" class="pull-left">Donec at elementum orci. In vestibulum vestibulum mauris in pellentesque...</a> 17/011/2019</li>
+                        <li class="list-group-item text-right"><a href="#" class="pull-left">Wesm sapien massaortor. A lobortis vitae, condimentum justo...</a> 17/01/2019</li>
+                        <li class="list-group-item text-right"><a href="#" class="pull-left">Donec pulvinar tincidunt neque eu cursus...</a> 16/01/2019</li>
+                        <li class="list-group-item text-right"><a href="#" class="pull-left">Ut sollicitudin placerat consectetur. In iaculis nulla laoreet nibh...</a> 15/01/2019</li>
+                        <li class="list-group-item text-right"><a href="#" class="pull-left">Nunc eget diam et lacus ullamcorper consectetur...</a> 15/01/2019</li>
 
                     </ul>
 
@@ -311,10 +87,10 @@
             </div>
         </div>
 
-        <div class="col-sm-3">
+        <div class="col-sm-3 hidden-xs">
             <div class="panel panel-info">
                 <div class="panel-heading">
-                    Foto <i class="fa fa-link fa-1x"></i>
+                    Foto <i class="fa fa-photo fa-1x"></i>
                 </div>
                 <div class="panel-body">
                     <a href="/users" class="pull-right">
@@ -323,16 +99,32 @@
                 </div>
             </div>
 
+            {% if comunicaciones  %}
             <ul class="list-group">
-                <li class="list-group-item text-muted">Comunicación</li>
-                <li class="list-group-item text-right">
-                    <span class="pull-left"><strong>Joined</strong></span> 2.13.2014
-                </li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Last seen</strong></span> Yesterday</li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Real name</strong></span> Joseph Doe</li>
-
+                <li class="list-group-item text-muted">Comunicación <i class="fa fa-phone fa-1x"></i></li>
+                {% for obj in comunicaciones %}
+                    {% if obj.tipo in "tel,movil,wa,sms" %}
+                    <li class="list-group-item text-right">
+                        <span class="pull-left"><strong>{{obj.get_tipo_display}}</strong></span> {{obj.texto}}
+                    </li>
+                    {% endif %}
+                {% endfor %}
             </ul>
+            {% endif  %}
 
+            <div class="panel panel-info">
+                <div class="panel-heading">Social <i class="fa fa-link fa-1x"></i></div>
+                <div class="panel-body">
+                    <i class="fa fa-facebook fa-2x"> </i>
+                    <i class="fa fa-github fa-2x"> </i>
+                    <i class="fa fa-google-plus fa-2x"> </i>
+                    <i class="fa fa-linkedin fa-2x"> </i>
+                    <i class="fa fa-pinterest fa-2x"> </i>
+                    <i class="fa fa-twitter fa-2x"> </i>
+                </div>
+            </div>
+
+            <!--
             <div class="panel panel-success">
                 <div class="panel-heading">Website <i class="fa fa-link fa-1x"></i></div>
                 <div class="panel-body"><a href="https://bootdey.com">https://bootdey.com</a></div>
@@ -345,14 +137,7 @@
                 <li class="list-group-item text-right"><span class="pull-left"><strong>Posts</strong></span> 37</li>
                 <li class="list-group-item text-right"><span class="pull-left"><strong>Followers</strong></span> 78</li>
             </ul>
-
-            <div class="panel panel-info">
-                <div class="panel-heading">Social Media</div>
-                <div class="panel-body">
-                    <i class="fa fa-facebook fa-2x"></i> <i class="fa fa-github fa-2x"></i> <i class="fa fa-twitter fa-2x"></i> <i class="fa fa-pinterest fa-2x"></i> <i class="fa fa-google-plus fa-2x"></i>
-                </div>
-            </div>
-
+            -->
         </div>
     </div>
 </div>

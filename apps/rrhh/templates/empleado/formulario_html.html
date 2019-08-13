@@ -1,0 +1,113 @@
+<form class="form" action="##" method="post" id="registrationForm">
+    <div class="form-group">
+        <div class="col-sm-6 col-xs-12">
+            <label for="nombre">
+                <h4>Nombre</h4>
+            </label>
+            <input type="text" class="form-control" name="nombre" id="nombre" value="{{object.persona.nombre}}" placeholder="nombres" title="ingrese nombre completo">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-6 col-xs-12">
+            <label for="apellido">
+                <h4>Apellido</h4>
+            </label>
+            <input type="text" class="form-control" name="apellido" id="apellido" value="{{object.persona.apellido}}" placeholder="apellidos" title="ingrese sus apellidos">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-xs-6">
+            <label for="dni">
+                <h4>DNI</h4>
+            </label>
+            <input type="text" class="form-control" name="dni" id="dni" value="{{object.persona.dni}}" placeholder="dni 20.123.456" title="ingrese número de documento">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-xs-6">
+            <label for="cuil">
+                <h4>CUIL</h4></label>
+            <input type="text" class="form-control" name="cuil" id="cuil" value="{{object.persona.cuil}}" placeholder="cuil 20-12345678-0" title="ingrese número de cuil">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-xs-6">
+            <label for="sexo">
+                <h4>Sexo</h4>
+            </label>
+            <input type="text" class="form-control" name="sexo" id="sexo" value="{{object.persona.sexo}}" placeholder="sexo (Masc / Fem)" title="ingrese sexo">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-xs-6">
+            <label for="fnac">
+                <h4>Fecha de Nacimiento</h4>
+            </label>
+            <input type="text" class="form-control" name="fnac" id="fnac" value="{{object.persona.fec_nac|date:'d/m/Y'}}" placeholder="f. nac. 30/01/2019" title="fecha de nacimiento">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-xs-6">
+            <label for="fec_ing">
+                <h4>Fecha de Ingreso</h4>
+            </label>
+            <input type="text" class="form-control" name="fec_ing" id="fec_ing" value="{{object.fec_ing|date:'d/m/Y'}}" placeholder="f. ing. 30/01/2019" title="fecha de ingreso">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-xs-6">
+            <label for="fec_egr">
+                <h4>Fecha de Egreso</h4>
+            </label>
+            <input type="text" class="form-control" name="fec_egr" id="fec_egr" value="{{object.fec_egr|date:'d/m/Y'}}" placeholder="f. egr. 30/01/2019" title="fecha de egreso">
+        </div>
+    </div>
+
+    {% comment %}
+    <div class="form-group">
+        <div class="col-xs-6">
+            <label for="email">
+                <h4>Correo-E</h4>
+            </label>
+            <input type="email" class="form-control"
+                   name="email" id="email"
+                   placeholder="tu@correo.com" title="ingreso correo electrónico">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-xs-6">
+            <label for="password">
+                <h4>Password</h4>
+            </label>
+            <input type="password" class="form-control" name="password" id="password" placeholder="password" title="enter your password.">
+        </div>
+    </div>
+    <div class="form-group">
+
+        <div class="col-xs-6">
+            <label for="password2">
+                <h4>Verify</h4></label>
+            <input type="password" class="form-control" name="password2" id="password2" placeholder="password2" title="enter your password2.">
+        </div>
+    </div>
+    {% endcomment %}
+
+    <div class="form-group">
+        <div class="col-xs-12">
+            <br>
+            <button class="btn btn-lg btn-success" type="submit">
+                <i class="glyphicon glyphicon-ok-sign"></i> Grabar
+            </button>
+            <button class="btn btn-lg btn-default" type="reset">
+                <i class="glyphicon glyphicon-repeat"></i> Limpiar
+            </button>
+        </div>
+    </div>
+</form>

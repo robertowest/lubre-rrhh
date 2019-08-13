@@ -2,21 +2,26 @@ body {
     padding-top: 50px; /* Padding for .navbar-fixed-top. Change value if navbar height changes. Remove if using .navbar-static-top. */
 }
 
-@media screen and (max-width: 1225px) and (min-width: 1045px) {
+@media (max-width: @screen-lg) {
     body {font-size: 14px;}
+    .autosized .label { font-size: 14px; }
 }
-@media screen and (max-width: 1045px) and (min-width: 835px) {
+
+@media (max-width: @screen-md) {
     body {font-size: 12px;}
+    .autosized .label { font-size: 12px; }
 }
-@media screen and (max-width: 835px) and (min-width: 565px) {
+
+@media (max-width: @screen-sm) {
     body {font-size: 10px;}
+    .autosized .label { font-size: 10px; }
 }
-@media screen and (max-width: 565px) and (min-width: 300px) {
-    body {font-size: 9px;}
-}
-@media screen and (max-width: 300px) {
+
+@media (max-width: @screen-xs) {
     body {font-size: 8px;}
+    .autosized .label { font-size: 8px; }
 }
+
 
 h1, h2, h3, h4, h5, h6,
 h1 a:link, h2 a:link, h3 a:link, h4 a:link, h5 a:link, h6 a:link {
