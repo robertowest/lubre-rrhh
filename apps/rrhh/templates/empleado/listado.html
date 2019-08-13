@@ -11,7 +11,7 @@
             </div>
             <div class="panel-body">
                 <div align="right" class="btn_crear mb-3">
-                    <a href="#" type="button" class="btn btn-primary">
+                    <a href="{% url 'rrhh:empl_new' %}" type="button" class="btn btn-primary" style="margin-bottom:10px">
                         <i class="glyphicon glyphicon-plus"></i> Crear </a>
                 </div>
 
@@ -30,13 +30,13 @@
                         <tr>
                             <td class="priority-1">{{object.legajo}}</td>
                             <td class="priority-1">
-                                <a href="{% url 'rrhh:empl_detail' object.id %}">{{object}}</a>
+                                <a href="{{object.get_absolute_url}}">{{object}}</a>
                             </td>
                             <td class="priority-3">{{object.fec_ing|date:"d/m/Y"}}</td>
                             <td class="priority-4">{{object.fec_egr|date:"d/m/Y"}}</td>
                             <td class="priority-1">
                                 {# url 'clientes:detail' object.idcliente #}
-                                <a href="{% url 'rrhh:empl_update' object.id %}">
+                                <a href="{{object.get_update_url}}">
                                     <span class="glyphicon glyphicon-pencil"></span>
                                 </a> |
                                 <a href="#"><span class="glyphicon glyphicon-trash"></span></a>

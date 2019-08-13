@@ -1,10 +1,9 @@
+from apps.comunes.models import AudtoriaMixin
 from django.db import models
+from django.urls import reverse
 
-# Create your models here.
 
-class Persona(models.Model):
-    SEXO = (('M', 'Masculino'), ('F', 'Femenino'))
-
+class Persona(AudtoriaMixin):
     class Meta:
         app_label = 'rrhh'
         verbose_name = 'Persona'
@@ -14,7 +13,8 @@ class Persona(models.Model):
     def __str__(self):
         return '{}, {}'.format(self.nombre, self.apellido)
 
-    id = models.IntegerField(primary_key=True)
+    SEXO = (('M', 'Masculino'), ('F', 'Femenino'))
+
     apellido = models.CharField(max_length=30, blank=False, null=False)
     nombre = models.CharField(max_length=60, blank=False, null=False)
     dni = models.CharField(max_length=8, blank=True, null=True)
@@ -23,12 +23,7 @@ class Persona(models.Model):
     fec_nac = models.DateField(blank=True, null=True)
 
 
-class Comunicacion(models.Model):
-    TIPO = (('movil', 'Celular'), ('tel', 'Teléfono'), ('wa', 'WhatsApp'), ('sms', 'Mensaje SMS'),
-            ('email', 'Correo Electrónico'),
-            ('face', 'Facebook'), ('git', 'GitHub'), ('google', 'Google+'),
-            ('link', 'LinkedIn'), ('pinter', 'Pinterest'), ('twitt', 'Twitter'))
-
+class Comunicacion(AudtoriaMixin):
     class Meta:
         app_label = 'rrhh'
         verbose_name = 'Comunicacion'
@@ -37,12 +32,16 @@ class Comunicacion(models.Model):
     def __str__(self):
         return '{}: {}'.format(self.get_tipo_display(), self.texto)
 
-    id = models.IntegerField(primary_key=True)
+    TIPO = (('movil', 'Celular'), ('tel', 'Teléfono'), ('wa', 'WhatsApp'), ('sms', 'Mensaje SMS'),
+            ('email', 'Correo Electrónico'),
+            ('face', 'Facebook'), ('git', 'GitHub'), ('google', 'Google+'),
+            ('link', 'LinkedIn'), ('pinter', 'Pinterest'), ('twitt', 'Twitter'))
+
     tipo = models.CharField(max_length=5, choices=TIPO, default='movil')
     texto = models.CharField(max_length=150)
 
 
-class Empleado(models.Model):
+class Empleado(AudtoriaMixin):
     class Meta:
         app_label = 'rrhh'
         verbose_name = 'Empleado'
@@ -52,15 +51,27 @@ class Empleado(models.Model):
     def __str__(self):
         return '{}, {}'.format(self.persona.apellido, self.persona.nombre)
 
-    id = models.IntegerField(primary_key=True)
-    persona = models.ForeignKey(Persona, on_delete=models.CASCADE, blank=False, null=False)
+    def get_absolute_url(self):
+        # reverse('persona:info', kwargs={'pk': self.pk})
+        return reverse('rrhh:empl_detail', args=(self.pk,))
+
+    def get_update_url(self):
+        return reverse('rrhh:empl_edit', args=(self.pk,))
+
+    # def get_delete_url(self):
+    #     return reverse('rrhh:empl_delete', args=(self.pk,))
+
+    def get_success_url(self):
+        return reverse('rrhh:empl_show')
+
+    persona = models.OneToOneField(Persona, on_delete=models.CASCADE, primary_key=True)
     legajo = models.IntegerField(blank=False, null=False)
     fec_ing = models.DateField(blank=True, null=True)
     fec_egr = models.DateField(blank=True, null=True)
     comunicaciones = models.ManyToManyField(Comunicacion, related_name='empleado_comunicaciones', blank=True)
 
 
-class Domicilio(models.Model):
+class Domicilio(AudtoriaMixin):
     class Meta:
         app_label = 'rrhh'
         verbose_name = 'Domicilio'
@@ -69,22 +80,8 @@ class Domicilio(models.Model):
     def __str__(self):
         return self.domicilio
 
-    id = models.IntegerField(primary_key=True)
     domicilio = models.CharField(max_length=90, blank=False, null=False)
     localidad = models.CharField(max_length=40, blank=False, null=False)
     provincia = models.CharField(max_length=30, blank=False, null=False)
     cp = models.CharField(max_length=12, blank=False, null=False)
     pais = models.CharField(max_length=30, blank=False, null=False)
-
-
-# CREATE TABLE `Personal` (
-# 	`Tel_Movil` DOUBLE,
-# 	`Tel_Fijo` DOUBLE,
-# 	`Cod_OS` DOUBLE DEFAULT 0,
-# 	`Seg_Vida_Oblig` VARCHAR(255),
-# 	`Cert_Seg_Vida_Oblig` VARCHAR(255),
-# 	`Tarea a realizar` VARCHAR(255),
-# 	`Fecha_Pre` TIMESTAMP,
-# 	`Emp_Laboral` VARCHAR(255),
-# 	`Res_Preoc` VARCHAR(255),
-# 	`Fech_Period` TIMESTAMP

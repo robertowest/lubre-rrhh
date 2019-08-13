@@ -314,3 +314,4 @@ fabric.properties
 
 # End of https://www.gitignore.io/api/git,linux,python,django,pycharm,visualstudiocode
 
+/db.sqlite3.bak

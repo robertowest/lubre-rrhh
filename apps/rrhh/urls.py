@@ -8,8 +8,8 @@ urlpatterns = [
     path('', views.home, name='home'),
     # empleados
     path('empleado/', views.EmpleadoShow.as_view(), name='empl_show'),
-    path('empleado/crear/<int:pk>', views.EmpleadoCreate.as_view(), name='empl_create'),
-    path('empleado/editar/<int:pk>', views.EmpleadoUpdate.as_view(), name='empl_update'),
+    path('empleado/nuevo/', views.EmpleadoCreate.as_view(), name='empl_new'),
+    path('empleado/editar/<int:pk>', views.EmpleadoUpdate.as_view(), name='empl_edit'),
     path('empleado/detalle/<int:pk>', views.EmpleadoDetail.as_view(), name='empl_detail'),
     # path('detalle/<int:pk>', views.Detalle.as_view(), name='detail'),
     # path('crear', views.Crear.as_view(), name='create'),
