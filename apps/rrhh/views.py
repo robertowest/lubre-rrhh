@@ -43,10 +43,10 @@ class EmpleadoCreate(CreateView):
 
 
 class EmpleadoUpdate(UpdateView):
-#     # def get_form_kwargs(self):
-#     #     kwargs = super().get_form_kwargs()
-#     #     kwargs.update(instance={'persona': self.object.persona, 'empleado': self.object})
-#     #     return kwargs
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update(instance={'persona': self.object.persona, 'empleado': self.object})
+        return kwargs
 #
 #     def get_context_data(self, **kwargs):
 #         context = super().get_context_data(**kwargs)
@@ -60,6 +60,7 @@ class EmpleadoUpdate(UpdateView):
 #     #     empleado.save()
 #     #     return reverse_lazy('clientes:show')
 #
+    model = Empleado
     form_class = EmpleadoMultiForm
     template_name = 'empleado/formulario.html'
     success_url = reverse_lazy('clientes:show')

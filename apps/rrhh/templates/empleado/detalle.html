@@ -4,6 +4,7 @@
 {% block base_css %}
     <style>
         .form-control { font-size: unset; }
+        label { margin-top: 20px; }
         .btn-lg, .btn-group-lg > .btn { font-size: unset; }
     </style>
 {% endblock %}
@@ -26,8 +27,7 @@
 
             <div class="tab-content">
                 <div class="tab-pane active" id="datos">
-                    {% include 'empleado/formulario_html.html' %}
-
+                    {% include 'empleado/detalle_campos.html' %}
                 </div>
 
                 <div class="tab-pane" id="canales">
@@ -90,9 +90,7 @@
                     Foto <i class="fa fa-photo fa-1x"></i>
                 </div>
                 <div class="panel-body">
-                    <a href="/users" class="pull-right">
-                        <img title="profile image" class="img-circle img-responsive" src="https://bootdey.com/img/Content/avatar/avatar1.png">
-                    </a>
+                    <img class="img-circle img-responsive" src="https://bootdey.com/img/Content/avatar/avatar1.png">
                 </div>
             </div>
 
