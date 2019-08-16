@@ -16,10 +16,13 @@ class PersonaForm(forms.ModelForm):
             'fec_nac': 'Fecha Nacimiento',
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in iter(self.fields):
+            self.fields[field].widget.attrs.update({'class': 'form-control'})
+
 
 class EmpleadoForm(forms.ModelForm):
-    # ImageField(verbose_name='Foto', upload_to='rrhh/persona')
-
     class Meta:
         model = Empleado
         fields = ['fec_ing', 'fec_egr', 'imagen'] # No agregar el campo 'persona'
@@ -37,7 +40,7 @@ class EmpleadoMultiForm(MultiModelForm):
             persona.save()
             empleado = objects['empleado']
             empleado.persona = persona
-            empleado.legajo = persona.id
+            empleado.legajo = str(persona.id).zfill(4)
             empleado.save()
         return objects
 

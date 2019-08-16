@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, UpdateView, CreateView
 
-from .models import Empleado
+from .models import Empleado, Comunicacion
 from .forms import EmpleadoMultiForm
 
 
@@ -20,7 +20,8 @@ class EmpleadoShow(ListView):
 class EmpleadoDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['comunicaciones'] = context['empleado'].comunicaciones.all()
+        # context['comunicaciones'] = context['empleado'].comunicaciones.all()
+        context['comunicaciones'] = Comunicacion.objects.filter(empleado_id=context['empleado'].persona_id)
         return context
 
     model = Empleado

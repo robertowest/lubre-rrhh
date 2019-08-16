@@ -26,24 +26,6 @@ class Persona(AudtoriaMixin):
     fec_nac = models.DateField(blank=True, null=True)
 
 
-class Comunicacion(AudtoriaMixin):
-    class Meta:
-        app_label = 'rrhh'
-        verbose_name = 'Comunicacion'
-        verbose_name_plural = 'Comunicaciones'
-
-    def __str__(self):
-        return '{}: {}'.format(self.get_tipo_display(), self.texto)
-
-    TIPO = (('movil', 'Celular'), ('tel', 'Teléfono'), ('wa', 'WhatsApp'), ('sms', 'Mensaje SMS'),
-            ('email', 'Correo Electrónico'),
-            ('face', 'Facebook'), ('git', 'GitHub'), ('google', 'Google+'),
-            ('link', 'LinkedIn'), ('pinter', 'Pinterest'), ('twitt', 'Twitter'))
-
-    tipo = models.CharField(max_length=5, choices=TIPO, default='movil')
-    texto = models.CharField(max_length=150)
-
-
 class Empleado(AudtoriaMixin):
     class Meta:
         app_label = 'rrhh'
@@ -68,11 +50,36 @@ class Empleado(AudtoriaMixin):
         return reverse('rrhh:empl_show')
 
     persona = models.OneToOneField(Persona, on_delete=models.CASCADE, primary_key=True)
-    legajo = models.IntegerField(blank=False, null=False)
+    legajo = models.CharField(max_length=4, blank=False, null=False)
     fec_ing = models.DateField(blank=True, null=True)
     fec_egr = models.DateField(blank=True, null=True)
-    comunicaciones = models.ManyToManyField(Comunicacion, related_name='empleado_comunicaciones', blank=True)
+    # comunicaciones = models.ManyToManyField(Comunicacion, related_name='empleado_comunicaciones', blank=True)
     imagen = models.FileField(upload_to='rrhh/empleados/', blank=True, null=True)
+
+    # comunicaciones = models.ManyToManyField(Comunicacion, through='EmpleadoComunicacion')
+
+# class EmpleadoComunicacion(models.Model):
+#     empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE)
+#     comunicacion = models.ForeignKey(Comunicacion, on_delete=models.CASCADE)
+
+
+class Comunicacion(AudtoriaMixin):
+    class Meta:
+        app_label = 'rrhh'
+        verbose_name = 'Comunicacion'
+        verbose_name_plural = 'Comunicaciones'
+
+    def __str__(self):
+        return '{}: {}'.format(self.get_tipo_display(), self.texto)
+
+    TIPO = (('movil', 'Celular'), ('tel', 'Teléfono'), ('wa', 'WhatsApp'), ('sms', 'Mensaje SMS'),
+            ('email', 'Correo Electrónico'),
+            ('face', 'Facebook'), ('git', 'GitHub'), ('google', 'Google+'),
+            ('link', 'LinkedIn'), ('pinter', 'Pinterest'), ('twitt', 'Twitter'))
+
+    tipo = models.CharField(max_length=5, choices=TIPO, default='movil')
+    texto = models.CharField(max_length=150)
+    empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE, blank=True, null=True)
 
 
 class Domicilio(AudtoriaMixin):
