@@ -18,9 +18,11 @@ class PersonaForm(forms.ModelForm):
 
 
 class EmpleadoForm(forms.ModelForm):
+    # ImageField(verbose_name='Foto', upload_to='rrhh/persona')
+
     class Meta:
         model = Empleado
-        fields = ['fec_ing', 'fec_egr'] # No agregar el campo 'persona'
+        fields = ['fec_ing', 'fec_egr', 'imagen'] # No agregar el campo 'persona'
         labels = {
             'fec_ing': 'Fecha Ingreso',
             'fec_egr': 'Fecha Egreso',

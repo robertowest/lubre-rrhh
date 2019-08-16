@@ -90,7 +90,11 @@
                     Foto <i class="fa fa-photo fa-1x"></i>
                 </div>
                 <div class="panel-body">
+                    {% if object.imagen %}
+                    <img class="img-circle img-responsive" src="{{ object.imagen.url }}">
+                    {% else %}
                     <img class="img-circle img-responsive" src="https://bootdey.com/img/Content/avatar/avatar1.png">
+                    {% endif %}
                 </div>
             </div>
 

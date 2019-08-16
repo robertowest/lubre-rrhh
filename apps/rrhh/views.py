@@ -35,11 +35,11 @@ class EmpleadoCreate(CreateView):
     #     empleado = form['empleado'].save(commit=False)
     #     empleado.persona = persona
     #     empleado.save()
-    #     return reverse_lazy('clientes:show')
+    #     return reverse_lazy('rrhh:empl_show')
 
     form_class = EmpleadoMultiForm
     template_name = 'empleado/formulario.html'
-    success_url = reverse_lazy('clientes:show')
+    success_url = reverse_lazy('rrhh:empl_show')
 
 
 class EmpleadoUpdate(UpdateView):
@@ -58,9 +58,10 @@ class EmpleadoUpdate(UpdateView):
 #     #     empleado = form['empleado'].save(commit=False)
 #     #     empleado.persona = persona
 #     #     empleado.save()
-#     #     return reverse_lazy('clientes:show')
+#     #     return reverse_lazy('rrhh:empl_show')
 #
     model = Empleado
     form_class = EmpleadoMultiForm
     template_name = 'empleado/formulario.html'
-    success_url = reverse_lazy('clientes:show')
+    success_url = reverse_lazy('rrhh:empl_show')
+

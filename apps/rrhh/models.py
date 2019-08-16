@@ -1,7 +1,10 @@
 from apps.comunes.models import AudtoriaMixin
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
+from django.utils.deconstruct import deconstructible
 
+import os
 
 class Persona(AudtoriaMixin):
     class Meta:
@@ -69,6 +72,7 @@ class Empleado(AudtoriaMixin):
     fec_ing = models.DateField(blank=True, null=True)
     fec_egr = models.DateField(blank=True, null=True)
     comunicaciones = models.ManyToManyField(Comunicacion, related_name='empleado_comunicaciones', blank=True)
+    imagen = models.FileField(upload_to='rrhh/empleados/', blank=True, null=True)
 
 
 class Domicilio(AudtoriaMixin):

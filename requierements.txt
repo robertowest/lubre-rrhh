@@ -1,8 +1,9 @@
 django==2.2.4
-django-debug-toolbar==2.0
-django-crispy-forms==1.7.2
-fdb==2.0.1
 django-betterforms==1.2
+django-crispy-forms==1.7.2
+django-debug-toolbar==2.0
+django-widget-tweaks==1.4.5
+fdb==2.0.1
 
 # el instalador de django-firebird es antiguo y no funciona con la versión 2.5
 # por lo que habrá que instalarlo manualmente
