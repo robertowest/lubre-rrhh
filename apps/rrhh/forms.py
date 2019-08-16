@@ -4,7 +4,15 @@ from betterforms.multiform import MultiModelForm
 
 from .models import Empleado, Persona
 
-class PersonaForm(forms.ModelForm):
+# agregamos la clase form-control a todos los campos
+class MyModelForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in iter(self.fields):
+            self.fields[field].widget.attrs.update({'class': 'form-control'})
+
+
+class PersonaForm(MyModelForm):
     class Meta:
         model = Persona
         fields = ['nombre', 'apellido', 'dni', 'cuil', 'sexo', 'fec_nac']
@@ -16,13 +24,8 @@ class PersonaForm(forms.ModelForm):
             'fec_nac': 'Fecha Nacimiento',
         }
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field in iter(self.fields):
-            self.fields[field].widget.attrs.update({'class': 'form-control'})
 
-
-class EmpleadoForm(forms.ModelForm):
+class EmpleadoForm(MyModelForm):
     class Meta:
         model = Empleado
         fields = ['fec_ing', 'fec_egr', 'imagen'] # No agregar el campo 'persona'

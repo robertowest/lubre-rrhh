@@ -10,7 +10,7 @@
 {% block content %}
 <div class="container bootstrap snippet">
     <div class="row">
-        <div class="col-sm-push-2 col-sm-8">
+        <div class="col-sm-8">
             <div class="tab-content">
                 <div class="tab-pane active" id="datos">
                     <form method="post" class="form" enctype="multipart/form-data">
@@ -19,6 +19,20 @@
                     </form>
                 </div>
             </div>
+        </div>
+
+        <div class="col-sm-4 hidden-xs">
+            <br>
+            <ul class="list-group">
+                <li class="list-group-item text-muted">Canales de Comunicación <i class="fa fa-phone fa-1x"></i></li>
+                {% for obj in comunicaciones %}
+                    {% if obj.tipo in "tel,movil,wa,sms" %}
+                    <li class="list-group-item text-right">
+                        <span class="pull-left"><strong>{{obj.get_tipo_display}}</strong></span> {{obj.texto}}
+                    </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
         </div>
     </div>
 </div>

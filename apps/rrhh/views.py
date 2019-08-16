@@ -44,6 +44,11 @@ class EmpleadoCreate(CreateView):
 
 
 class EmpleadoUpdate(UpdateView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comunicaciones'] = Comunicacion.objects.filter(empleado_id=context['empleado'].persona_id)
+        return context
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs.update(instance={'persona': self.object.persona, 'empleado': self.object})

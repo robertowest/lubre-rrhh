@@ -6,8 +6,8 @@
         <label>
             <h4>{{ field.label }}</h4>
         </label>
-        {# field #}
-        {% render_field field class="form-control" %}
+        {{ field }}
+        {# render_field field class="form-control" #}
         {% if field.errors %}
             {% for error in  field.errors %}
                 <p><span class="help-inline" style="color:red">{{ error }}</span></p>
