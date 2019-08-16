@@ -24,7 +24,11 @@
         <div class="col-sm-4 hidden-xs">
             <br>
             <ul class="list-group">
-                <li class="list-group-item text-muted">Canales de Comunicación <i class="fa fa-phone fa-1x"></i></li>
+                <li class="list-group-item text-muted">
+                    <a onclick="return abrir_modal('{% url 'rrhh:canal_new' %}')">
+                        <i class="fa fa-phone fa-1x"></i>
+                    </a> Canales de Comunicación
+                </li>
                 {% for obj in comunicaciones %}
                     {% if obj.tipo in "tel,movil,wa,sms" %}
                     <li class="list-group-item text-right">

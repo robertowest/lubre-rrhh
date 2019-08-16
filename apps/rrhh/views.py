@@ -1,10 +1,10 @@
 from betterforms.multiform import MultiModelForm
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, UpdateView, CreateView
+from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView
 
 from .models import Empleado, Comunicacion
-from .forms import EmpleadoMultiForm
+from .forms import EmpleadoMultiForm, ComunicacionForm
 
 
 def home(request):
@@ -30,14 +30,6 @@ class EmpleadoDetail(DetailView):
 
 
 class EmpleadoCreate(CreateView):
-    # def form_valid(self, form):
-    #     # grabar primero la persona
-    #     persona = form['persona'].save()
-    #     empleado = form['empleado'].save(commit=False)
-    #     empleado.persona = persona
-    #     empleado.save()
-    #     return reverse_lazy('rrhh:empl_show')
-
     form_class = EmpleadoMultiForm
     template_name = 'empleado/formulario.html'
     success_url = reverse_lazy('rrhh:empl_show')
@@ -53,21 +45,32 @@ class EmpleadoUpdate(UpdateView):
         kwargs = super().get_form_kwargs()
         kwargs.update(instance={'persona': self.object.persona, 'empleado': self.object})
         return kwargs
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['comunicaciones'] = context['empleado'].comunicaciones.all()
-#         return context
-#
-#     # def form_valid(self, form):
-#     #     persona = form['persona'].save()
-#     #     empleado = form['empleado'].save(commit=False)
-#     #     empleado.persona = persona
-#     #     empleado.save()
-#     #     return reverse_lazy('rrhh:empl_show')
-#
+
     model = Empleado
     form_class = EmpleadoMultiForm
     template_name = 'empleado/formulario.html'
     success_url = reverse_lazy('rrhh:empl_show')
 
+    # def get_success_url(self):
+    #     return reverse_lazy('rrhh:empl_detail', kwargs={'pk': self.object.pk})
+    #
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['comunicaciones'] = context['empleado'].comunicaciones.all()
+    #     return context
+    #
+    # def form_valid(self, form):
+    #     persona = form['persona'].save()
+    #     empleado = form['empleado'].save(commit=False)
+    #     empleado.persona = persona
+    #     empleado.save()
+    #     return reverse_lazy('rrhh:empl_show')
+
+
+class EmpleadoUpdate(DeleteView):
+    pass
+
+
+class CanalCreate(CreateView):
+    form_class = ComunicacionForm
+    template_name = 'comunicacion/formulario.html'

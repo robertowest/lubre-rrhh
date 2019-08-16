@@ -1,0 +1,12 @@
+<div class="modal-content">
+    <form action="." method="post" data-control-form>
+        {% csrf_token %}
+        <span class="card-title">Confirmar Eliminación</span>
+        <div class="row">
+            <p>¿Está seguro de eliminar el registro {{ object }}"?</p>
+        </div>
+        <div class="right-align">
+            <button type="submit" class="btn btn-default">Confirmar</button>
+        </div>
+    </form>
+</div>

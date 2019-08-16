@@ -39,7 +39,11 @@
                                 <a href="{{object.get_update_url}}">
                                     <span class="glyphicon glyphicon-pencil"></span>
                                 </a> |
-                                <a href="#"><span class="glyphicon glyphicon-trash"></span></a>
+
+                                <a onclick="return abrir_modal('{% url 'rrhh:empl_delete' object.pk %}')">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </a>
+
                             </td>
                         </tr>
                         {% endfor %}

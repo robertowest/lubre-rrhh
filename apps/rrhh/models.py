@@ -1,10 +1,8 @@
-from apps.comunes.models import AudtoriaMixin
-from django.core.exceptions import ValidationError
-from django.db import models
-from django.urls import reverse
-from django.utils.deconstruct import deconstructible
+from django.urls import reverse_lazy
 
-import os
+from apps.comunes.models import AudtoriaMixin
+from django.db import models
+
 
 class Persona(AudtoriaMixin):
     class Meta:
@@ -14,7 +12,7 @@ class Persona(AudtoriaMixin):
         ordering = ['apellido', 'nombre']
 
     def __str__(self):
-        return '{}, {}'.format(self.nombre, self.apellido)
+        return '{} {}'.format(self.nombre, self.apellido)
 
     SEXO = (('M', 'Masculino'), ('F', 'Femenino'))
 
@@ -36,31 +34,25 @@ class Empleado(AudtoriaMixin):
     def __str__(self):
         return '{}, {}'.format(self.persona.apellido, self.persona.nombre)
 
-    def get_absolute_url(self):
-        # reverse('persona:info', kwargs={'pk': self.pk})
-        return reverse('rrhh:empl_detail', args=(self.pk,))
+    def get_absolute_url(self, *args, **kwargs):
+        # return reverse('rrhh:empl_detail', kwargs={'pk': self.pk})
+        return reverse_lazy('rrhh:empl_detail', args=(self.pk,))
 
-    def get_update_url(self):
-        return reverse('rrhh:empl_edit', args=(self.pk,))
-
+    # def get_success_url(self):
+    #     # return reverse('rrhh:empl_detail', args=(self.object.id,))
+    #     return reverse('rrhh:empl_show')
+    #
+    # def get_update_url(self):
+    #     return reverse('rrhh:empl_edit', args=(self.pk,))
+    #
     # def get_delete_url(self):
     #     return reverse('rrhh:empl_delete', args=(self.pk,))
-
-    def get_success_url(self):
-        return reverse('rrhh:empl_show')
 
     persona = models.OneToOneField(Persona, on_delete=models.CASCADE, primary_key=True)
     legajo = models.CharField(max_length=4, blank=False, null=False)
     fec_ing = models.DateField(blank=True, null=True)
     fec_egr = models.DateField(blank=True, null=True)
-    # comunicaciones = models.ManyToManyField(Comunicacion, related_name='empleado_comunicaciones', blank=True)
     imagen = models.FileField(upload_to='rrhh/empleados/', blank=True, null=True)
-
-    # comunicaciones = models.ManyToManyField(Comunicacion, through='EmpleadoComunicacion')
-
-# class EmpleadoComunicacion(models.Model):
-#     empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE)
-#     comunicacion = models.ForeignKey(Comunicacion, on_delete=models.CASCADE)
 
 
 class Comunicacion(AudtoriaMixin):

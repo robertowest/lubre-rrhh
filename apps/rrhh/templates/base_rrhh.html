@@ -22,5 +22,27 @@
 
     {% block content %}
     {% endblock %}
+
+    <!-- modal form -->
+    <div id="popup" class="modal fade" role="dialog">
+    </div>
 {% endblock %}
 
+{% block base_js %}
+<script>
+    function abrir_modal(url)
+    {
+        $('#popup').load(url, function()
+        {
+            $(this).modal('show');
+        });
+        return false;
+    }
+
+    function cerrar_modal()
+    {
+        $('#popup').modal('hide');
+        return false;
+    }
+</script>
+{% endblock %}

@@ -2,7 +2,7 @@ from django import forms
 
 from betterforms.multiform import MultiModelForm
 
-from .models import Empleado, Persona
+from .models import Comunicacion, Empleado, Persona
 
 # agregamos la clase form-control a todos los campos
 class MyModelForm(forms.ModelForm):
@@ -51,3 +51,12 @@ class EmpleadoMultiForm(MultiModelForm):
         'persona': PersonaForm,
         'empleado': EmpleadoForm,
     }
+
+
+class ComunicacionForm(MyModelForm):
+    class Meta:
+        model = Comunicacion
+        fields = ['tipo', 'texto']
+        labels = {
+            'texto': 'Contenido',
+        }
