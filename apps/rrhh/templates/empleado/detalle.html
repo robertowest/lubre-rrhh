@@ -21,7 +21,9 @@
         <div class="col-sm-9">
             <ul class="nav nav-tabs" id="myTab">
                 <li class="active"><a href="#datos" data-toggle="tab">Datos Personales</a></li>
+                {% comment %}
                 <li><a href="#canales" data-toggle="tab">Caneles de Comunicación</a></li>
+                {% endcomment %}
                 <li><a href="#mensajes" data-toggle="tab">Mensages</a></li>
             </ul>
 
@@ -30,6 +32,7 @@
                     {% include 'empleado/detalle_campos.html' %}
                 </div>
 
+                {% comment %}
                 <div class="tab-pane" id="canales">
                     <div class="table-responsive">
                         <table class="table table-hover">
@@ -62,6 +65,7 @@
                     <hr>
 
                 </div>
+                {% endcomment %}
 
                 <div class="tab-pane" id="mensajes">
 
@@ -109,19 +113,36 @@
                     {% endif %}
                 {% endfor %}
             </ul>
-            {% endif  %}
 
             <div class="panel panel-info">
                 <div class="panel-heading">Social <i class="fa fa-link fa-1x"></i></div>
                 <div class="panel-body">
-                    <i class="fa fa-facebook fa-2x"> </i>
-                    <i class="fa fa-github fa-2x"> </i>
-                    <i class="fa fa-google-plus fa-2x"> </i>
-                    <i class="fa fa-linkedin fa-2x"> </i>
-                    <i class="fa fa-pinterest fa-2x"> </i>
-                    <i class="fa fa-twitter fa-2x"> </i>
+                {% for obj in comunicaciones %}
+                    {% if obj.tipo == "link"  %}
+                    <a href="https://www.facebook.com/{{obj.texto}}" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a>&nbsp;
+                    {% endif %}
+                    {% if obj.tipo == "face"  %}
+                    <a href="https://www.facebook.com/{{obj.texto}}" target="_blank"><i class="fa fa-facebook fa-2x"></i></a>&nbsp;
+                    {% endif %}
+                    {% if obj.tipo == "twitt" %}
+                    <a href="https://twitter.com/{{obj.texto}}" target="_blank"><i class="fa fa-twitter fa-2x"></i></a>&nbsp;
+                    {% endif %}
+                    {% if obj.tipo == "ytube" %}
+                    <a href="https://www.youtube.com/channel/{{obj.texto}}" target="_blank"><i class="fa fa-youtube fa-2x"></i></a>&nbsp;
+                    {% endif %}
+                    {% if obj.tipo == "git"   %}
+                    <a href="https://github.com/{{obj.texto}}" target="_blank"><i class="fa fa-github fa-2x"></i></a>&nbsp;
+                    {% endif %}
+                    {% if obj.tipo == "pint"  %}
+                    <a href="https://ar.pinterest.com/{{obj.texto}}" target="_blank"><i class="fa fa-pinterest fa-2x"></i></a>&nbsp;
+                    {% endif %}
+                    {% if obj.tipo == "gmail" %}
+                    <a href="https://aboutme.google.com/u/0/?referer=gplus" target="_blank"><i class="fa fa-google-plus fa-2x"></i></a>&nbsp;
+                    {% endif %}
+                {% endfor %}
                 </div>
             </div>
+            {% endif  %}
 
             <!--
             <div class="panel panel-success">

@@ -82,7 +82,8 @@ DATABASES = {
     },
     'mysql': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'lubre_dev',
+        # 'NAME': 'lubre_dev',
+        'NAME': 'lubresrl',
         'USER': 'roberto',
         'PASSWORD': 'roberto',
         'HOST': '192.168.1.2',

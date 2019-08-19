@@ -1,27 +1,48 @@
 from betterforms.multiform import MultiModelForm
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView
+from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView, FormView
 
-from .models import Empleado, Comunicacion
-from .forms import EmpleadoMultiForm, ComunicacionForm
+from .models import Empleado, Comunicacion, Domicilio
+from .forms import EmpleadoMultiForm, ComunicacionForm, EmpleadoFiltro
 
 
 def home(request):
     return render(request, 'rrhh_home.html')
 
 
-class EmpleadoShow(ListView):
+class EmpleadoShow(ListView, FormView):
+    def post(self, request, *args, **kwargs):
+        self.object_list = self.get_queryset()
+        form = self.form_class(self.request.POST or None)
+        if form.is_valid():
+            if form.cleaned_data['nombre']:
+                self.object_list = self.object_list.filter(persona__nombre__icontains=form.cleaned_data['nombre'])
+            if form.cleaned_data['apellido']:
+                self.object_list = self.object_list.filter(persona__apellido__icontains=form.cleaned_data['apellido'])
+            if form.cleaned_data['active']:
+                self.object_list = self.object_list.filter(active=form.cleaned_data['active'])
+        return self.render_to_response(self.get_context_data(object_list=self.object_list.order_by('persona'), form=form))
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.order_by('persona')
+
     model = Empleado
+    form_class = EmpleadoFiltro
     template_name = 'empleado/listado.html'
     paginate_by = 25
+    success_url = reverse_lazy('rrhh:empl_show')
 
 
 class EmpleadoDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # context['comunicaciones'] = context['empleado'].comunicaciones.all()
-        context['comunicaciones'] = Comunicacion.objects.filter(empleado_id=context['empleado'].persona_id)
+        context['domicilio'] = \
+            Domicilio.objects.filter(empleado_id=context['empleado'].persona_id)
+        context['comunicaciones'] = \
+            Comunicacion.objects.filter(empleado_id=context['empleado'].persona_id).order_by('tipo')
         return context
 
     model = Empleado
@@ -38,7 +59,8 @@ class EmpleadoCreate(CreateView):
 class EmpleadoUpdate(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['comunicaciones'] = Comunicacion.objects.filter(empleado_id=context['empleado'].persona_id)
+        context['comunicaciones'] = \
+            Comunicacion.objects.filter(empleado_id=context['empleado'].persona_id).order_by('tipo')
         return context
 
     def get_form_kwargs(self):
@@ -67,7 +89,7 @@ class EmpleadoUpdate(UpdateView):
     #     return reverse_lazy('rrhh:empl_show')
 
 
-class EmpleadoUpdate(DeleteView):
+class EmpleadoDelete(DeleteView):
     pass
 
 

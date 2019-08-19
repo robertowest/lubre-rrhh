@@ -10,10 +10,12 @@
                 </h3>
             </div>
             <div class="panel-body">
+                {% comment %}
                 <div align="right" class="btn_crear mb-3">
                     <a href="{% url 'rrhh:empl_new' %}" type="button" class="btn btn-primary" style="margin-bottom:10px">
                         <i class="glyphicon glyphicon-plus"></i> Crear </a>
                 </div>
+                {% endcomment %}
 
                 <table class="table table-responsive table-striped">
                     <thead>
@@ -22,7 +24,10 @@
                             <th class="priority-1">Nombre</th>
                             <th class="priority-2">F.Ingreso</th>
                             <th class="priority-3">F.Egreso</th>
+                            <th class="priority-3">Actividad</th>
+                            {% comment %}
                             <th class="priority-1">Acciones</th>
+                            {% endcomment %}
                         </tr>
                     </thead>
                     <tbody>
@@ -32,8 +37,10 @@
                             <td class="priority-1">
                                 <a href="{{object.get_absolute_url}}">{{object}}</a>
                             </td>
-                            <td class="priority-3">{{object.fec_ing|date:"d/m/Y"}}</td>
+                            <td class="priority-4">{{object.fec_ing|date:"d/m/Y"}}</td>
                             <td class="priority-4">{{object.fec_egr|date:"d/m/Y"}}</td>
+                            <td class="priority-3">{{object.tarea}}</td>
+                            {% comment %}
                             <td class="priority-1">
                                 {# url 'clientes:detail' object.idcliente #}
                                 <a href="{{object.get_update_url}}">
@@ -43,8 +50,8 @@
                                 <a onclick="return abrir_modal('{% url 'rrhh:empl_delete' object.pk %}')">
                                     <span class="glyphicon glyphicon-trash"></span>
                                 </a>
-
                             </td>
+                            {% endcomment %}
                         </tr>
                         {% endfor %}
                     </tbody>

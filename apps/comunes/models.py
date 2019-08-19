@@ -17,10 +17,10 @@ class AudtoriaMixin(models.Model):
         self.modified = datetime.now()
         super(AudtoriaMixin, self).save(*args, **kwargs)
 
-    active = models.BooleanField('Activo', default=True)
+    active = models.BooleanField('Activo', default=1)
     created = models.DateTimeField('Creado', auto_now_add=True, editable=False, null=True, blank=True)
     created_by = models.CharField('Creado por', max_length=15, editable=False, null=True, blank=True)
-    modified = models.DateTimeField('Modificado', auto_now_add=True, editable=False, null=True, blank=True)
+    modified = models.DateTimeField('Modificado', auto_now=True, editable=False, null=True, blank=True)
     modified_by = models.CharField('Modif. por', max_length=15, editable=False, null=True, blank=True)
 
 

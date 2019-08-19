@@ -53,6 +53,19 @@ class EmpleadoMultiForm(MultiModelForm):
     }
 
 
+class EmpleadoFiltro(MyModelForm):
+    class Meta:
+        model = Empleado
+        fields = ('nombre', 'apellido', 'active')
+        labels = {'active': 'Estado'}
+        widgets = {
+            'active': forms.Select(choices=((False, 'Todos'), (True, 'Activos')))
+        }
+
+    nombre = forms.CharField(label='Nombre', max_length=60, required=False)
+    apellido = forms.CharField(label='Apellido', max_length=60, required=False)
+
+
 class ComunicacionForm(MyModelForm):
     class Meta:
         model = Comunicacion
@@ -60,3 +73,4 @@ class ComunicacionForm(MyModelForm):
         labels = {
             'texto': 'Contenido',
         }
+
