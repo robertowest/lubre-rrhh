@@ -1,7 +1,8 @@
+from django.utils import timezone
+from django.db import models
 from django.urls import reverse_lazy
 
 from apps.comunes.models import AudtoriaMixin
-from django.db import models
 
 
 class Persona(AudtoriaMixin):
@@ -104,3 +105,56 @@ class Domicilio(AudtoriaMixin):
     cp = models.CharField(max_length=12, blank=False, null=False)
     pais = models.CharField(max_length=30, blank=False, null=False)
 
+
+class Diccionario_ART(models.Model):
+    class Meta:
+        app_label = 'rrhh'
+        verbose_name = 'Diccionario ART'
+        verbose_name_plural = 'Diccionarios ART'
+
+    def __str__(self):
+        return self.descripcion
+
+    descripcion = models.CharField(max_length=80)
+    diccionario = models.CharField(max_length=15)
+
+
+class Denuncia_ART(AudtoriaMixin):
+    class Meta:
+        app_label = 'rrhh'
+        verbose_name = 'Denuncia ART'
+        verbose_name_plural = 'Denuncias ART'
+        ordering = ['fec_siniestro']
+
+    def __str__(self):
+        return str(self.siniestro)
+
+    @property
+    def dias_perdidos(self):
+        if self.fec_alta_medica is None:
+            return (timezone.now() - self.fec_siniestro).days
+        else:
+            return (self.fec_alta_medica - self.fec_siniestro).days
+
+    ESTADO = [('P', 'Pendiente'), ('A', 'Aceptado'), ('R', 'Rechazado')]
+
+    siniestro = models.IntegerField()
+    empleado = models.ForeignKey(Empleado,
+                                 on_delete=models.CASCADE, null=False,
+                                 limit_choices_to = {'active': True})
+    fec_siniestro = models.DateField('Fecha Siniestro', default=timezone.now, blank=True, null=True)
+    fec_denuncia = models.DateField('Fecha Denuncia', default=timezone.now, blank=True, null=True)
+    tipo_accidente = models.ForeignKey(Diccionario_ART, models.DO_NOTHING, null=True, blank=True,
+                                       related_name='tipo_accidente_id',
+                                       verbose_name='Tipo de Accidente',
+                                       limit_choices_to = {'diccionario': 'tipoAccidente'})
+    tipologia = models.ForeignKey(Diccionario_ART, models.DO_NOTHING, null=True, blank=True,
+                                  related_name='tipologia_id',
+                                  limit_choices_to = {'diccionario': 'tipologia'})
+    zona_afectada = models.TextField('Zona Afectada', blank=True, null=True)
+    estado = models.CharField(max_length=1, choices=ESTADO, default='P', blank=True, null=True)
+    fec_alta_medica = models.DateField('Fecha Alta', blank=True, null=True)
+    motivo_alta = models.ForeignKey(Diccionario_ART, models.DO_NOTHING, null=True, blank=True,
+                                    related_name='motivo_alta_id',
+                                    verbose_name='Motivo de Alta',
+                                    limit_choices_to = {'diccionario': 'motivoAlta'})

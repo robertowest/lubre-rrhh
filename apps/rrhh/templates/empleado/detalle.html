@@ -21,9 +21,7 @@
         <div class="col-sm-9">
             <ul class="nav nav-tabs" id="myTab">
                 <li class="active"><a href="#datos" data-toggle="tab">Datos Personales</a></li>
-                {% comment %}
-                <li><a href="#canales" data-toggle="tab">Caneles de Comunicación</a></li>
-                {% endcomment %}
+                <li><a href="#art" data-toggle="tab">Denuncias ART</a></li>
                 <li><a href="#mensajes" data-toggle="tab">Mensages</a></li>
             </ul>
 
@@ -32,40 +30,9 @@
                     {% include 'empleado/detalle_campos.html' %}
                 </div>
 
-                {% comment %}
-                <div class="tab-pane" id="canales">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th style="width: 10%">#</th>
-                                    <th style="width: 30%">Tipo</th>
-                                    <th>Texto</th>
-                                </tr>
-                            </thead>
-                            <tbody id="items">
-                                {% for obj in comunicaciones %}
-                                <tr>
-                                    <td>{{obj.id}}</td>
-                                    <td>{{obj.get_tipo_display}}</td>
-                                    <td>{{obj.texto}}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-4 col-md-offset-4 text-center">
-                                <ul class="pagination" id="myPager"></ul>
-                            </div>
-                        </div>
-                    </div>
-                    <!--/table-resp-->
-
-                    <hr>
-
+                <div class="tab-pane" id="art">
+                    {% include 'empleado/siniestros.html' %}
                 </div>
-                {% endcomment %}
 
                 <div class="tab-pane" id="mensajes">
 

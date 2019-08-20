@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView, FormView
 
-from .models import Empleado, Comunicacion, Domicilio
+from .models import Empleado, Comunicacion, Denuncia_ART, Domicilio
 from .forms import EmpleadoMultiForm, ComunicacionForm, EmpleadoFiltro
 
 
@@ -43,6 +43,7 @@ class EmpleadoDetail(DetailView):
             Domicilio.objects.filter(empleado_id=context['empleado'].persona_id)
         context['comunicaciones'] = \
             Comunicacion.objects.filter(empleado_id=context['empleado'].persona_id).order_by('tipo')
+        context['denuncias'] = Denuncia_ART.objects.filter(empleado_id=context['empleado'].persona_id)
         return context
 
     model = Empleado

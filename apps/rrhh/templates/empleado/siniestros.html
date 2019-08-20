@@ -1,0 +1,33 @@
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Siniestro</th>
+                <th>Fecha</th>
+                <th>Tipo</th>
+                <th>Estado</th>
+                <th>Días</th>
+            </tr>
+        </thead>
+        <tbody id="items">
+            {% for obj in denuncias %}
+            <tr>
+                <td><a href="#">{{obj.siniestro}}</a></td>
+                <td>{{obj.fec_siniestro|date:"d/m/Y"}}</td>
+                <td>{{obj.tipo_accidente}}</td>
+                <td>{{obj.get_estado_display}}</td>
+                <td>{{obj.dias_perdidos}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% comment %}
+    <hr>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4 text-center">
+            <ul class="pagination" id="myPager"></ul>
+        </div>
+    </div>
+    {% endcomment %}
+</div>
+<hr>

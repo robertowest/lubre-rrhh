@@ -20,11 +20,12 @@
                 <table class="table table-responsive table-striped">
                     <thead>
                         <tr>
-                            <th class="priority-1">Legajo</th>
                             <th class="priority-1">Nombre</th>
-                            <th class="priority-2">F.Ingreso</th>
-                            <th class="priority-3">F.Egreso</th>
+                            <th class="priority-2">Legajo</th>
                             <th class="priority-3">Actividad</th>
+                            <th class="priority-4">F.Ingreso</th>
+                            <th class="priority-4">F.Egreso</th>
+                            <th class="priority-4">Activo</th>
                             {% comment %}
                             <th class="priority-1">Acciones</th>
                             {% endcomment %}
@@ -33,13 +34,14 @@
                     <tbody>
                         {% for object in object_list %}
                         <tr>
-                            <td class="priority-1">{{object.legajo}}</td>
                             <td class="priority-1">
                                 <a href="{{object.get_absolute_url}}">{{object}}</a>
                             </td>
+                            <td class="priority-2">{{object.legajo}}</td>
+                            <td class="priority-3">{{object.tarea}}</td>
                             <td class="priority-4">{{object.fec_ing|date:"d/m/Y"}}</td>
                             <td class="priority-4">{{object.fec_egr|date:"d/m/Y"}}</td>
-                            <td class="priority-3">{{object.tarea}}</td>
+                            <td class="priority-1">{{object.active|yesno:"Sí,No"}}</td>
                             {% comment %}
                             <td class="priority-1">
                                 {# url 'clientes:detail' object.idcliente #}
