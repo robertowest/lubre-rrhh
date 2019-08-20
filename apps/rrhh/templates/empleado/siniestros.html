@@ -7,16 +7,28 @@
                 <th>Tipo</th>
                 <th>Estado</th>
                 <th>Días</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody id="items">
             {% for obj in denuncias %}
             <tr>
-                <td><a href="#">{{obj.siniestro}}</a></td>
+                <td><a href="{% url 'rrhh:art_update' obj.pk %}">{{obj.siniestro}}</a></td>
                 <td>{{obj.fec_siniestro|date:"d/m/Y"}}</td>
                 <td>{{obj.tipo_accidente}}</td>
                 <td>{{obj.get_estado_display}}</td>
                 <td>{{obj.dias_perdidos}}</td>
+                <td>
+                    <button type="button" class="read-book btn btn-sm btn-primary" data-id="{% url 'rrhh:art_read' obj.pk %}">
+                        <span class="fa fa-eye"></span>
+                    </button>
+                    <button type="button" class="update-book btn btn-sm btn-primary" data-id="{% url 'rrhh:art_update' obj.pk %}">
+                        <span class="fa fa-pencil"></span>
+                    </button>
+                    <button type="button" class="delete-book btn btn-sm btn-danger" data-id="{% url 'rrhh:art_delete' obj.pk %}">
+                        <span class="fa fa-trash"></span>
+                    </button>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
@@ -31,3 +43,4 @@
     {% endcomment %}
 </div>
 <hr>
+<button class="create-book btn btn-primary" type="button" name="button">Nueva Denuncia</button>

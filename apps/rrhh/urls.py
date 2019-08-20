@@ -15,6 +15,12 @@ urlpatterns = [
 
     path('canal/nuevo/', views.CanalCreate.as_view(), name='canal_new'),
 
+    path('denuncia/nueva/', views.DenunciaCreateView.as_view(), name='art_create'),
+    path('denuncia/editar/<int:pk>', views.DenunciaUpdateView.as_view(), name='art_update'),
+    path('denuncia/info/<int:pk>', views.DenunciaReadView.as_view(), name='art_read'),
+    path('denuncia/eliminar/<int:pk>', views.DenunciaDeleteView.as_view(), name='art_delete'),
+
+
     # path('detalle/<int:pk>', views.Detalle.as_view(), name='detail'),
     # path('crear', views.Crear.as_view(), name='create'),
     # path('editar/<int:pk>', views.Editar.as_view(), name='edit'),

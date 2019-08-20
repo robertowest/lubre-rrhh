@@ -1,8 +1,9 @@
+from bootstrap_modal_forms.forms import BSModalForm
 from django import forms
 
 from betterforms.multiform import MultiModelForm
 
-from .models import Comunicacion, Empleado, Persona
+from .models import Comunicacion, Denuncia_ART, Empleado, Persona
 
 # agregamos la clase form-control a todos los campos
 class MyModelForm(forms.ModelForm):
@@ -74,3 +75,9 @@ class ComunicacionForm(MyModelForm):
             'texto': 'Contenido',
         }
 
+
+class DenunciaForm(BSModalForm):
+    class Meta:
+        model = Denuncia_ART
+        # fields = ['siniestro', 'empleado']
+        fields = ('__all__')

@@ -1,10 +1,12 @@
 from betterforms.multiform import MultiModelForm
+from bootstrap_modal_forms.generic import \
+    BSModalCreateView, BSModalUpdateView, BSModalReadView, BSModalDeleteView
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView, FormView
 
 from .models import Empleado, Comunicacion, Denuncia_ART, Domicilio
-from .forms import EmpleadoMultiForm, ComunicacionForm, EmpleadoFiltro
+from .forms import DenunciaForm, EmpleadoMultiForm, ComunicacionForm, EmpleadoFiltro
 
 
 def home(request):
@@ -97,3 +99,33 @@ class EmpleadoDelete(DeleteView):
 class CanalCreate(CreateView):
     form_class = ComunicacionForm
     template_name = 'comunicacion/formulario.html'
+
+
+
+
+
+class DenunciaCreateView(BSModalCreateView):
+    template_name = 'denuncia/formulario.html'
+    form_class = DenunciaForm
+    success_message = 'Success: Book was created.'
+    success_url = reverse_lazy('rrhh:empl_show')
+
+
+class DenunciaUpdateView(BSModalUpdateView):
+    model = Denuncia_ART
+    template_name = 'denuncia/formulario.html'
+    form_class = DenunciaForm
+    success_message = 'Success: Book was updated.'
+    success_url = reverse_lazy('rrhh:empl_show')
+
+
+class DenunciaReadView(BSModalReadView):
+    model = Denuncia_ART
+    template_name = 'denuncia/detalle.html'
+
+
+class DenunciaDeleteView(BSModalDeleteView):
+    model = Denuncia_ART
+    template_name = 'denuncia/confirmar_borrado.html'
+    success_message = 'Success: Book was deleted.'
+    success_url = reverse_lazy('rrhh:empl_show')
