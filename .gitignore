@@ -1,5 +1,12 @@
-# Created by https://www.gitignore.io/api/git,linux,python,django,pycharm,visualstudiocode
-# Edit at https://www.gitignore.io/?templates=git,linux,python,django,pycharm,visualstudiocode
+# Created by https://www.gitignore.io/api/git,linux,python,django,backup,pycharm,visualstudiocode
+# Edit at https://www.gitignore.io/?templates=git,linux,python,django,backup,pycharm,visualstudiocode
+
+### Backup ###
+*.bak
+*.gho
+*.ori
+*.orig
+*.tmp
 
 ### Django ###
 *.log
@@ -138,9 +145,10 @@ dmypy.json
 ### Git ###
 # Created by git for backups. To disable backups in Git:
 # $ git config --global mergetool.keepBackup false
-*.orig
 
 # Created by git when using merge tools for conflicts
+*.bak
+*.backup
 *.BACKUP.*
 *.BASE.*
 *.LOCAL.*
@@ -312,6 +320,4 @@ fabric.properties
 # Ignore all local history of files
 .history
 
-# End of https://www.gitignore.io/api/git,linux,python,django,pycharm,visualstudiocode
-
-/db.sqlite3.bak
+# End of https://www.gitignore.io/api/git,linux,python,django,backup,pycharm,visualstudiocode

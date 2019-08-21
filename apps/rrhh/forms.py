@@ -76,8 +76,22 @@ class ComunicacionForm(MyModelForm):
         }
 
 
-class DenunciaForm(BSModalForm):
+# agregamos la clase form-control a todos los campos
+class MyBSModelForm(BSModalForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in iter(self.fields):
+            self.fields[field].widget.attrs.update({'class': 'form-control'})
+
+
+class DenunciaForm(MyBSModelForm):
     class Meta:
         model = Denuncia_ART
-        # fields = ['siniestro', 'empleado']
-        fields = ('__all__')
+        fields = ['siniestro', 'empleado', 'fec_siniestro', 'fec_denuncia',
+                  'tipo_accidente', 'tipologia', 'zona_afectada', 'estado',
+                    'fec_alta_medica', 'motivo_alta']
+        # fields = ('__all__')
+        # exclude = ('active', 'created', 'created_by', 'modified', 'modified_by')
+
+
+

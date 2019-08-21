@@ -22,12 +22,14 @@
                     <button type="button" class="read-book btn btn-sm btn-primary" data-id="{% url 'rrhh:art_read' obj.pk %}">
                         <span class="fa fa-eye"></span>
                     </button>
-                    <button type="button" class="update-book btn btn-sm btn-primary" data-id="{% url 'rrhh:art_update' obj.pk %}">
+                    {% comment %}
+                    <button type="button" class="update-book btn btn-sm btn-success" data-id="{% url 'rrhh:art_update' obj.pk %}">
                         <span class="fa fa-pencil"></span>
                     </button>
                     <button type="button" class="delete-book btn btn-sm btn-danger" data-id="{% url 'rrhh:art_delete' obj.pk %}">
                         <span class="fa fa-trash"></span>
                     </button>
+                    {% endcomment %}
                 </td>
             </tr>
             {% endfor %}
@@ -42,5 +44,7 @@
     </div>
     {% endcomment %}
 </div>
+{% comment %}
 <hr>
 <button class="create-book btn btn-primary" type="button" name="button">Nueva Denuncia</button>
+{% endcomment %}
