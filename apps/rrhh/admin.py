@@ -1,8 +1,6 @@
 from django.contrib import admin
 
 # Register your models here.
-
-# Register your models here.
 from .models import Comunicacion, Denuncia_ART, Diccionario_ART, Domicilio, Empleado, Persona
 
 admin.site.register(Persona)
@@ -27,3 +25,25 @@ class DenunciaAdmin(admin.ModelAdmin):
 
 admin.site.register(Diccionario_ART)
 admin.site.register(Denuncia_ART, DenunciaAdmin)
+
+# ----------------------------------------------------------------
+
+from .models import Activo, Documentacion, Mantenimiento
+
+class ActivoAdmin(admin.ModelAdmin):
+    list_display = ('tipo', 'identificacion', 'responsable')
+    list_filter = ('tipo',)
+
+admin.site.register(Activo, ActivoAdmin)
+
+class DocumentacionAdmin(admin.ModelAdmin):
+    list_display = ('activo', 'descripcion', 'fecha_inicial', 'fecha_final')
+    list_filter = ('activo',)
+
+admin.site.register(Documentacion, DocumentacionAdmin)
+
+class MantenimientoAdmin(admin.ModelAdmin):
+    list_display = ('content_type', 'descripcion', 'estado', 'proximo')
+    list_filter = ('estado',)
+
+admin.site.register(Mantenimiento, MantenimientoAdmin)

@@ -95,3 +95,13 @@ class DenunciaForm(MyBSModelForm):
 
 
 
+from django.contrib.contenttypes.models import ContentType
+from django.db import models
+
+class MantenimientoForm(MyModelForm):
+    def __init__(self, *args, **kwargs):
+        import pdb; pdb.set_trace()
+        super().__init__(*args, **kwargs)
+        if 'initial' in kwargs:
+            self.fields['content_type'].queryset = \
+                ContentType.objects.filter(models.Q(model='activo') | models.Q(model='documentacion'))

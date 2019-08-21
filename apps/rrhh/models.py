@@ -66,7 +66,8 @@ class Empleado(AudtoriaMixin):
     fec_ing = models.DateField('Fecha Ingreso', blank=True, null=True)
     fec_egr = models.DateField('Fecha Egreso',blank=True, null=True)
     imagen = models.FileField(upload_to='rrhh/empleados/', blank=True, null=True)
-    tarea = models.ForeignKey(Tarea, on_delete=models.CASCADE, blank=True, null=True)
+    tarea = models.ForeignKey(Tarea, on_delete=models.CASCADE, blank=True, null=True,
+                              limit_choices_to = {'active': True})
 
 
 class Comunicacion(AudtoriaMixin):
@@ -84,7 +85,8 @@ class Comunicacion(AudtoriaMixin):
             ('link', 'LinkedIn'), ('pint', 'Pinterest'), ('twitt', 'Twitter'),
             ('ytube', 'YouTube'))
 
-    empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE, blank=True, null=True)
+    empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE, blank=True, null=True,
+                                 limit_choices_to={'active': True})
     tipo = models.CharField(max_length=5, choices=TIPO, default='movil')
     texto = models.CharField(max_length=150)
 
@@ -158,3 +160,80 @@ class Denuncia_ART(AudtoriaMixin):
                                     related_name='motivo_alta_id',
                                     verbose_name='Motivo de Alta',
                                     limit_choices_to = {'diccionario': 'motivoAlta'})
+
+
+# Mantenimiento
+#         +-----> Activo
+#         +-----> Documentacion
+
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+from django.contrib.contenttypes.models import ContentType
+
+class Mantenimiento(AudtoriaMixin):
+    class Meta:
+        app_label = 'rrhh'
+        verbose_name = 'Mantenimiento'
+        verbose_name_plural = 'Mantenimientos'
+
+    def __str__(self):
+        return str(self.descripcion)
+
+    ESTADO = [('A', 'Atención'), ('C', 'Cumple'), ('N', 'No Cumple')]
+
+    # campos necesarios para utilizar ContentTypes
+    content_type =   models.ForeignKey(ContentType, models.DO_NOTHING, limit_choices_to = {'app_label': 'rrhh'})
+    object_id = models.PositiveIntegerField()
+    content_object=GenericForeignKey('content_type', 'object_id')
+
+    descripcion = models.CharField(max_length=60)
+    estado = models.CharField(max_length=1, choices=ESTADO, default='C')
+    proximo = models.DateField('Próxima Verificación', default=timezone.now, blank=True, null=True)
+
+
+class Activo(AudtoriaMixin):
+    class Meta:
+        app_label = 'rrhh'
+        verbose_name = 'Activo'
+        verbose_name_plural = 'Activos'
+        ordering = ['tipo', 'identificacion']
+
+    def __str__(self):
+        return str(self.identificacion)
+
+    TIPO = [('D', 'Depósito'), ('V', 'Vehículo')]
+
+    tipo = models.CharField(max_length=1, choices=TIPO, default='D')
+    identificacion = models.CharField(max_length=40)
+    responsable = models.ForeignKey(Empleado, models.DO_NOTHING, null=True, blank=True,
+                                    limit_choices_to = {'active': True})
+    # campo necesario para utilizar ContentTypes asociado a la tabla Mantenimiento
+    mantenimientos = GenericRelation(Mantenimiento)
+
+
+class Documentacion(AudtoriaMixin):
+    class Meta:
+        app_label = 'rrhh'
+        verbose_name = 'Documentación'
+        verbose_name_plural = 'Documentaciones'
+        ordering = ['activo', 'descripcion']
+
+    def __str__(self):
+        return str(self.descripcion)
+
+    @property
+    def dias_vencido(self):
+        if self.fecha_final is None:
+            return 0
+        return (timezone.now() - self.fecha_final).days
+
+    activo = models.ForeignKey(Activo, models.DO_NOTHING, null=True, blank=True,
+                               related_name = 'documentaciones',
+                               limit_choices_to = {'active': True})
+    descripcion = models.CharField(max_length=60)
+    fecha_inicial = models.DateField('Fecha Inicial', default=timezone.now, blank=True, null=True)
+    fecha_final = models.DateField('Fecha Final', default=timezone.now, blank=True, null=True)
+    archivo = models.FileField(upload_to='rrhh/activos/', blank=True, null=True)
+    # campo necesario para utilizar ContentTypes asociado a la tabla Mantenimiento
+    mantenimientos = GenericRelation(Mantenimiento)
+
+

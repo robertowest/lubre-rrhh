@@ -20,7 +20,9 @@ urlpatterns = [
     path('denuncia/info/<int:pk>', views.DenunciaReadView.as_view(), name='art_read'),
     path('denuncia/eliminar/<int:pk>', views.DenunciaDeleteView.as_view(), name='art_delete'),
 
-
+    path('activo/info/<int:pk>', views.ActivoReadView.as_view(), name='activo_read'),
+    path('documentacion/info/<int:pk>', views.DocumentacionReadView.as_view(), name='documentacion_read'),
+    path('mantenimiento/info/<int:pk>', views.MantenimientoReadView.as_view(), name='mantenimiento_read'),
     # path('detalle/<int:pk>', views.Detalle.as_view(), name='detail'),
     # path('crear', views.Crear.as_view(), name='create'),
     # path('editar/<int:pk>', views.Editar.as_view(), name='edit'),

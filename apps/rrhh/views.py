@@ -1,16 +1,26 @@
 from betterforms.multiform import MultiModelForm
 from bootstrap_modal_forms.generic import \
     BSModalCreateView, BSModalUpdateView, BSModalReadView, BSModalDeleteView
+from django.db.models import Q
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView, FormView
 
 from .models import Empleado, Comunicacion, Denuncia_ART, Domicilio
+from .models import Activo, Documentacion, Mantenimiento
 from .forms import DenunciaForm, EmpleadoMultiForm, ComunicacionForm, EmpleadoFiltro
 
 
 def home(request):
-    return render(request, 'rrhh_home.html')
+    # latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    # context = {'latest_question_list': latest_question_list}
+    # return render(request, 'polls/index.html', context)
+    # vencimientos = Documentacion.objects.all()  # filter('dias_vencido': 0)
+
+    # Model.objects.filter(Q(x=1) & Q(y=2))
+    # vencimientos = Documentacion.objects.filter(Q(dias_vencido='0'))
+    vencimientos = Documentacion.objects.filter(fecha_final__date__gt=0)
+    return render(request, 'rrhh_home.html', {'vencimientos': vencimientos})
 
 
 class EmpleadoShow(ListView, FormView):
@@ -46,6 +56,7 @@ class EmpleadoDetail(DetailView):
         context['comunicaciones'] = \
             Comunicacion.objects.filter(empleado_id=context['empleado'].persona_id).order_by('tipo')
         context['denuncias'] = Denuncia_ART.objects.filter(empleado_id=context['empleado'].persona_id)
+        context['activos'] = Activo.objects.filter(responsable_id=context['empleado'].persona_id)
         return context
 
     model = Empleado
@@ -101,7 +112,7 @@ class CanalCreate(CreateView):
     template_name = 'comunicacion/formulario.html'
 
 
-
+# -------------------------------------------------------------------
 
 
 class DenunciaCreateView(BSModalCreateView):
@@ -129,3 +140,21 @@ class DenunciaDeleteView(BSModalDeleteView):
     template_name = 'denuncia/confirmar_borrado.html'
     success_message = 'Success: Book was deleted.'
     success_url = reverse_lazy('rrhh:empl_show')
+
+
+# -------------------------------------------------------------------
+
+
+class ActivoReadView(BSModalReadView):
+    model = Activo
+    template_name = 'comunes/detalle.html'
+
+
+class DocumentacionReadView(BSModalReadView):
+    model = Documentacion
+    template_name = 'comunes/detalle.html'
+
+
+class MantenimientoReadView(BSModalReadView):
+    model = Mantenimiento
+    template_name = 'comunes/detalle.html'

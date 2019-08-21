@@ -64,6 +64,9 @@
             $(this).modalForm({formURL: $(this).data('id')});
         })
 
+        // info de activo
+        $(".read-activo").each(function () {$(this).modalForm({formURL: $(this).data('id')});});
+
         // Hide message
         $(".alert").fadeTo(2000, 500).slideUp(500, function(){
             $(".alert").slideUp(500);

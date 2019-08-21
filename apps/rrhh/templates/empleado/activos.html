@@ -1,0 +1,29 @@
+{% comment %}
+<button type="button" class="read-book btn btn-sm btn-primary" data-id="{% url 'rrhh:art_read' obj.pk %}">
+    <span class="fa fa-eye"></span>
+</button>
+{% endcomment %}
+
+
+
+<ul id="activos">
+    {% for obj in activos %}
+    <li>
+        <a href="#" class="read-activo" data-id="{% url 'rrhh:activo_read' obj.pk %}">{{obj}} ({{ obj.get_tipo_display }})</a>
+        <ul id="docs">
+            {% for doc in obj.documentaciones.all %}
+            <li>
+                <a href="#" class="read-activo" data-id="{% url 'rrhh:documentacion_read' doc.pk %}">{{doc}}</a>
+                <ul id="mant">
+                    {% for man in doc.mantenimientos.all %}
+                    <li>
+                        <a href="#" class="read-activo" data-id="{% url 'rrhh:mantenimiento_read' man.pk %}">{{man}}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </li>
+            {% endfor %}
+        </ul>
+    </li>
+    {% endfor %}
+</ul>
