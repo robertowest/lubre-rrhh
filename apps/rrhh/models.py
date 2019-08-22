@@ -1,3 +1,4 @@
+from datetime import date
 from django.utils import timezone
 from django.db import models
 from django.urls import reverse_lazy
@@ -162,9 +163,13 @@ class Denuncia_ART(AudtoriaMixin):
                                     limit_choices_to = {'diccionario': 'motivoAlta'})
 
 
+# -------------------------------------------------------------------
 # Mantenimiento
 #         +-----> Activo
 #         +-----> Documentacion
+#
+# https://axiacore.com/blog/como-usar-genericforeignkey-en-django-554/
+# -------------------------------------------------------------------
 
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
@@ -181,9 +186,10 @@ class Mantenimiento(AudtoriaMixin):
     ESTADO = [('A', 'Atención'), ('C', 'Cumple'), ('N', 'No Cumple')]
 
     # campos necesarios para utilizar ContentTypes
-    content_type =   models.ForeignKey(ContentType, models.DO_NOTHING, limit_choices_to = {'app_label': 'rrhh'})
+    content_type = models.ForeignKey(ContentType, models.DO_NOTHING,
+                                     limit_choices_to={'model__in': ('activo', 'documentacion')})
     object_id = models.PositiveIntegerField()
-    content_object=GenericForeignKey('content_type', 'object_id')
+    content_object = GenericForeignKey('content_type', 'object_id')
 
     descripcion = models.CharField(max_length=60)
     estado = models.CharField(max_length=1, choices=ESTADO, default='C')
@@ -221,10 +227,10 @@ class Documentacion(AudtoriaMixin):
         return str(self.descripcion)
 
     @property
-    def dias_vencido(self):
+    def dias_vencidos(self):
         if self.fecha_final is None:
             return 0
-        return (timezone.now() - self.fecha_final).days
+        return (date.today() - self.fecha_final).days
 
     activo = models.ForeignKey(Activo, models.DO_NOTHING, null=True, blank=True,
                                related_name = 'documentaciones',
@@ -235,5 +241,3 @@ class Documentacion(AudtoriaMixin):
     archivo = models.FileField(upload_to='rrhh/activos/', blank=True, null=True)
     # campo necesario para utilizar ContentTypes asociado a la tabla Mantenimiento
     mantenimientos = GenericRelation(Mantenimiento)
-
-

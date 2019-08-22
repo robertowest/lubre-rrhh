@@ -1,15 +1,32 @@
 {% extends "base_rrhh.html" %}
+{% load static %}
 
 {% block content %}
 <div class="container-fluid">
     <div class="col-sm-3">
+        <!-- mantenimientos -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h1 class="panel-title"><span class="glyphicon glyphicon-wrench"></span> Mantenimiento</h1>
+            </div>
+            <div class="list-group">
+                {% for obj in mantenimientos %}
+                <a href="{% url 'rrhh:mantenimiento_read' obj.pk %}" class="list-group-item">{{obj}}
+                    <spam class="pull-right">{{obj.content_object}}</spam>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        <!-- documentación vencida -->
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h1 class="panel-title"><span class="glyphicon glyphicon-random"></span> Documentación Vencida</h1>
             </div>
             <div class="list-group">
                 {% for obj in vencimientos %}
-                <a href="#" class="list-group-item">{{obj}} <span class="badge">New</span></a>
+                <a href="#" class="list-group-item">{{obj}}
+                    {% if obj.dias_vencidos == 1 %} <span class="badge progress-bar-danger">Hoy</span>{% endif %}
+                </a>
                 {% endfor %}
             </div>
         </div>

@@ -10,7 +10,8 @@
         {% for f in object.get_fields %}
         <tr>
             <td><b>{{f.name|capfirst}}</b></td>
-            <td>: {{f.value|escape}}</td>
+            <td style="padding:5px;">:</td>
+            <td>{{f.value|escape}}</td>
         </tr>
         {% endfor %}
     </table>

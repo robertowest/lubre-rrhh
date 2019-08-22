@@ -4,6 +4,7 @@ from bootstrap_modal_forms.generic import \
 from django.db.models import Q
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView, FormView
 
 from .models import Empleado, Comunicacion, Denuncia_ART, Domicilio
@@ -19,8 +20,10 @@ def home(request):
 
     # Model.objects.filter(Q(x=1) & Q(y=2))
     # vencimientos = Documentacion.objects.filter(Q(dias_vencido='0'))
-    vencimientos = Documentacion.objects.filter(fecha_final__date__gt=0)
-    return render(request, 'rrhh_home.html', {'vencimientos': vencimientos})
+    mantenimientos = Mantenimiento.objects.filter(proximo__lt=timezone.now())
+    vencimientos = Documentacion.objects.filter(fecha_final__lt=timezone.now())
+    return render(request, 'rrhh_home.html', {'mantenimientos': mantenimientos,
+                                              'vencimientos': vencimientos})
 
 
 class EmpleadoShow(ListView, FormView):

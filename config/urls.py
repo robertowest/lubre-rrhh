@@ -25,7 +25,7 @@ urlpatterns = [
     # Juridico
     path('juridico/', include('apps.juridico.urls')),
     # RRHH
-    path('rrhh/', include('apps.rrhh.urls')),
+    path('', include('apps.rrhh.urls')),
 ]
 
 # -----------------------------------------------------------------------------
