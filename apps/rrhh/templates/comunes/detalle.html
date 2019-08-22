@@ -7,6 +7,11 @@
 
 <div class="modal-body">
     <table>
+        <tr>
+            <td><b>Id</b></td>
+            <td style="padding:5px;">:</td>
+            <td>{{object.pk}}</td>
+        </tr>
         {% for f in object.get_fields %}
         <tr>
             <td><b>{{f.name|capfirst}}</b></td>

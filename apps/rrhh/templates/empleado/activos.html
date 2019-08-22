@@ -1,29 +1,46 @@
-{% comment %}
-<button type="button" class="read-book btn btn-sm btn-primary" data-id="{% url 'rrhh:art_read' obj.pk %}">
-    <span class="fa fa-eye"></span>
-</button>
-{% endcomment %}
-
-
-
-<ul id="activos">
-    {% for obj in activos %}
-    <li>
-        <a href="#" class="read-activo" data-id="{% url 'rrhh:activo_read' obj.pk %}">{{obj}} ({{ obj.get_tipo_display }})</a>
-        <ul id="docs">
-            {% for doc in obj.documentaciones.all %}
-            <li>
-                <a href="#" class="read-activo" data-id="{% url 'rrhh:documentacion_read' doc.pk %}">{{doc}}</a>
-                <ul id="mant">
-                    {% for man in doc.mantenimientos.all %}
-                    <li>
-                        <a href="#" class="read-activo" data-id="{% url 'rrhh:mantenimiento_read' man.pk %}">{{man}}</a>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </li>
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Activo</th>
+                <th>Documentación</th>
+                <th>Mantenimiento</th>
+                <th>Estado</th>
+                <th>Próximo</th>
+            </tr>
+        </thead>
+        <tbody id="items">
+            {% for obj in activos %}
+            <tr>
+                <td>
+                    <a href="#" class="read-activo" data-id="{% url 'rrhh:activo_read' obj.act_id %}">
+                        {{obj.activo}} ({{ obj.get_tipo_display }})
+                    </a>
+                </td>
+                <td>
+                    {% if obj.doc_id %}
+                    <a href="#" class="read-activo" data-id="{% url 'rrhh:documentacion_read' obj.doc_id %}">
+                        {{obj.documentacion}}
+                    </a>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="#" class="read-activo" data-id="{% url 'rrhh:mantenimiento_read' obj.mant_id %}">
+                        {{obj.mantenimiento}}
+                    </a>
+                </td>
+                <td class="color_{{obj.estado}}">
+                    {{obj.get_estado_display}}
+                </td>
+                <td>{{obj.proximo|date:"d/m/Y"}}</td>
+            </tr>
             {% endfor %}
-        </ul>
-    </li>
-    {% endfor %}
-</ul>
+        </tbody>
+    </table>
+    <hr>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4 text-center">
+            <ul class="pagination" id="myPager"></ul>
+        </div>
+    </div>
+</div>

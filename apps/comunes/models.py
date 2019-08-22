@@ -1,6 +1,13 @@
 from datetime import datetime
 from django.db import models
 
+def get_current_user():
+    username = None
+    # from django.http import request
+    # if request.user.is_authenticated():
+    #     username = current_user()
+    # return username
+    return 'admin'
 
 class AudtoriaMixin(models.Model):
     class Meta:
@@ -33,6 +40,13 @@ class AudtoriaMixin(models.Model):
 
     def save(self, *args, **kwargs):
         self.modified = datetime.now()
+        if not self.pk:
+            self.created_by = get_current_user()
+        else:
+            self.modified_by = get_current_user()
+        # if not self.created_by:
+        #     self.created_by = get_current_user()
+        # self.modified_by = get_current_user()
         super(AudtoriaMixin, self).save(*args, **kwargs)
 
     active = models.BooleanField('Activo', default=1)

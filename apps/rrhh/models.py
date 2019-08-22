@@ -109,6 +109,7 @@ class Domicilio(AudtoriaMixin):
     pais = models.CharField(max_length=30, blank=False, null=False)
 
 
+
 class Diccionario_ART(models.Model):
     class Meta:
         app_label = 'rrhh'
@@ -241,3 +242,23 @@ class Documentacion(AudtoriaMixin):
     archivo = models.FileField(upload_to='rrhh/activos/', blank=True, null=True)
     # campo necesario para utilizar ContentTypes asociado a la tabla Mantenimiento
     mantenimientos = GenericRelation(Mantenimiento)
+
+
+# vista con activo/documentacion y mantenimiento
+class ActivoMantenimientoView(models.Model):
+    act_id = models.IntegerField()
+    tipo = models.CharField(max_length=1, choices=Activo.TIPO, default='D')
+    activo = models.CharField(max_length=40)
+    doc_id = models.IntegerField(blank=True, null=True)
+    documentacion = models.CharField(max_length=60, blank=True, null=True)
+    valido_desde = models.DateField(blank=True, null=True)
+    valido_hasta = models.DateField(blank=True, null=True)
+    mant_id = models.IntegerField(primary_key=True)
+    mantenimiento = models.CharField(max_length=60, blank=True, null=True)
+    estado = models.CharField(max_length=1, choices=Mantenimiento.ESTADO, default='C')
+    proximo = models.DateField(blank=True, null=True)
+    responsable_id = models.IntegerField()
+
+    class Meta:
+        managed = False  # Created from a view. Don't remove.
+        db_table = 'activo_mantenimiento_view'
