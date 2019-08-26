@@ -182,5 +182,14 @@ INSTALLED_APPS += [
     'apps.rrhh',
 ]
 
-#  Para permitir el testeo de correo
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# redirecciona a home al realizar un login exitoso
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/'
+
+LOGOUT_URL = '/accounts/logout/'
+LOGOUT_REDIRECT_URL = '/'
+
+# para que funcione el proceso de registro de usuarios
+# esto evitará que se envíe un email e imprimirá el resultado por la consola
+EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+EMAIL_FILE_PATH = os.path.join(BASE_DIR, "static/sent_emails")

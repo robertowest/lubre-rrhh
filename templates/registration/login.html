@@ -1,38 +1,59 @@
 {% extends "layouts/base_login.html" %}
-{% block content %}
+{% load static %}
 
-{% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
-{% endif %}
-
-{% if next %}
-    {% if user.is_authenticated %}
-    <p>Your account doesn't have access to this page. To proceed,
-    please login with an account that has access.</p>
-    {% else %}
-    <p>Please login to see this page.</p>
+{% block message %}
+    {% if form.errors %}
+    <div class="alert alert-danger" role="alert">
+        <p>Su nombre de usuario y contraseña no coinciden. Inténtelo de nuevo.</p>
+    </div>
     {% endif %}
-{% endif %}
 
-<form method="post" action="{% url 'login' %}">
-{% csrf_token %}
+    {% if next %}
+    <div class="alert alert-danger" role="alert">
+        {% if user.is_authenticated %}
+            <p>Su cuenta no tiene acceso a esta página. Para continuar,
+                inicie sesión con una cuenta que tenga acceso.</p>
+        {% else %}
+            <p>Por favor inicie sesión para ver esta página.</p>
+        {% endif %}
+    </div>
+    {% endif %}
+{% endblock %}
 
-<div>
-  <td>{{ form.username.label_tag }}</td>
-  <td>{{ form.username }}</td>
-</div>
-<div>
-  <td>{{ form.password.label_tag }}</td>
-  <td>{{ form.password }}</td>
-</div>
+{% block content %}
+    <form method="post" action="{% url 'login' %}" class="form-signin">
+        {% csrf_token %}
 
-<div>
-  <input type="submit" value="login" />
-  <input type="hidden" name="next" value="{{ next }}" />
-</div>
-</form>
+        <h1 class="h3 mb-3 font-weight-normal">Por favor, identifíquese</h1>
 
-{# Assumes you setup the password_reset view in your URLconf #}
-<p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+        <!--
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+        -->
+        <label for="userName" class="sr-only">Nombre de Usuario</label>
+        <input name="username" type="text" id="userName" class="form-control" placeholder="Nombre de Usuario" required autofocus>
 
+        <label for="inputPassword" class="sr-only">Contraseña</label>
+        <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Contraseña" required>
+
+        {% comment %}
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" value="remember-me"> Recuérdame
+            </label>
+        </div>
+        {% endcomment %}
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit" value="login">Entrar</button>
+        <input type="hidden" name="next" value="{{ next }}" />
+
+        {# Assumes you setup the password_reset view in your URLconf #}
+        {% comment %}
+        <p class="mt-5 mb-3 text-muted">
+            <a href="{% url 'register' %}">¿Todavía no tienes usuario?</a>
+            <br>
+            <a href="{% url 'reset_password' %}">¿Olvidó su contraseña?</a>
+        </p>
+        {% endcomment %}
+    </form>
 {% endblock %}
