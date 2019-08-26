@@ -1,5 +1,8 @@
+{% load static %}
+
 <div class="table-responsive">
-    <table class="table table-hover">
+    <table id="autotabla" class="table table-hover">
+
         <thead>
             <tr>
                 <th>Activo</th>
@@ -9,7 +12,8 @@
                 <th>Próximo</th>
             </tr>
         </thead>
-        <tbody id="items">
+
+        <tbody>
             {% for obj in activos %}
             <tr>
                 <td>

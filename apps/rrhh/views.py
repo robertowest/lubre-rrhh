@@ -58,13 +58,14 @@ class EmpleadoDetail(DetailView):
         context['comunicaciones'] = \
             models.Comunicacion.objects.filter(empleado_id=context['empleado'].persona_id).order_by('tipo')
         context['denuncias'] = models.Denuncia_ART.objects.filter(empleado_id=context['empleado'].persona_id)
-        # context['activos'] = Activo.objects.filter(responsable_id=context['empleado'].persona_id)
+        # context['activos'] = models.Activo.objects.filter(responsable_id=context['empleado'].persona_id)
         context['activos'] = models.ActivoMantenimientoView.objects.filter(responsable_id=context['empleado'].persona_id)
         return context
 
     model = models.Empleado
     # form_class = Empleado
     template_name = 'empleado/detalle.html'
+    # template_name = 'empleado/activos.html'
 
 
 class EmpleadoCreate(CreateView):

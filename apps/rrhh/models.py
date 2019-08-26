@@ -259,6 +259,9 @@ class ActivoMantenimientoView(models.Model):
     proximo = models.DateField(blank=True, null=True)
     responsable_id = models.IntegerField()
 
+    def __str__(self):
+        return str(self.activo)
+
     class Meta:
         managed = False  # Created from a view. Don't remove.
         db_table = 'activo_mantenimiento_view'
