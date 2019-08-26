@@ -147,7 +147,6 @@ dmypy.json
 # $ git config --global mergetool.keepBackup false
 
 # Created by git when using merge tools for conflicts
-*.bak
 *.backup
 *.BACKUP.*
 *.BASE.*
@@ -321,3 +320,9 @@ fabric.properties
 .history
 
 # End of https://www.gitignore.io/api/git,linux,python,django,backup,pycharm,visualstudiocode
+
+/apps/*/migrations/
+check.sh
+runserver.sh
+test.py
+inspectdb*
