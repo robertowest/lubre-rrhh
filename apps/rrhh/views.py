@@ -1,6 +1,7 @@
 from betterforms.multiform import MultiModelForm
 from bootstrap_modal_forms.generic import \
     BSModalCreateView, BSModalUpdateView, BSModalReadView, BSModalDeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -10,6 +11,10 @@ from django.views.generic import ListView, DetailView, UpdateView, CreateView, D
 from . import models
 from .forms import DenunciaForm, EmpleadoMultiForm, ComunicacionForm, EmpleadoFiltro
 
+# from django.contrib.auth.decorators import login_required
+# @login_required
+# def index(request):
+#     pass
 
 def home(request):
     # latest_question_list = Question.objects.order_by('-pub_date')[:5]
@@ -68,7 +73,8 @@ class EmpleadoDetail(DetailView):
     # template_name = 'empleado/activos.html'
 
 
-class EmpleadoCreate(CreateView):
+class EmpleadoCreate(LoginRequiredMixin, CreateView):
+    login_url = '/accounts/login/'
     form_class = EmpleadoMultiForm
     template_name = 'empleado/formulario.html'
     success_url = reverse_lazy('rrhh:empl_show')

@@ -28,6 +28,11 @@ urlpatterns = [
     path('', include('apps.rrhh.urls')),
 ]
 
+# agregamos autenticación (login, logout, password management)
+urlpatterns += [
+    path('accounts/', include('django.contrib.auth.urls')),
+]
+
 # -----------------------------------------------------------------------------
 
 # DEBUG

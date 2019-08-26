@@ -181,3 +181,6 @@ INSTALLED_APPS += [
     'apps.juridico',
     'apps.rrhh',
 ]
+
+#  Para permitir el testeo de correo
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

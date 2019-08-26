@@ -10,12 +10,12 @@
                 </h3>
             </div>
             <div class="panel-body">
-                {% comment %}
+                {% if user.is_authenticated %}
                 <div align="right" class="btn_crear mb-3">
                     <a href="{% url 'rrhh:empl_new' %}" type="button" class="btn btn-primary" style="margin-bottom:10px">
                         <i class="glyphicon glyphicon-plus"></i> Crear </a>
                 </div>
-                {% endcomment %}
+                {% endif %}
 
                 <table class="table table-responsive table-striped">
                     <thead>
@@ -26,9 +26,9 @@
                             <th class="priority-4">F.Ingreso</th>
                             <th class="priority-4">F.Egreso</th>
                             <th class="priority-4">Activo</th>
-                            {% comment %}
+                            {% if user.is_authenticated %}
                             <th class="priority-1">Acciones</th>
-                            {% endcomment %}
+                            {% endif %}
                         </tr>
                     </thead>
                     <tbody>
@@ -42,18 +42,17 @@
                             <td class="priority-4">{{object.fec_ing|date:"d/m/Y"}}</td>
                             <td class="priority-4">{{object.fec_egr|date:"d/m/Y"}}</td>
                             <td class="priority-1">{{object.active|yesno:"Sí,No"}}</td>
-                            {% comment %}
+                            {% if user.is_authenticated %}
                             <td class="priority-1">
                                 {# url 'clientes:detail' object.idcliente #}
                                 <a href="{{object.get_update_url}}">
                                     <span class="glyphicon glyphicon-pencil"></span>
                                 </a> |
-
                                 <a onclick="return abrir_modal('{% url 'rrhh:empl_delete' object.pk %}')">
                                     <span class="glyphicon glyphicon-trash"></span>
                                 </a>
                             </td>
-                            {% endcomment %}
+                            {% endif %}
                         </tr>
                         {% endfor %}
                     </tbody>
