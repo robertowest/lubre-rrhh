@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="author" content="Roberto West">
+        <meta name="description" content="">
+
+        <title>{% block title %}Lubre SRL{% endblock %}</title>
+        {% load static %}
+
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" type="text/css" href="{% static 'bootstrap4/css/bootstrap.min.css' %}">
+
+        <!-- Custom styles for this template -->
+        <link rel="stylesheet" type="text/css" href="{% static 'css/jumbotron.css' %}">
+    </head>
+    <body>
+        {% include "layouts/b4/navbar.html" %}
+
+        <main role="main">
+            <!-- Main jumbotron for a primary marketing message or call to action -->
+            <div class="jumbotron">
+                <div class="container">
+                    <h1 class="display-3">Página de Inicio</h1>
+                    <p>This is a template for a simple marketing or informational website. It includes a large callout called a
+                        jumbotron and three supporting pieces of content. Use it as a starting point to create something more
+                        unique.</p>
+                    <p><a class="btn btn-primary btn-lg" href="#" role="button">Leer más &raquo;</a></p>
+                </div>
+            </div>
+
+            {% block content %}
+            {% endblock %}
+        </main>
+
+        {% include "layouts/b4/footer.html" %}
+
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="{% static 'js/jquery-3.3.1.slim.min.js' %}"></script>
+        <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'js/popper.min.js' %}"></script>
+    </body>
+</html>

@@ -33,9 +33,9 @@ def profile(request):
 @login_required
 def index(request):
     group = request.user.groups.filter(user=request.user)[0]
-    if group.name == "rrhh":
-        ### return HttpResponseRedirect(reverse('rrhh'))
-        return reverse_lazy('rrhh')
+    if group.name == "RRHH":
+        return HttpResponseRedirect(reverse('rrhh:home'))
+
     # if group.name=="employees":
     #     return HttpResponseRedirect(reverse('worker'))
     # elif group.name=="teamLeader":

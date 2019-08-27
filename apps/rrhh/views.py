@@ -74,7 +74,7 @@ class EmpleadoDetail(DetailView):
 
 
 class EmpleadoCreate(LoginRequiredMixin, CreateView):
-    login_url = '/accounts/login/'
+    login_url = '/usuarios/inicio/'
     form_class = EmpleadoMultiForm
     template_name = 'empleado/formulario.html'
     success_url = reverse_lazy('rrhh:empl_show')
