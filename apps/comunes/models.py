@@ -55,7 +55,6 @@ class AudtoriaMixin(models.Model):
     modified = models.DateTimeField('Modificado', auto_now=True, editable=False, null=True, blank=True)
     modified_by = models.CharField('Modif. por', max_length=15, editable=False, null=True, blank=True)
 
-
 # Create your models here.
 class Provincias(models.Model):
     class Meta:

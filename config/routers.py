@@ -1,13 +1,17 @@
 import pdb
 
+MYSQL_APPS = ['auth', 'contenttypes', 'admin', 'sessions', 'rrhh', 'blog']
+FIREBIRD_APPS = ['firebird', 'clientes']
+
+
 class MySQLRouter:
     def db_for_read(self, model, **hints):
-        if model._meta.app_label in ['auth', 'contenttypes', 'admin', 'sessions', 'rrhh']:
+        if model._meta.app_label in MYSQL_APPS:
             return 'mysql'
         return None
 
     def db_for_write(self, model, **hints):
-        if model._meta.app_label in ['auth', 'contenttypes', 'admin', 'sessions', 'rrhh']:
+        if model._meta.app_label in MYSQL_APPS:
             return 'mysql'
         return None
 
@@ -17,19 +21,19 @@ class MySQLRouter:
         return None
 
     def allow_migrate(self, db, app_label, model_name=None, **hints):
-        if app_label in ['auth', 'contenttypes', 'admin', 'sessions', 'rrhh']:
+        if app_label in MYSQL_APPS:
             return db == 'mysql'
         return None
 
 
 class FirebirdRouter:
     def db_for_read(self, model, **hints):
-        if model._meta.app_label in ['firebird', 'clientes']:
+        if model._meta.app_label in FIREBIRD_APPS:
             return 'firebird'
         return None
 
     def db_for_write(self, model, **hints):
-        if model._meta.app_label in ['firebird', 'clientes']:
+        if model._meta.app_label in FIREBIRD_APPS:
             return 'firebird'
         return None
 
@@ -39,6 +43,6 @@ class FirebirdRouter:
         return None
 
     def allow_migrate(self, db, app_label, model_name=None, **hints):
-        if app_label in ['firebird', 'clientes']:
+        if app_label in FIREBIRD_APPS:
             return db == 'firebird'
         return None

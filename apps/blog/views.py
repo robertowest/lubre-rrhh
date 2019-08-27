@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views import generic
-from .models import Post
+
+from . import models
 
 # Create your views here.
 def home(request):
@@ -8,10 +9,15 @@ def home(request):
 
 
 class PostList(generic.ListView):
-    queryset = Post.objects.filter(status=1).order_by('-created_on')
-    template_name = 'index.html'
+    # def get_queryset(self):
+    #     queryset = super().get_queryset()
+    #     return queryset.filter(status=1).order_by('-created')
+
+    model = models.Post
+    template_name = 'blog/index.html'
+    paginate_by = 25
 
 
 class PostDetail(generic.DetailView):
-    model = Post
-    template_name = 'post_detail.html'
+    model = models.Post
+    template_name = 'blog/post_detail.html'
