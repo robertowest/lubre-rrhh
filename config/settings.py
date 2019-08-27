@@ -180,14 +180,15 @@ INSTALLED_APPS += [
     'apps.clientes',
     'apps.juridico',
     'apps.rrhh',
+    'apps.usuarios',
 ]
 
 # redirecciona a home al realizar un login exitoso
-LOGIN_URL = '/accounts/login/'
-LOGIN_REDIRECT_URL = '/'
-
-LOGOUT_URL = '/accounts/logout/'
-LOGOUT_REDIRECT_URL = '/'
+# LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/usuarios/'
+#
+# LOGOUT_URL = '/logout/'
+LOGOUT_REDIRECT_URL = '/usuarios/'
 
 # para que funcione el proceso de registro de usuarios
 # esto evitará que se envíe un email e imprimirá el resultado por la consola
