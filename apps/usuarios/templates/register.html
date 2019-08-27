@@ -20,7 +20,7 @@
 {% endblock %}
 
 {% block content %}
-    <form method="post" action="{% url 'register' %}" class="form-signin">
+    <form method="post" action="{% url 'usuarios:register' %}" class="form-signin">
         {% csrf_token %}
 
         <h1 class="h3 mb-3 font-weight-normal">Registrarse</h1>
@@ -42,7 +42,7 @@
         <input type="hidden" name="next" value="{{ next }}" />
 
         <p class="mt-5 mb-3 text-muted">
-            <a href="{% url 'login' %}">Ya soy usuario</a>
+            <a href="{% url 'usuarios:login' %}">Ya soy usuario</a>
         </p>
     </form>
 {% endblock %}

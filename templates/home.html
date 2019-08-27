@@ -1,0 +1,12 @@
+{% extends 'layouts/base_b4.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        {% if user.is_authenticated %}
+        <p>Usuario autenticado</p>
+        {% else %}
+        <p>Usuario no autenticado</p>
+        {% endif %}
+{% endblock %}

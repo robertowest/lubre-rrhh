@@ -52,10 +52,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'config.urls'
 
+TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # accederá al directorio templates del proyecto
+        'DIRS': [TEMPLATES_DIR],  # accederá al directorio templates del proyecto
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -156,18 +157,18 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 
-# # configuración debug-toolbar
-# if DEBUG:
-#     INSTALLED_APPS += [
-#         'debug_toolbar',
-#     ]
-#
-#     MIDDLEWARE += [
-#         'debug_toolbar.middleware.DebugToolbarMiddleware',
-#     ]
-#
-#     INTERNAL_IPS = ['localhost', '127.0.0.1', '172.19.0.1']  # gateway del docker
-# # fin configuración debug-toolbar
+# configuración debug-toolbar
+if DEBUG:
+    INSTALLED_APPS += [
+        'debug_toolbar',
+    ]
+
+    MIDDLEWARE += [
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
+    ]
+
+    INTERNAL_IPS = ['localhost', '127.0.0.1', '172.19.0.1']  # gateway del docker
+# fin configuración debug-toolbar
 
 INSTALLED_APPS += [
     # aplicacione de terceros
@@ -176,6 +177,7 @@ INSTALLED_APPS += [
     'django_filters',
     'widget_tweaks',
     # mis aplicaciones
+    'apps.blog',
     'apps.homepage',
     'apps.clientes',
     'apps.juridico',

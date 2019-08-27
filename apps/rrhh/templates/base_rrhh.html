@@ -1,32 +1,20 @@
-{% extends "layouts/base_b3.html" %}
+{% extends "layouts/base_b4.html" %}
 {% load static %}
 
-{% block base_css %}
-    <link href="{% static 'css/table.css' %}" rel="stylesheet">
-    <script>
-        .modal-header {
-            min-height: 16.42857143px;
-            padding: 15px;
-        }
-    </script>
+{% block css %}
+<style>
+.color_C { color: #155724;
+           background-color: #c3e6cb; }
+.color_A { color: #856404;
+           background-color: #ffeeba; }
+.color_N { color: #721c24;
+           background-color: #f1b0b7;}
+</style>
 {% endblock %}
 
-{% block base_title %}
-    RRHH
-{% endblock %}
-
-{% block base_navbar %}
-    {% include 'navbar_rrhh.html' %}
-{% endblock %}
-
-{% block base_footer %}
-{% endblock %}
-
-{% block base_content %}
-    <div class="container theme-showcase" role="main" style="padding-top: 20px;">
-    </div>
-
-    {% block content %}
+<!-- contenido -->
+{% block content %}
+    {% block local_content %}
     {% endblock %}
 
     <!-- modal form -->
@@ -43,7 +31,10 @@
     </div>
 {% endblock %}
 
-{% block base_js %}
+{% block footer %}
+{% endblock %}
+
+{% block js %}
 <script src="{% static 'js/autotabla.js' %}"></script>
 <script type="text/javascript">
     $(function () {
@@ -74,7 +65,6 @@
         });
     });
 </script>
-
 <script>
     function abrir_modal(url)
     {

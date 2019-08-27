@@ -18,6 +18,8 @@ from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # Blog
+    path('', include('apps.blog.urls')),
     # Página principal
     path('', include('apps.homepage.urls')),
     # Clientes
@@ -37,11 +39,11 @@ urlpatterns = [
 from django.urls import include
 from django.conf import settings
 
-# if settings.DEBUG:
-#     import debug_toolbar
-#     urlpatterns += [
-#         path('__debug__/', include(debug_toolbar.urls)),
-#     ]
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ]
 
 
 # STATIC FILES

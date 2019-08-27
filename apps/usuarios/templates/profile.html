@@ -27,7 +27,7 @@
     <div class="container bootstrap snippet">
         <div class="row">
             <div class="col-sm-10">
-                <h1>{{ user.username }}</h1>
+                <h1>Usuario: <b>{{ user.username }}</b></h1>
             </div>
         </div>
         <div class="row">
@@ -59,8 +59,8 @@
                     </li>
                 </ul>
             </div>
-            <!--/col-3-->
-            <div class="col-sm-9">
+
+            <div class="col-sm-5">
                 <hr>
                 <form class="form" action="##" method="post" id="registrationForm">
                     {% csrf_token %}

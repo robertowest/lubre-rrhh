@@ -26,65 +26,77 @@
 {% endblock %}
 
 {% block content %}
-<div class="container bootstrap snippet">
-    <div class="row">
-        <div class="col-sm-12">
-            <h1>{{ object }}</h1>
+<div class="row">
+    <div class="col-sm-12">
+        <h1>{{ object }}</h1>
+    </div>
+</div>
+<hr>
+<div class="row">
+    <div class="col-sm-9">
+        <ul class="nav nav-tabs" id="myTab">
+            <li class="nav-item">
+                <a class="nav-link active" href="#datos" data-toggle="tab">Datos Personales</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#denuncias" data-toggle="tab">Denuncias ART</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#activos" data-toggle="tab">Activos</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane active" id="datos">
+                {% include 'empleado/detalle_campos.html' %}
+            </div>
+
+            <div class="tab-pane fade" id="denuncias">
+                {% include 'empleado/denuncias.html' %}
+            </div>
+
+            <div class="tab-pane fade" id="activos">
+                {% include 'empleado/activos.html' %}
+            </div>
         </div>
     </div>
-    <hr>
-    <div class="row">
-        <div class="col-sm-9">
-            <ul class="nav nav-tabs" id="myTab">
-                <li class="active"><a href="#datos" data-toggle="tab">Datos Personales</a></li>
-                <li><a href="#denuncias" data-toggle="tab">Denuncias ART</a></li>
-                <li><a href="#activos" data-toggle="tab">Activos</a></li>
-            </ul>
 
-            <div class="tab-content">
-                <div class="tab-pane active" id="datos">
-                    {% include 'empleado/detalle_campos.html' %}
-                </div>
-
-                <div class="tab-pane" id="denuncias">
-                    {% include 'empleado/denuncias.html' %}
-                </div>
-
-                <div class="tab-pane" id="activos">
-                    {% include 'empleado/activos.html' %}
-                </div>
+    <div class="col-sm-3 hidden-xs">
+        <div class="card card-info">
+            <div class="card-header">
+                Foto <i class="fa fa-photo fa-1x"></i>
+            </div>
+            <div class="card-body" style="text-align: center;">
+                {% if object.imagen %}
+                <img class="rounded-circle img-responsive" src="{{ object.imagen.url }}">
+                {% else %}
+                <img class="rounded-circle img-responsive" src="https://bootdey.com/img/Content/avatar/avatar1.png">
+                {% endif %}
             </div>
         </div>
+        <br>
 
-        <div class="col-sm-3 hidden-xs">
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    Foto <i class="fa fa-photo fa-1x"></i>
-                </div>
-                <div class="panel-body">
-                    {% if object.imagen %}
-                    <img class="img-circle img-responsive" src="{{ object.imagen.url }}">
-                    {% else %}
-                    <img class="img-circle img-responsive" src="https://bootdey.com/img/Content/avatar/avatar1.png">
-                    {% endif %}
-                </div>
+        {% if comunicaciones  %}
+        <div class="card">
+            <div class="card-header">
+                Comunicación <i class="fa fa-phone fa-1x"></i>
             </div>
-
-            {% if comunicaciones  %}
-            <ul class="list-group">
-                <li class="list-group-item text-muted">Comunicación <i class="fa fa-phone fa-1x"></i></li>
+            <div class="list-group list-group-flush">
                 {% for obj in comunicaciones %}
-                    {% if obj.tipo in "tel,movil,wa,sms" %}
-                    <li class="list-group-item text-right">
-                        <span class="pull-left"><strong>{{obj.get_tipo_display}}</strong></span> {{obj.texto}}
-                    </li>
-                    {% endif %}
+                <div class="list-group-item">
+                    {{obj.get_tipo_display}}
+                    <spam class="pull-right">{{obj.texto}}</spam>
+                </div>
                 {% endfor %}
-            </ul>
+            </div>
+        </div>
+        <br>
 
-            <div class="panel panel-info">
-                <div class="panel-heading">Social <i class="fa fa-link fa-1x"></i></div>
-                <div class="panel-body">
+        <div class="card">
+            <div class="card-header">Social <i class="fa fa-link fa-1x"></i></div>
+            <div class="card-body">
+                {# https://lipis.github.io/bootstrap-social/ #}
+
                 {% for obj in comunicaciones %}
                     {% if obj.tipo == "link"  %}
                     <a href="https://www.facebook.com/{{obj.texto}}" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a>&nbsp;
@@ -108,25 +120,24 @@
                     <a href="https://aboutme.google.com/u/0/?referer=gplus" target="_blank"><i class="fa fa-google-plus fa-2x"></i></a>&nbsp;
                     {% endif %}
                 {% endfor %}
-                </div>
             </div>
-            {% endif  %}
-
-            {% comment %}
-            <div class="panel panel-success">
-                <div class="panel-heading">Website <i class="fa fa-link fa-1x"></i></div>
-                <div class="panel-body"><a href="https://bootdey.com">https://bootdey.com</a></div>
-            </div>
-
-            <ul class="list-group">
-                <li class="list-group-item text-muted">Activity <i class="fa fa-dashboard fa-1x"></i></li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Shares</strong></span> 125</li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span> 13</li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Posts</strong></span> 37</li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Followers</strong></span> 78</li>
-            </ul>
-            {% endcomment %}
         </div>
+        {% endif  %}
+
+        {% comment %}
+        <div class="panel panel-success">
+            <div class="panel-heading">Website <i class="fa fa-link fa-1x"></i></div>
+            <div class="panel-body"><a href="https://bootdey.com">https://bootdey.com</a></div>
+        </div>
+
+        <ul class="list-group">
+            <li class="list-group-item text-muted">Activity <i class="fa fa-dashboard fa-1x"></i></li>
+            <li class="list-group-item text-right"><span class="pull-left"><strong>Shares</strong></span> 125</li>
+            <li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span> 13</li>
+            <li class="list-group-item text-right"><span class="pull-left"><strong>Posts</strong></span> 37</li>
+            <li class="list-group-item text-right"><span class="pull-left"><strong>Followers</strong></span> 78</li>
+        </ul>
+        {% endcomment %}
     </div>
 </div>
 {% endblock %}
