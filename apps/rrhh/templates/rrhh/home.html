@@ -1,6 +1,28 @@
 {% extends "rrhh/base.html" %}
 {% load static %}
 
+<!-- agregamos el marco para la ventana modal -->
+{% block modal %}
+    {% include 'rrhh/post_detail.html' %}
+{% endblock %}
+
+<!-- jscript necesario para pasar datos a la ventana modal -->
+{% block js %}
+<script>
+    $('#myModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget)     // Button that triggered the modal
+        // Extract info from data-* attributes
+        var title = button.data('title')
+        var content = button.data('content')
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        modal.find('.modal-title').text(title)
+        modal.find('.modal-body').text(content)
+    })
+</script>
+{% endblock %}
+
 {% block content %}
 <div class="row">
     <div class="col-sm-3">
@@ -51,15 +73,17 @@
                 <ul class="list-inline">
                     <li><a href="#"><span class="glyphicon glyphicon-comment"></span> 2 Comentarios</a></li>
                 </ul>
-                {% endcomment %}
+
                 <a href="{% url 'rrhh:post_detail' post.slug %}"
                    class="btn btn-primary pull-right"
                    data-toggle="modal" data-target="#modal" title="edit item" data-tooltip>Leer más &rarr;</a>
+                {% endcomment %}
 
-<a onclick="return abrir_modal('{% url 'rrhh:post_detail' post.slug %}', 'Post/{{post.titulo}}')" class="btn">
-    <span class="glyphicon glyphicon-eye-open"></span>
-</a>
-
+                <button type="button" class="btn btn-primary float-right"
+                        data-toggle="modal" data-target="#myModal"
+                        data-title="{{post.titulo}}"
+                        data-content="{{post.contenido}}"
+                        title="edit item" data-tooltip>Leer más &rarr;</button>
             </div>
         </div>
         <hr>
@@ -88,34 +112,4 @@
         </div>
     </div>
 </div>
-{% endblock %}
-
-{# VENTANA MODAL #}
-
-{% block modal %}
-    {# include "comunes/modal.html" #}
-    <div id="ventana_modal" class="modal fade" role="dialog"></div>
-{% endblock %}
-
-{% block js %}
-    {# <script src="{% static 'js/modal.js' %}"></script> #}
-<script>
-    function abrir_modal(url)
-        {
-            $('#ventana_modal').load(url, function() {
-                $(this).modal({
-                                backdrop: 'static',
-                                keyboard: false
-                })
-                $(this).modal('show');
-            });
-            return false;
-        }
-
-        function cerrar_modal()
-        {
-            $('#ventana_modal').modal('hide');
-            return false;
-        }
-</script>
 {% endblock %}
