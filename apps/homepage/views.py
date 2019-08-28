@@ -8,3 +8,6 @@ def home(request):
 
 def demo(request):
     return render(request, 'demo.html')
+
+def modal(request):
+    return render(request, 'modal.html')
