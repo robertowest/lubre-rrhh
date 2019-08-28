@@ -8,8 +8,9 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView, FormView
 
-from . import models
-from .forms import DenunciaForm, EmpleadoMultiForm, ComunicacionForm, EmpleadoFiltro
+
+from . import models, forms
+from apps.blog.models import Post
 
 # from django.contrib.auth.decorators import login_required
 # @login_required
@@ -26,8 +27,16 @@ def home(request):
     # vencimientos = Documentacion.objects.filter(Q(dias_vencido='0'))
     mantenimientos = models.Mantenimiento.objects.filter(proximo__lt=timezone.now())
     vencimientos = models.Documentacion.objects.filter(fecha_final__lt=timezone.now())
-    return render(request, 'rrhh_home.html', {'mantenimientos': mantenimientos,
+    # noticias = Post.objects.filter(estado=1).order_by('-created')
+    noticias = Post.objects.all().order_by('-created')
+    return render(request, 'rrhh/home.html', {'mantenimientos': mantenimientos,
+                                              'noticias': noticias,
                                               'vencimientos': vencimientos})
+
+
+class PostDetail(DetailView):
+    model = Post
+    template_name = 'rrhh/post_detail.html'
 
 
 class EmpleadoShow(ListView, FormView):
@@ -48,7 +57,7 @@ class EmpleadoShow(ListView, FormView):
         return queryset.order_by('persona')
 
     model = models.Empleado
-    form_class = EmpleadoFiltro
+    form_class = forms.EmpleadoFiltro
     template_name = 'empleado/listado.html'
     paginate_by = 25
     success_url = reverse_lazy('rrhh:empl_show')
@@ -75,7 +84,7 @@ class EmpleadoDetail(DetailView):
 
 class EmpleadoCreate(LoginRequiredMixin, CreateView):
     login_url = '/usuarios/inicio/'
-    form_class = EmpleadoMultiForm
+    form_class = forms.EmpleadoMultiForm
     template_name = 'empleado/formulario.html'
     success_url = reverse_lazy('rrhh:empl_show')
 
@@ -93,7 +102,7 @@ class EmpleadoUpdate(UpdateView):
         return kwargs
 
     model = models.Empleado
-    form_class = EmpleadoMultiForm
+    form_class = forms.EmpleadoMultiForm
     template_name = 'empleado/formulario.html'
     success_url = reverse_lazy('rrhh:empl_show')
 
@@ -118,7 +127,7 @@ class EmpleadoDelete(DeleteView):
 
 
 class CanalCreate(CreateView):
-    form_class = ComunicacionForm
+    form_class = forms.ComunicacionForm
     template_name = 'comunicacion/formulario.html'
 
 
@@ -127,7 +136,7 @@ class CanalCreate(CreateView):
 
 class DenunciaCreateView(BSModalCreateView):
     template_name = 'denuncia/formulario.html'
-    form_class = DenunciaForm
+    form_class = forms.DenunciaForm
     success_message = 'Success: Book was created.'
     success_url = reverse_lazy('rrhh:empl_show')
 
@@ -135,7 +144,7 @@ class DenunciaCreateView(BSModalCreateView):
 class DenunciaUpdateView(BSModalUpdateView):
     model = models.Denuncia_ART
     template_name = 'denuncia/formulario.html'
-    form_class = DenunciaForm
+    form_class = forms.DenunciaForm
     success_message = 'Success: Book was updated.'
     success_url = reverse_lazy('rrhh:empl_show')
 

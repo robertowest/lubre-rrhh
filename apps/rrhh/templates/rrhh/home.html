@@ -1,7 +1,7 @@
-{% extends "base_rrhh.html" %}
+{% extends "rrhh/base.html" %}
 {% load static %}
 
-{% block local_content %}
+{% block content %}
 <div class="row">
     <div class="col-sm-3">
         <!-- mantenimientos -->
@@ -41,18 +41,29 @@
         </div>
         -->
 
-        <!-- Articulos -->
+        <!-- noticias -->
+        {% for post in noticias %}
         <div class="media">
-            <img class="align-self-start mr-3" src="holder.js/120x120" alt="">
             <div class="media-body">
-                <h4 class="media-heading"><a href="#">Información importante</a></h4>
-                <p><b>Lorem Ipsum</b> dolor sit amet, consectetur adipiscing elit. Etiam at pellentesque nisi. Quisque nisl sem, euismod ac ornare a, aliquet malesuada mi. Quisque gravida non nibh placerat eleifend. In id nisl risus. Nunc congue justo eros, in molestie massa fringilla in. Mauris consequat pulvinar ex ac vehicula.</p>
+                <h4 class="media-heading"><a href="#">{{ post.titulo }}</a></h4>
+                <p>{{post.contenido|slice:":200"}} ...</p>
+                {% comment %}
                 <ul class="list-inline">
                     <li><a href="#"><span class="glyphicon glyphicon-comment"></span> 2 Comentarios</a></li>
                 </ul>
+                {% endcomment %}
+                <a href="{% url 'rrhh:post_detail' post.slug %}"
+                   class="btn btn-primary pull-right"
+                   data-toggle="modal" data-target="#modal" title="edit item" data-tooltip>Leer más &rarr;</a>
+
+<a onclick="return abrir_modal('{% url 'rrhh:post_detail' post.slug %}', 'Post/{{post.titulo}}')" class="btn">
+    <span class="glyphicon glyphicon-eye-open"></span>
+</a>
+
             </div>
         </div>
         <hr>
+        {% endfor %}
     </div>
 
     <div class="col-sm-3">
@@ -77,4 +88,34 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{# VENTANA MODAL #}
+
+{% block modal %}
+    {# include "comunes/modal.html" #}
+    <div id="ventana_modal" class="modal fade" role="dialog"></div>
+{% endblock %}
+
+{% block js %}
+    {# <script src="{% static 'js/modal.js' %}"></script> #}
+<script>
+    function abrir_modal(url)
+        {
+            $('#ventana_modal').load(url, function() {
+                $(this).modal({
+                                backdrop: 'static',
+                                keyboard: false
+                })
+                $(this).modal('show');
+            });
+            return false;
+        }
+
+        function cerrar_modal()
+        {
+            $('#ventana_modal').modal('hide');
+            return false;
+        }
+</script>
 {% endblock %}

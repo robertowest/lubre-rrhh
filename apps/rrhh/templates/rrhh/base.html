@@ -6,7 +6,7 @@
         <meta name="author" content="Roberto West">
         <meta name="description" content="">
 
-        <title>{% block title %}Lubre SRL{% endblock %}</title>
+        <title>Lubre SRL</title>
         {% load static %}
 
         <!-- Fonts Awesome -->
@@ -20,11 +20,18 @@
         <link rel="stylesheet" type="text/css" href="{% static 'bootstrap4/css/bootstrap.min.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'bootstrap4/css/bootstrap-glyphicons.css' %}">
 
-        <!-- Custom styles for this template -->
+        <!-- Custom styles for this template
         <link rel="stylesheet" type="text/css" href="{% static 'css/jumbotron.css' %}">
+        -->
 
-        {% block css %}
-        {% endblock %}
+        <style>
+        .color_C { color: #155724;
+                   background-color: #c3e6cb; }
+        .color_A { color: #856404;
+                   background-color: #ffeeba; }
+        .color_N { color: #721c24;
+                   background-color: #f1b0b7;}
+        </style>
     </head>
     <body>
         {% include "layouts/b4/navbar.html" %}
@@ -33,20 +40,19 @@
             <!-- separador -->
         </div>
 
+        {% block modal %}
+        {% endblock %}
+
         <div class="container-fluid">
             {% block content %}
             {% endblock %}
         </div>
 
-        {% block footer %}
-            {% include "layouts/b4/footer.html" %}
-        {% endblock %}
-
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="{% static 'js/jquery-3.3.1.slim.min.js' %}"></script>
-        <script src="{% static 'bootstrap4/js/bootstrap.bundle.min.js' %}"></script>
+        <script src="{% static 'js/jquery-1.11.3.min.js' %}"></script>
         <script src="{% static 'js/popper.min.js' %}"></script>
+        <script src="{% static 'bootstrap4/js/bootstrap.min.js' %}"></script>
 
         {% block js %}
         {% endblock %}

@@ -23,6 +23,8 @@ urlpatterns = [
     path('activo/info/<int:pk>', views.ActivoReadView.as_view(), name='activo_read'),
     path('documentacion/info/<int:pk>', views.DocumentacionReadView.as_view(), name='documentacion_read'),
     path('mantenimiento/info/<int:pk>', views.MantenimientoReadView.as_view(), name='mantenimiento_read'),
+
+    path('<slug:slug>/', views.PostDetail.as_view(), name='post_detail'),
     # path('detalle/<int:pk>', views.Detalle.as_view(), name='detail'),
     # path('crear', views.Crear.as_view(), name='create'),
     # path('editar/<int:pk>', views.Editar.as_view(), name='edit'),
