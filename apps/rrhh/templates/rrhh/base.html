@@ -40,6 +40,15 @@
         <script src="{% static 'js/popper.min.js' %}"></script>
         <script src="{% static 'js/bootstrap.min.js' %}"></script>
 
+        {# https://pypi.org/project/django-bootstrap-modal-forms/ #}
+        <script type="text/javascript">
+        $(function () {
+            // Read book buttons
+            // $(".read-activo").each(function () { $(this).modalForm({formURL: $(this).data('id')}); });
+            $(".read-activo").each(function () { alert('hola'); });
+        });
+        </script>
+
         {% block js %}
         {% endblock %}
     </body>
