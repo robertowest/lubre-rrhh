@@ -32,11 +32,17 @@
             <!-- separador -->
         </div>
 
-        {% block modal %}
-        {% endblock %}
+        <!-- modal -->
+        <div id="modal" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+            </div>
+        </div>
 
         <div class="container-fluid">
             {% block content %}
+            <button type="button" class="read-book btn btn-sm btn-primary" data-id="{% url 'rrhh:activo_read' 1 %}">
+                <span class="fa fa-eye"></span>
+            </button>
             {% endblock %}
         </div>
 
@@ -45,8 +51,30 @@
         <script src="{% static '/js/popper.min.js' %}"></script>
         <script src="{% static '/js/bootstrap.min.js' %}"></script>
 
-        <!-- JS para #modal -->
-        {% block js %}
-        {% endblock %}
+        <!-- JS necesarios para que funcione #modal -->
+        <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+        <script type="text/javascript">
+            $(function() {
+                // read book buttons
+                $(".read-book").each(function() {
+                    $(this).modalForm({
+                        formURL: $(this).data('id'),
+                        modalContent: ".modal-dialog",
+                        modalForm: ".modal-dialog form"
+                    });
+                });
+
+                // hide message
+                $(".alert").fadeTo(2000, 500).slideUp(500, function() {
+                    $(".alert").slideUp(500);
+                });
+
+                // autofocus to first input field of a modal
+                $('.modal').on('shown.bs.modal', function() {
+                    $('form').find('input[type=text]').filter(':visible:first').focus();
+                });
+            });
+        </script>
+
     </body>
 </html>

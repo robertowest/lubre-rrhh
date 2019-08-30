@@ -1,7 +1,10 @@
 {% extends "rrhh/base.html" %}
+
 {% load humanize %}
+{% load static %}
 
 {% block modal %}
+    <!-- div para presentación de modal -->
     <div class="modal fade" tabindex="-1" role="dialog" id="modal">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -32,7 +35,7 @@
             </ul>
 
             <div class="tab-content">
-                <div class="tab-pane active" id="datos">
+                <div class="tab-pane fade active" id="datos">
                     {% include 'empleado/detalle_campos.html' %}
                 </div>
 
@@ -125,4 +128,36 @@
             {% endcomment %}
         </div>
     </div>
+{% endblock %}
+
+{% block js %}
+    <!-- JS necesarios para que funcione #modal -->
+    <script src="{% static '/js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+    <script type="text/javascript">
+        $(function() {
+            $(".read-book").each(function() {
+                $(this).modalForm({
+                    formURL: $(this).data('id'),
+                    modalContent: ".modal-content-dbmf",
+                    modalForm: ".modal-content-dbmf form"
+                });
+            });
+
+            $(".documentacion_read").each(function() {
+                $(this).modalForm({
+                    formURL: $(this).data('id'),
+                    modalContent: ".modal-content-dbmf",
+                    modalForm: ".modal-content-dbmf form"
+                });
+            });
+
+            $(".mantenimiento_read").each(function() {
+                $(this).modalForm({
+                    formURL: $(this).data('id'),
+                    modalContent: ".modal-content-dbmf",
+                    modalForm: ".modal-content-dbmf form"
+                });
+            });
+        });
+    </script>
 {% endblock %}

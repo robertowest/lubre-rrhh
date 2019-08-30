@@ -15,7 +15,7 @@
             {% for obj in activos %}
             <tr>
                 <td>
-                    <a href="#" class="read-activo" data-id="{% url 'rrhh:activo_read' obj.act_id %}">
+                    <a href="#" class="read-book" data-id="{% url 'rrhh:activo_read' obj.act_id %}">
                         {{obj.activo}} ({{ obj.get_tipo_display }})
                     </a>
                 </td>

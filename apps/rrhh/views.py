@@ -18,6 +18,9 @@ from apps.blog.models import Post
 #     pass
 
 def home(request):
+    return render(request, 'rrhh/home2.html')
+
+def home_2(request):
     # latest_question_list = Question.objects.order_by('-pub_date')[:5]
     # context = {'latest_question_list': latest_question_list}
     # return render(request, 'polls/index.html', context)
@@ -166,7 +169,7 @@ class DenunciaDeleteView(BSModalDeleteView):
 
 class ActivoReadView(BSModalReadView):
     model = models.Activo
-    template_name = 'comunes/detalle.html'
+    template_name = 'comunes/detalle_modal.html'
 
 
 class DocumentacionReadView(BSModalReadView):
