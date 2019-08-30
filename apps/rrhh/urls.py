@@ -7,9 +7,6 @@ app_name = 'rrhh'
 urlpatterns = [
     path('', views.home, name='home'),
 
-    # lectura de noticia
-    path('<slug:slug>/', views.PostDetail.as_view(), name='post_detail'),
-
     # CRUD empleado
     path('empleado/', views.EmpleadoShow.as_view(), name='empl_show'),
     path('empleado/detalle/<int:pk>', views.EmpleadoDetail.as_view(), name='empl_detail'),
@@ -30,6 +27,7 @@ urlpatterns = [
     path('activo/info/<int:pk>', views.ActivoReadView.as_view(), name='activo_read'),
     path('documentacion/info/<int:pk>', views.DocumentacionReadView.as_view(), name='documentacion_read'),
     path('mantenimiento/info/<int:pk>', views.MantenimientoReadView.as_view(), name='mantenimiento_read'),
+    path('noticia/<slug:slug>/', views.PostReadView.as_view(), name='post_detail'),
 
     # path('detalle/<int:pk>', views.Detalle.as_view(), name='detail'),
     # path('crear', views.Crear.as_view(), name='create'),

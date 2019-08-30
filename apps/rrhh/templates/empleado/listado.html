@@ -1,4 +1,5 @@
 {% extends "rrhh/base.html" %}
+{% load group_tags %}
 
 {% block content %}
     <div class="row">
@@ -30,13 +31,15 @@
                         <td>{{object.active|yesno:"Sí,No"}}</td>
                         {% if user.is_authenticated %}
                         <td>
-                            {# url 'clientes:detail' object.idcliente #}
-                            <a href="{{object.get_update_url}}">
+                            {# comprobamos si el usuario pertenece al grupo RRHH #}
+                            {% if request.user|has_group:"RRHH" %}
+                            <a href="{{object.get_update_url}}" target="_blank">
                                 <span class="glyphicon glyphicon-pencil"></span>
                             </a> |
                             <a onclick="return abrir_modal('{% url 'rrhh:empl_delete' object.pk %}')">
                                 <span class="glyphicon glyphicon-trash"></span>
                             </a>
+                            {% endif %}
                         </td>
                         {% endif %}
                     </tr>
@@ -47,6 +50,7 @@
             {# paginación #}
             {% include 'paginator.html' %}
         </div>
+
         <div class="col-sm-2">
             <div class="card">
                 <div class="card-header"> {#  text-white bg-primary #}

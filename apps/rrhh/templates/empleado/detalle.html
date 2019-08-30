@@ -3,14 +3,6 @@
 {% load humanize %}
 {% load static %}
 
-{% block modal %}
-    <!-- modal -->
-    <div id="modal" class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-        </div>
-    </div>
-{% endblock %}
-
 {% block content %}
     <div class="row">
         <div class="col-sm-12">
@@ -33,7 +25,7 @@
             </ul>
 
             <div class="tab-content">
-                <div class="tab-pane fade active" id="datos">
+                <div class="tab-pane active" id="datos">
                     {% include 'empleado/detalle_campos.html' %}
                 </div>
 
@@ -128,7 +120,17 @@
     </div>
 {% endblock %}
 
+{% block modal %}
+    <!-- modal -->
+    <div id="modal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+        </div>
+    </div>
+{% endblock %}
+
 {% block js %}
+    <!-- JS necesarios para que funcione autotabla -->
+    <script src="{% static 'js/autotabla.js' %}"></script>
     <!-- JS necesarios para que funcione #modal -->
     <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
     <script type="text/javascript">

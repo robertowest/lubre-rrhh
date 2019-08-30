@@ -1,7 +1,9 @@
 from datetime import date
+
+from django.http import HttpResponseRedirect
 from django.utils import timezone
 from django.db import models
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
 from apps.comunes.models import AudtoriaMixin
 
@@ -51,6 +53,16 @@ class Empleado(AudtoriaMixin):
     def get_absolute_url(self, *args, **kwargs):
         # return reverse('rrhh:empl_detail', kwargs={'pk': self.pk})
         return reverse_lazy('rrhh:empl_detail', args=(self.pk,))
+
+    def get_update_url(self):
+        # def changelist_view(self, request, extra_context=None):
+        #     if self.model.objects.all().count() == 1:
+        #         obj = self.model.objects.all()[0]
+        #         return HttpResponseRedirect(
+        #             reverse("admin:%s_%s_change" % (self.model._meta.app_label, self.model._meta.model_name),
+        #                     args=(self.pk,)))
+        #     return super(ItemAdmin, self).changelist_view(request=request, extra_context=extra_context)
+        return "/admin/rrhh/empleado/%s/change/" % self.pk
 
     # def get_success_url(self):
     #     # return reverse('rrhh:empl_detail', args=(self.object.id,))

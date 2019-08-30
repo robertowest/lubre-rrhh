@@ -185,11 +185,10 @@ INSTALLED_APPS += [
 ]
 
 # redirecciona a home al realizar un login exitoso
-# LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/usuarios/'
-#
-# LOGOUT_URL = '/logout/'
-LOGOUT_REDIRECT_URL = '/usuarios/'
+LOGIN_URL = '/usuarios/inicio/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_URL = '/usuarios/salir/'
+LOGOUT_REDIRECT_URL = '/'
 
 # para que funcione el proceso de registro de usuarios
 # esto evitará que se envíe un email e imprimirá el resultado por la consola

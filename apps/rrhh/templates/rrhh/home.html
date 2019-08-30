@@ -1,116 +1,118 @@
 {% extends "rrhh/base.html" %}
 {% load static %}
 
-<!-- agregamos el marco para la ventana modal -->
-{% block modal %}
-    {% include 'rrhh/post_detail.html' %}
-{% endblock %}
-
-<!-- jscript necesario para pasar datos a la ventana modal -->
-{% block js %}
-<script>
-    $('#myModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget)     // Button that triggered the modal
-        // Extract info from data-* attributes
-        var title = button.data('title')
-        var content = button.data('content')
-        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-        var modal = $(this)
-        modal.find('.modal-title').text(title)
-        modal.find('.modal-body').text(content)
-    })
-</script>
-{% endblock %}
-
 {% block content %}
-<div class="row">
-    <div class="col-sm-3">
-        <!-- mantenimientos -->
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title">Mantenimiento</h5>
-            </div>
-            <div class="list-group">
-                {% for obj in mantenimientos %}
-                <a href="{% url 'rrhh:mantenimiento_read' obj.pk %}" class="list-group-item">{{obj}}
-                    <spam class="pull-right">{{obj.content_object}}</spam>
-                </a>
-                {% endfor %}
-            </div>
-        </div>
-        <br>
-        
-        <!-- documentación vencida -->
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title">Documentación Vencida</h5>
-            </div>
-            <div class="list-group">
-                {% for obj in vencimientos %}
-                <a href="#" class="list-group-item">{{obj}}
-                    {% if obj.dias_vencidos == 1 %} <span class="badge progress-bar-danger">Hoy</span>{% endif %}
-                </a>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-
-    <div class="col-sm-6">
-        <!-- Alert
-        <div class="alert alert-danger alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <strong>Synergize:</strong> Seamlessly visualize quality intellectual capital!
-        </div>
-        -->
-
-        <!-- noticias -->
-        {% for post in noticias %}
-        <div class="media">
-            <div class="media-body">
-                <h4 class="media-heading"><a href="#">{{ post.titulo }}</a></h4>
-                <p>{{post.contenido|slice:":200"}} ...</p>
-                {% comment %}
-                <ul class="list-inline">
-                    <li><a href="#"><span class="glyphicon glyphicon-comment"></span> 2 Comentarios</a></li>
-                </ul>
-
-                <a href="{% url 'rrhh:post_detail' post.slug %}"
-                   class="btn btn-primary pull-right"
-                   data-toggle="modal" data-target="#modal" title="edit item" data-tooltip>Leer más &rarr;</a>
-                {% endcomment %}
-
-                <button type="button" class="btn btn-primary float-right"
-                        data-toggle="modal" data-target="#myModal"
-                        data-title="{{post.titulo}}"
-                        data-content="{{post.contenido}}"
-                        title="edit item" data-tooltip>Leer más &rarr;</button>
-            </div>
-        </div>
-        <hr>
-        {% endfor %}
-    </div>
-
-    <div class="col-sm-3">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title">Semáforo</h5>
-            </div>
-            <div class="card-body">
-                <div class="progress">
-                    <div class="progress-bar bg-success" role="progressbar"
-                         style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+    <div class="row">
+        <div class="col-sm-3">
+            <!-- mantenimientos -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Mantenimiento</h5>
                 </div>
-                <div class="progress">
-                    <div class="progress-bar bg-warning" role="progressbar"
-                         style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%</div>
+                <div class="list-group">
+                    {% for obj in mantenimientos %}
+                    <a href="{% url 'rrhh:mantenimiento_read' obj.pk %}" class="list-group-item">{{obj}}
+                        <spam class="pull-right">{{obj.content_object}}</spam>
+                    </a>
+                    {% endfor %}
                 </div>
-                <div class="progress">
-                    <div class="progress-bar bg-danger" role="progressbar"
-                         style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>
+            </div>
+            <br>
+
+            <!-- documentación vencida -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Documentación Vencida</h5>
+                </div>
+                <div class="list-group">
+                    {% for obj in vencimientos %}
+                    <a href="#" class="list-group-item">{{obj}}
+                        {% if obj.dias_vencidos == 1 %} <span class="badge progress-bar-danger">Hoy</span>{% endif %}
+                    </a>
+                    {% endfor %}
                 </div>
             </div>
         </div>
+
+        <div class="col-sm-6">
+            <!-- Alert
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong>Synergize:</strong> Seamlessly visualize quality intellectual capital!
+            </div>
+            -->
+
+            <!-- noticias -->
+            {% for post in noticias %}
+            <div class="media">
+                <div class="media-body">
+                    <h4 class="media-heading"><a href="#">{{ post.titulo }}</a></h4>
+                    <p>{{post.contenido|slice:":200"}} ...</p>
+
+                    {% comment %}
+                    <ul class="list-inline">
+                        <li><a href="#"><span class="glyphicon glyphicon-comment"></span> 2 Comentarios</a></li>
+                    </ul>
+                    {% endcomment %}
+
+                    <!--
+                    <a href="{% url 'rrhh:post_detail' post.slug %}"
+                       class="btn btn-primary pull-right"
+                       data-toggle="modal" data-target="#modal" title="edit item" data-tooltip>Leer más &rarr;</a>
+                    -->
+
+                    <button type="button" class="read-modal btn btn-primary float-right"
+                            data-id="{% url 'rrhh:post_detail' post.slug %}">Leer más &rarr;</button>
+                </div>
+            </div>
+            <hr>
+            {% endfor %}
+        </div>
+
+        <div class="col-sm-3">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Semáforo</h5>
+                </div>
+                <div class="card-body">
+                    <div class="progress">
+                        <div class="progress-bar bg-success" role="progressbar"
+                             style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-warning" role="progressbar"
+                             style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%</div>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-danger" role="progressbar"
+                             style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+{% endblock %}
+
+{% block modal %}
+    <!-- modal -->
+    <div id="modal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <!-- JS necesarios para que funcione #modal -->
+    <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+    <script type="text/javascript">
+        $(function() {
+            // read book buttons
+            $(".read-modal").each(function() {
+                $(this).modalForm({
+                    formURL: $(this).data('id'),
+                    modalContent: ".modal-dialog",
+                });
+            });
+        });
+    </script>
 {% endblock %}

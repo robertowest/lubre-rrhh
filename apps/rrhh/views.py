@@ -37,11 +37,6 @@ def home(request):
                                               'vencimientos': vencimientos})
 
 
-class PostDetail(DetailView):
-    model = Post
-    template_name = 'rrhh/post_detail.html'
-
-
 class EmpleadoShow(ListView, FormView):
     def post(self, request, *args, **kwargs):
         self.object_list = self.get_queryset()
@@ -179,4 +174,14 @@ class DocumentacionReadView(BSModalReadView):
 
 class MantenimientoReadView(BSModalReadView):
     model = models.Mantenimiento
+    template_name = 'comunes/read-modal.html'
+
+
+class MantenimientoReadView(BSModalReadView):
+    model = models.Mantenimiento
+    template_name = 'comunes/read-modal.html'
+
+
+class PostReadView(BSModalReadView):
+    model = Post
     template_name = 'comunes/read-modal.html'
