@@ -15,19 +15,19 @@
             {% for obj in activos %}
             <tr>
                 <td>
-                    <a href="#" class="read-book" data-id="{% url 'rrhh:activo_read' obj.act_id %}">
+                    <a href="#" class="read-modal" data-id="{% url 'rrhh:activo_read' obj.act_id %}">
                         {{obj.activo}} ({{ obj.get_tipo_display }})
                     </a>
                 </td>
                 <td>
                     {% if obj.doc_id %}
-                    <a href="#" class="read-activo" data-id="{% url 'rrhh:documentacion_read' obj.doc_id %}">
+                    <a href="#" class="read-modal" data-id="{% url 'rrhh:documentacion_read' obj.doc_id %}">
                         {{obj.documentacion}}
                     </a>
                     {% endif %}
                 </td>
                 <td>
-                    <a href="#" class="read-activo" data-id="{% url 'rrhh:mantenimiento_read' obj.mant_id %}">
+                    <a href="#" class="read-modal" data-id="{% url 'rrhh:mantenimiento_read' obj.mant_id %}">
                         {{obj.mantenimiento}}
                     </a>
                 </td>

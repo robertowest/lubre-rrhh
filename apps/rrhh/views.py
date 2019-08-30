@@ -17,10 +17,10 @@ from apps.blog.models import Post
 # def index(request):
 #     pass
 
-def home(request):
+def home_borrar(request):
     return render(request, 'rrhh/home2.html')
 
-def home_2(request):
+def home(request):
     # latest_question_list = Question.objects.order_by('-pub_date')[:5]
     # context = {'latest_question_list': latest_question_list}
     # return render(request, 'polls/index.html', context)
@@ -169,14 +169,14 @@ class DenunciaDeleteView(BSModalDeleteView):
 
 class ActivoReadView(BSModalReadView):
     model = models.Activo
-    template_name = 'comunes/detalle_modal.html'
+    template_name = 'comunes/read-modal.html'
 
 
 class DocumentacionReadView(BSModalReadView):
     model = models.Documentacion
-    template_name = 'comunes/detalle.html'
+    template_name = 'comunes/read-modal.html'
 
 
 class MantenimientoReadView(BSModalReadView):
     model = models.Mantenimiento
-    template_name = 'comunes/detalle.html'
+    template_name = 'comunes/read-modal.html'

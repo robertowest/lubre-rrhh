@@ -33,6 +33,7 @@
         </div>
 
         {% block modal %}
+            <!-- contenedor para ventana modal -->
         {% endblock %}
 
         <div class="container-fluid">
@@ -45,8 +46,8 @@
         <script src="{% static '/js/popper.min.js' %}"></script>
         <script src="{% static '/js/bootstrap.min.js' %}"></script>
 
-        <!-- JS para #modal -->
         {% block js %}
+            <!-- JS para #modal -->
         {% endblock %}
     </body>
 </html>

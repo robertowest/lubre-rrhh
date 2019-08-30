@@ -4,11 +4,9 @@
 {% load static %}
 
 {% block modal %}
-    <!-- div para presentación de modal -->
-    <div class="modal fade" tabindex="-1" role="dialog" id="modal">
+    <!-- modal -->
+    <div id="modal" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
-            </div>
         </div>
     </div>
 {% endblock %}
@@ -132,31 +130,26 @@
 
 {% block js %}
     <!-- JS necesarios para que funcione #modal -->
-    <script src="{% static '/js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+    <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
     <script type="text/javascript">
         $(function() {
-            $(".read-book").each(function() {
+            // read book buttons
+            $(".read-modal").each(function() {
                 $(this).modalForm({
                     formURL: $(this).data('id'),
-                    modalContent: ".modal-content-dbmf",
-                    modalForm: ".modal-content-dbmf form"
+                    modalContent: ".modal-dialog",
+                    modalForm: ".modal-dialog form"
                 });
             });
 
-            $(".documentacion_read").each(function() {
-                $(this).modalForm({
-                    formURL: $(this).data('id'),
-                    modalContent: ".modal-content-dbmf",
-                    modalForm: ".modal-content-dbmf form"
-                });
+            // hide message
+            $(".alert").fadeTo(2000, 500).slideUp(500, function() {
+                $(".alert").slideUp(500);
             });
 
-            $(".mantenimiento_read").each(function() {
-                $(this).modalForm({
-                    formURL: $(this).data('id'),
-                    modalContent: ".modal-content-dbmf",
-                    modalForm: ".modal-content-dbmf form"
-                });
+            // autofocus to first input field of a modal
+            $('.modal').on('shown.bs.modal', function() {
+                $('form').find('input[type=text]').filter(':visible:first').focus();
             });
         });
     </script>
