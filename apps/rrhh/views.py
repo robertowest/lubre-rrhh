@@ -203,13 +203,39 @@ def act_man_ajax(request):
     context = {'mantenimientos': models.Mantenimiento.objects.filter(object_id=pk)}
     return render(request, 'asignacion/ajax/act_man_ajax.html', context)
 
-# def act_man_ajax(request):
-#     pk = request.GET.get('id', None)
-#     man = models.Mantenimiento.objects.filter(object_id=pk)
-#     man_req = render(request, 'asignacion/ajax/act_man_ajax.html', {'mantenimientos': man})
-#
-#     doc = models.Documentacion.objects.filter(activo_id=pk)
-#     doc_req = render(request, 'asignacion/ajax/act_doc_ajax.html', {'documentos': doc})
-#
-#     context = {'mantenimientos': man_req, 'documentos': doc_req}
-#     return request
+def act_doc_ajax(request):
+    pk = request.GET.get('id', None)
+    context = {'documentos': models.Documentacion.objects.filter(activo_id=pk)}
+    return render(request, 'asignacion/ajax/act_doc_ajax.html', context)
+
+def act_doc_man_ajax(request):
+    pk = request.GET.get('id', None)
+    # content_type_id = 30  --> documentacion
+    # content_type_id = 32  --> mantenimiento
+    context = {'mantenimientos': models.Mantenimiento.objects.filter(content_type_id=30, object_id=pk)}
+    import pdb; pdb.set_trace()
+    return render(request, 'asignacion/ajax/act_doc_man_ajax.html', context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

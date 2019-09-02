@@ -2,6 +2,9 @@
 <hr>
 {% for obj in documentos %}
 <p>
-    {{obj.descripcion}}
+    <a href="#" class="documentacion" data-id="{{obj.pk}}"
+                                      data-url="{% url 'rrhh:act_doc_man_ajax' %}">
+        {{obj.descripcion}}
+    </a>
 </p>
 {% endfor %}

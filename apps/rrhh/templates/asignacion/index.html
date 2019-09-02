@@ -26,7 +26,7 @@
                         doc
                     </div>
                 </td>
-                <td colspan="2">
+                <td colspan="2" style="vertical-align: top">
                     <div id="doc-man" class="shadow p-3 mb-5 bg-white rounded">
                         doc-man
                     </div>
@@ -39,7 +39,10 @@
                         <hr>
                         {% for obj in activos %}
                         <p>
-                            <a href="#" class="activo" data-url="{% url 'rrhh:act_man_ajax' %}" data-id="{{obj.pk}}">
+                            <a href="#" class="activo"
+                               data-id="{{obj.pk}}"
+                               data-url="{% url 'rrhh:act_man_ajax' %}"
+                               data-url2="{% url 'rrhh:act_doc_ajax' %}">
                                 {{obj.get_tipo_display}} {{obj.identificacion}}
                             </a>
                         </p>
@@ -58,7 +61,7 @@
                         act-doc
                     </div>
                 </td>
-                <td>
+                <td style="vertical-align: top">
                     <div id="act-doc-man" class="shadow p-3 mb-5 bg-white rounded">
                         act-doc-man
                     </div>
@@ -72,12 +75,13 @@
 {% block js %}
     <script>
         $(document).ready (function () {
-            $('.activo').click(function (event) {
+            $('.activo').click(function(event) {
                 event.preventDefault();
 
-                let urlref = $(this).data('url');
                 let idref = $(this).data('id');
+                let urlref = $(this).data('url');
 
+                // mantenimientos del activo
                 $.ajax({
                     url: urlref,
                     data: {
@@ -86,8 +90,26 @@
                     success: function(response) {
                         $('#act-man').html(response);
                     }
-                })
-            })
+                });
+
+                // documentación del activo
+                $.ajax({
+                    url: $(this).data('url2'),
+                    data: {
+                        id: idref
+                    },
+                    success: function(response) {
+                        $('#act-doc').html(response);
+                    }
+                });
+            });
+        });
+
+        $(document).ready (function () {
+            $('.documentacion').click(function(event) {
+                event.preventDefault();
+                alert('funciona');
+            });
         });
     </script>
 {% endblock %}

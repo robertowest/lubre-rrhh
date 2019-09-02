@@ -31,7 +31,9 @@ urlpatterns = [
 
     # asignaciones
     path('asignacion/<int:pk>', views.asignacion, name='asignacion'),
-    path('act_man_ajax/', views.act_man_ajax, name='act_man_ajax'),
+    path('act_man_ajax/', views.act_man_ajax, name='act_man_ajax'),             # actividad-mantenimiento
+    path('act_doc_ajax/', views.act_doc_ajax, name='act_doc_ajax'),             # actividad-documento
+    path('act_doc_man_ajax/', views.act_doc_man_ajax, name='act_doc_man_ajax'), # actividad-documento-mantenimiento
 
     # path('detalle/<int:pk>', views.Detalle.as_view(), name='detail'),
     # path('crear', views.Crear.as_view(), name='create'),
