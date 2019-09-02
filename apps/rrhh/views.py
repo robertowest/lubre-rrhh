@@ -3,6 +3,7 @@ from bootstrap_modal_forms.generic import \
     BSModalCreateView, BSModalUpdateView, BSModalReadView, BSModalDeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -16,9 +17,6 @@ from apps.blog.models import Post
 # @login_required
 # def index(request):
 #     pass
-
-def home_borrar(request):
-    return render(request, 'rrhh/home2.html')
 
 def home(request):
     # latest_question_list = Question.objects.order_by('-pub_date')[:5]
@@ -185,3 +183,33 @@ class MantenimientoReadView(BSModalReadView):
 class PostReadView(BSModalReadView):
     model = Post
     template_name = 'comunes/read-modal.html'
+
+
+# -------------------------------------------------------------------
+
+
+def asignacion(request, pk):
+    # context['activos'] = models.ActivoMantenimientoView.objects.filter(responsable_id=context['empleado'].persona_id)
+    # context['activos'] = models.Activo.objects.filter(responsable_id=context['empleado'].persona_id)
+
+    # models.Documentacion.objects.filter(responsable_id=pk)
+    # select id, tipo, identificacion, responsable_id from rrhh_activo where responsable_id = 2;
+    # 'documentos': models.Documentacion.objects.all(),
+    context = {'activos': models.Activo.objects.filter(responsable_id=pk)}
+    return render(request, 'asignacion/index.html', context)
+
+def act_man_ajax(request):
+    pk = request.GET.get('id', None)
+    context = {'mantenimientos': models.Mantenimiento.objects.filter(object_id=pk)}
+    return render(request, 'asignacion/ajax/act_man_ajax.html', context)
+
+# def act_man_ajax(request):
+#     pk = request.GET.get('id', None)
+#     man = models.Mantenimiento.objects.filter(object_id=pk)
+#     man_req = render(request, 'asignacion/ajax/act_man_ajax.html', {'mantenimientos': man})
+#
+#     doc = models.Documentacion.objects.filter(activo_id=pk)
+#     doc_req = render(request, 'asignacion/ajax/act_doc_ajax.html', {'documentos': doc})
+#
+#     context = {'mantenimientos': man_req, 'documentos': doc_req}
+#     return request

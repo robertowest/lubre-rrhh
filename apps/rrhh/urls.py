@@ -29,6 +29,10 @@ urlpatterns = [
     path('mantenimiento/info/<int:pk>', views.MantenimientoReadView.as_view(), name='mantenimiento_read'),
     path('noticia/<slug:slug>/', views.PostReadView.as_view(), name='post_detail'),
 
+    # asignaciones
+    path('asignacion/<int:pk>', views.asignacion, name='asignacion'),
+    path('act_man_ajax/', views.act_man_ajax, name='act_man_ajax'),
+
     # path('detalle/<int:pk>', views.Detalle.as_view(), name='detail'),
     # path('crear', views.Crear.as_view(), name='create'),
     # path('editar/<int:pk>', views.Editar.as_view(), name='edit'),

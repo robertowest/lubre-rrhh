@@ -1,0 +1,93 @@
+{% extends "rrhh/base.html" %}
+{% load static %}
+
+{% comment %}
+    Empleado
+        puede tener documentación
+            la documentación puede tener mantenimiento
+
+        puede tener asignación de activos
+            el activo puede tener mantenimiento
+            el activo puede tener documentación
+                la documentación del activo puede tener mantenimiento
+
+
+    glyphicon glyphicon-plus
+    glyphicon glyphicon-pencil
+    glyphicon glyphicon-ok
+{% endcomment %}
+
+{% block content %}
+    <div class="container">
+        <table cellpadding="10" cellspacing="10" width="100%">
+            <tr>
+                <td>
+                    <div id="doc" class="shadow-lg p-3 mb-5 bg-white rounded">
+                        doc
+                    </div>
+                </td>
+                <td colspan="2">
+                    <div id="doc-man" class="shadow p-3 mb-5 bg-white rounded">
+                        doc-man
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td rowspan="2" style="vertical-align: top">
+                    <div id="act" class="shadow p-3 mb-5 bg-white rounded">
+                        <h5>Activos</h5>
+                        <hr>
+                        {% for obj in activos %}
+                        <p>
+                            <a href="#" class="activo" data-url="{% url 'rrhh:act_man_ajax' %}" data-id="{{obj.pk}}">
+                                {{obj.get_tipo_display}} {{obj.identificacion}}
+                            </a>
+                        </p>
+                        {% endfor %}
+                    </div>
+                </td>
+                <td colspan="2">
+                    <div id="act-man" class="shadow p-3 mb-5 bg-white rounded">
+                        act-man
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div id="act-doc" class="shadow p-3 mb-5 bg-white rounded">
+                        act-doc
+                    </div>
+                </td>
+                <td>
+                    <div id="act-doc-man" class="shadow p-3 mb-5 bg-white rounded">
+                        act-doc-man
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    <script>
+        $(document).ready (function () {
+            $('.activo').click(function (event) {
+                event.preventDefault();
+
+                let urlref = $(this).data('url');
+                let idref = $(this).data('id');
+
+                $.ajax({
+                    url: urlref,
+                    data: {
+                        id: idref
+                    },
+                    success: function(response) {
+                        $('#act-man').html(response);
+                    }
+                })
+            })
+        });
+    </script>
+{% endblock %}
