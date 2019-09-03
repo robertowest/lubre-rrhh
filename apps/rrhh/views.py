@@ -189,25 +189,28 @@ class PostReadView(BSModalReadView):
 
 
 def asignacion(request, pk):
-    # context['activos'] = models.ActivoMantenimientoView.objects.filter(responsable_id=context['empleado'].persona_id)
-    # context['activos'] = models.Activo.objects.filter(responsable_id=context['empleado'].persona_id)
-
-    # models.Documentacion.objects.filter(responsable_id=pk)
-    # select id, tipo, identificacion, responsable_id from rrhh_activo where responsable_id = 2;
-    # 'documentos': models.Documentacion.objects.all(),
     context = {'Doc': models.Documentacion.objects.filter(responsable_id=pk), 'DocMan': None,
                'Act': models.Activo.objects.filter(responsable_id=pk),
-               'ActMan': None, 'ActDoc': None, 'ActDocMan': None}
+               'ActMan': None, 'ActDoc': None, 'ActDocMan': None,
+               'referencia': pk}
     return render(request, 'asignacion/index.html', context)
+
+def doc_man_ajax(request):
+    pk = request.GET.get('id', None)
+    context = {'DocMan': models.Mantenimiento.objects.filter(object_id=pk),
+               'referencia': pk}
+    return render(request, 'asignacion/ajax/doc_man_ajax.html', context)
 
 def act_man_ajax(request):
     pk = request.GET.get('id', None)
-    context = {'mantenimientos': models.Mantenimiento.objects.filter(object_id=pk)}
+    context = {'ActMan': models.Mantenimiento.objects.filter(object_id=pk),
+               'referencia': pk}
     return render(request, 'asignacion/ajax/act_man_ajax.html', context)
 
 def act_doc_ajax(request):
     pk = request.GET.get('id', None)
-    context = {'documentos': models.Documentacion.objects.filter(activo_id=pk)}
+    context = {'ActDoc': models.Documentacion.objects.filter(activo_id=pk),
+               'referencia': pk}
     return render(request, 'asignacion/ajax/act_doc_ajax.html', context)
 
 def act_doc_man_ajax(request):
@@ -215,7 +218,8 @@ def act_doc_man_ajax(request):
     pk = request.GET.get('id', None)
     # content_type_id = 30  --> documentacion
     # content_type_id = 32  --> mantenimiento
-    context = {'mantenimientos': models.Mantenimiento.objects.filter(content_type_id=30, object_id=pk)}
+    context = {'ActDocMan': models.Mantenimiento.objects.filter(content_type_id=30, object_id=pk),
+               'referencia': pk}
     return render(request, 'asignacion/ajax/act_doc_man_ajax.html', context)
 
 

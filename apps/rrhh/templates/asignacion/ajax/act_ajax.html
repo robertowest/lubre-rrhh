@@ -1,24 +1,22 @@
+{% load static %}
 <h5>
     Activos
-    <a href="">
+    <a href="" data-ref="{{referencia}}">
         <span class="glyphicon glyphicon-plus pull-right"></span>
     </a>
 </h5>
-<div id="act" class="table-responsive">
+<div class="table-responsive">
     <table class="table table-sm">
         {% for obj in Act %}
         <tr>
             <td>
-                <a href="#" onclick="activo( {{obj.pk}} );">
+                <a href="#" onclick="activo({{obj.pk}});" data-id="{{obj.pk}}" name="act">
                     {{obj.get_tipo_display}} {{obj.identificacion}}
                 </a>
             </td>
             <td align="right">
                 <a href="">
                     <span class="glyphicon glyphicon-pencil"></span>
-                </a>
-                <a href="">
-                    <span class="glyphicon glyphicon-trash"></span>
                 </a>
             </td>
         </tr>

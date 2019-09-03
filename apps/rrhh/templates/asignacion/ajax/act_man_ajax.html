@@ -1,24 +1,20 @@
+{% load static %}
 <h5>
     Mantenimiento del activo
-    <a href="">
+    <a href="" data-ref="{{referencia}}">
         <span class="glyphicon glyphicon-plus pull-right"></span>
     </a>
 </h5>
-<div id="act-man" class="table-responsive">
+<div class="table-responsive">
     <table class="table table-sm">
         {% for obj in ActMan %}
         <tr>
             <td>
-                <a href="#" onclick="activo( {{obj.pk}} );">
-                    {{obj}}
-                </a>
+                {{obj.descripcion}}
             </td>
             <td align="right">
                 <a href="">
                     <span class="glyphicon glyphicon-pencil"></span>
-                </a>
-                <a href="">
-                    <span class="glyphicon glyphicon-trash"></span>
                 </a>
             </td>
         </tr>

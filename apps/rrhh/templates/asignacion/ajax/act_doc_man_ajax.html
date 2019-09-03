@@ -1,10 +1,11 @@
+{% load static %}
 <h5>
     Mantenimiento del documento del activo
-    <a href="">
+    <a href="" data-ref="{{referencia}}">
         <span class="glyphicon glyphicon-plus pull-right"></span>
     </a>
 </h5>
-<div id="act-doc-man" class="table-responsive">
+<div class="table-responsive">
     <table class="table table-sm">
         {% for obj in ActDocMan %}
         <tr>
@@ -14,9 +15,6 @@
             <td align="right">
                 <a href="">
                     <span class="glyphicon glyphicon-pencil"></span>
-                </a>
-                <a href="">
-                    <span class="glyphicon glyphicon-trash"></span>
                 </a>
             </td>
         </tr>

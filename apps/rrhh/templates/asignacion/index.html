@@ -88,7 +88,6 @@
         // miga de pan, al pulsar sobre los enlaces habilitados
         $(this).click(function(e) {
             $('#seleccion').html('<h5>Selección: ' + $(e.target).text() + '</h5>');
-            $('#new-doc-man').attr("data-ref", "500");
         });
 
         /*
@@ -114,20 +113,6 @@
                 }
             });
         };
-
-        /*
-            // FUERA DE SERVICIO
-            $('a').click(function(e) {
-                event.preventDefault();
-                if ( $(e.target).attr('name') == 'doc' ) {
-                    $('#new-doc-man').attr("data-ref", "500");
-                    // $(e.target).attr("data-id")
-                }
-                else if ( $(e.target).attr('name') == 'act' ) {
-                    alert( 'actividad' + ' ' + $(e.target).attr("data-id") );
-                }
-            });
-        */
 
         // cargamos la infromación al seleccionar un activo
         function activo(idref) {

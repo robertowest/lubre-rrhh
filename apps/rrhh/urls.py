@@ -31,10 +31,13 @@ urlpatterns = [
 
     # asignaciones
     path('asignacion/<int:pk>', views.asignacion, name='asignacion'),
+    path('doc_man_ajax/', views.doc_man_ajax, name='doc_man_ajax'),             # documento-mantenimiento
     path('act_man_ajax/', views.act_man_ajax, name='act_man_ajax'),             # actividad-mantenimiento
     path('act_doc_ajax/', views.act_doc_ajax, name='act_doc_ajax'),             # actividad-documento
     path('act_doc_man_ajax/', views.act_doc_man_ajax, name='act_doc_man_ajax'), # actividad-documento-mantenimiento
 
+    path('asignacion/documento/nuevo', views.home, name='doc_create'),        # nuevo documento
+    path('asignacion/documento/editar', views.home, name='doc_update'),       # nuevo documento
     # path('detalle/<int:pk>', views.Detalle.as_view(), name='detail'),
     # path('crear', views.Crear.as_view(), name='create'),
     # path('editar/<int:pk>', views.Editar.as_view(), name='edit'),

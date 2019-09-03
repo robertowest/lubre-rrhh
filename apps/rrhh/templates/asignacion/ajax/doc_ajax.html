@@ -1,25 +1,28 @@
+{% load static %}
 <h5>
     Documentos
-    <a href="">
+    <a href="{% url 'rrhh:doc_create' %}" data-ref="{{referencia}}">
         <span class="glyphicon glyphicon-plus pull-right"></span>
     </a>
 </h5>
-<div id="doc" class="table-responsive">
+<div class="table-responsive">
     <table class="table table-sm">
         {% for obj in Doc %}
         <tr>
             <td>
-                <a href="#" onclick="activo( {{obj.pk}} );">
+                <a href="#" onclick="documento({{obj.pk}});" data-id="{{obj.pk}}" name="doc">
                     {{obj}}
                 </a>
             </td>
             <td align="right">
-                <a href="">
+                <a href="{% url 'rrhh:doc_update' %}">
                     <span class="glyphicon glyphicon-pencil"></span>
                 </a>
+                <!--
                 <a href="">
                     <span class="glyphicon glyphicon-trash"></span>
                 </a>
+                -->
             </td>
         </tr>
         {% endfor %}
