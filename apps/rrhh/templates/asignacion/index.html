@@ -17,61 +17,52 @@
 {% block content %}
     <div class="container">
         <table cellpadding="10" cellspacing="10" width="100%">
+            <thead>
+                <tr>
+                    <td id="seleccion" colspan="3">
+                        <h5>Selección:</h5>
+                    </td>
+                </tr>
+            </thead>
             <tr>
                 <!-- documentos -->
                 <td>
-                    <div class="shadow-lg p-3 mb-5 bg-white rounded">
+                    <div id="doc" class="shadow-lg p-3 mb-5 bg-white rounded">
                         {% include 'asignacion/ajax/doc_ajax.html' %}
                     </div>
                 </td>
                 <!-- documento-mantenimiento -->
                 <td colspan="2" style="vertical-align: top">
-                    <div class="shadow p-3 mb-5 bg-white rounded">
-                        {% if Doc %}
-                            {% include 'asignacion/ajax/doc_man_ajax.html' %}
-                        {% else %}
-                            <h5>Mantenimiento del documento</h5>
-                        {% endif %}
+                    <div id="doc-man" class="shadow p-3 mb-5 bg-white rounded">
+                        <h5>Mantenimiento del documento</h5>
                     </div>
                 </td>
             </tr>
             <tr>
                 <!-- activos -->
                 <td rowspan="2" style="vertical-align: top">
-                    <div class="shadow p-3 mb-5 bg-white rounded">
+                    <div id="act" class="shadow p-3 mb-5 bg-white rounded">
                         {% include 'asignacion/ajax/act_ajax.html' %}
                     </div>
                 </td>
                 <!-- activo-mantenimiento -->
                 <td colspan="2">
-                    <div class="shadow p-3 mb-5 bg-white rounded">
-                        {% if Act %}
-                            {% include 'asignacion/ajax/act_man_ajax.html' %}
-                        {% else %}
-                            <h5>Mantenimiento del activo</h5>
-                        {% endif %}
+                    <div id="act-man" class="shadow p-3 mb-5 bg-white rounded">
+                        <h5>Mantenimiento del activo</h5>
                     </div>
                 </td>
             </tr>
             <tr>
                 <!-- activo-documentos -->
                 <td>
-                    <div class="shadow p-3 mb-5 bg-white rounded">
-                        {% if ActDoc %}
-                            {% include 'asignacion/ajax/act_doc_ajax.html' %}
-                        {% else %}
-                            <h5>Documento del activo</h5>
-                        {% endif %}
+                    <div id="act-doc" class="shadow p-3 mb-5 bg-white rounded">
+                        <h5>Documento del activo</h5>
                     </div>
                 </td>
                 <!-- activo-documento-mantenimiento -->
                 <td style="vertical-align: top">
-                    <div class="shadow p-3 mb-5 bg-white rounded">
-                        {% if ActDocMan %}
-                            {% include 'asignacion/ajax/act_doc_man_ajax.html' %}
-                        {% else %}
-                            <h5>Mantenimiento del documento del activo</h5>
-                        {% endif %}
+                    <div id="act-doc-man" class="shadow p-3 mb-5 bg-white rounded">
+                        <h5>Mantenimiento del documento del activo</h5>
                     </div>
                 </td>
             </tr>
@@ -82,8 +73,8 @@
 
 {% block js %}
     <script>
+         // olcultamos los cuadros en función de la información
         $(document).ready (function () {
-            // comprobamos que cuadro estará visible
             {% if not Doc %}
                 $('#doc-man').hide();
             {% endif %}
@@ -94,10 +85,51 @@
             {% endif %}
         });
 
+        // miga de pan, al pulsar sobre los enlaces habilitados
+        $(this).click(function(e) {
+            $('#seleccion').html('<h5>Selección: ' + $(e.target).text() + '</h5>');
+            $('#new-doc-man').attr("data-ref", "500");
+        });
+
+        /*
+            // FUERA DE SERVICIO
+            $('a[name="doc"]').click(function(e) {
+                alert( 'documento' + ' ' + $(e.target).attr("data-id") );
+            });
+
+            $('a[name="act"]').click(function(e) {
+                alert( 'actividad' + ' ' + $(e.target).attr("data-id") );
+            });
+        */
+
+        // cargamos la infromación al seleccionar un documento
         function documento(idref) {
-            alert('documento');
+            $.ajax({
+                url: '/rrhh/doc_man_ajax/',
+                data: {
+                    id: idref
+                },
+                success: function(response) {
+                    $('#doc-man').html(response);
+                }
+            });
         };
 
+        /*
+            // FUERA DE SERVICIO
+            $('a').click(function(e) {
+                event.preventDefault();
+                if ( $(e.target).attr('name') == 'doc' ) {
+                    $('#new-doc-man').attr("data-ref", "500");
+                    // $(e.target).attr("data-id")
+                }
+                else if ( $(e.target).attr('name') == 'act' ) {
+                    alert( 'actividad' + ' ' + $(e.target).attr("data-id") );
+                }
+            });
+        */
+
+        // cargamos la infromación al seleccionar un activo
         function activo(idref) {
             $.ajax({
                 url: '/rrhh/act_man_ajax/',
@@ -121,6 +153,7 @@
             });
         };
 
+        // cargamos la infromación al seleccionar un activo-documento
         function activo_documento(idref) {
             // documento del mantenimientos del activo
 
