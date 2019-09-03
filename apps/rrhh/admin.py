@@ -39,8 +39,9 @@ class ActivoAdmin(admin.ModelAdmin):
 admin.site.register(models.Activo, ActivoAdmin)
 
 class DocumentacionAdmin(admin.ModelAdmin):
-    list_display = ('activo', 'descripcion', 'fecha_inicial', 'fecha_final')
+    list_display = ('descripcion', 'activo', 'fecha_inicial', 'fecha_final')
     list_filter = ('activo',)
+    search_fields = ('descripcion',)
     list_per_page = 20
 
 admin.site.register(models.Documentacion, DocumentacionAdmin)

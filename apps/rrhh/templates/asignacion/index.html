@@ -2,6 +2,7 @@
 {% load static %}
 
 {% comment %}
+
     Empleado
         puede tener documentación
             la documentación puede tener mantenimiento
@@ -11,59 +12,66 @@
             el activo puede tener documentación
                 la documentación del activo puede tener mantenimiento
 
-
-    glyphicon glyphicon-plus
-    glyphicon glyphicon-pencil
-    glyphicon glyphicon-ok
 {% endcomment %}
 
 {% block content %}
     <div class="container">
         <table cellpadding="10" cellspacing="10" width="100%">
             <tr>
+                <!-- documentos -->
                 <td>
-                    <div id="doc" class="shadow-lg p-3 mb-5 bg-white rounded">
-                        doc
+                    <div class="shadow-lg p-3 mb-5 bg-white rounded">
+                        {% include 'asignacion/ajax/doc_ajax.html' %}
                     </div>
                 </td>
+                <!-- documento-mantenimiento -->
                 <td colspan="2" style="vertical-align: top">
-                    <div id="doc-man" class="shadow p-3 mb-5 bg-white rounded">
-                        doc-man
+                    <div class="shadow p-3 mb-5 bg-white rounded">
+                        {% if Doc %}
+                            {% include 'asignacion/ajax/doc_man_ajax.html' %}
+                        {% else %}
+                            <h5>Mantenimiento del documento</h5>
+                        {% endif %}
                     </div>
                 </td>
             </tr>
             <tr>
+                <!-- activos -->
                 <td rowspan="2" style="vertical-align: top">
-                    <div id="act" class="shadow p-3 mb-5 bg-white rounded">
-                        <h5>Activos</h5>
-                        <hr>
-                        {% for obj in activos %}
-                        <p>
-                            <a href="#" class="activo"
-                               data-id="{{obj.pk}}"
-                               data-url="{% url 'rrhh:act_man_ajax' %}"
-                               data-url2="{% url 'rrhh:act_doc_ajax' %}">
-                                {{obj.get_tipo_display}} {{obj.identificacion}}
-                            </a>
-                        </p>
-                        {% endfor %}
+                    <div class="shadow p-3 mb-5 bg-white rounded">
+                        {% include 'asignacion/ajax/act_ajax.html' %}
                     </div>
                 </td>
+                <!-- activo-mantenimiento -->
                 <td colspan="2">
-                    <div id="act-man" class="shadow p-3 mb-5 bg-white rounded">
-                        act-man
+                    <div class="shadow p-3 mb-5 bg-white rounded">
+                        {% if Act %}
+                            {% include 'asignacion/ajax/act_man_ajax.html' %}
+                        {% else %}
+                            <h5>Mantenimiento del activo</h5>
+                        {% endif %}
                     </div>
                 </td>
             </tr>
             <tr>
+                <!-- activo-documentos -->
                 <td>
-                    <div id="act-doc" class="shadow p-3 mb-5 bg-white rounded">
-                        act-doc
+                    <div class="shadow p-3 mb-5 bg-white rounded">
+                        {% if ActDoc %}
+                            {% include 'asignacion/ajax/act_doc_ajax.html' %}
+                        {% else %}
+                            <h5>Documento del activo</h5>
+                        {% endif %}
                     </div>
                 </td>
+                <!-- activo-documento-mantenimiento -->
                 <td style="vertical-align: top">
-                    <div id="act-doc-man" class="shadow p-3 mb-5 bg-white rounded">
-                        act-doc-man
+                    <div class="shadow p-3 mb-5 bg-white rounded">
+                        {% if ActDocMan %}
+                            {% include 'asignacion/ajax/act_doc_man_ajax.html' %}
+                        {% else %}
+                            <h5>Mantenimiento del documento del activo</h5>
+                        {% endif %}
                     </div>
                 </td>
             </tr>
@@ -75,41 +83,57 @@
 {% block js %}
     <script>
         $(document).ready (function () {
-            $('.activo').click(function(event) {
-                event.preventDefault();
-
-                let idref = $(this).data('id');
-                let urlref = $(this).data('url');
-
-                // mantenimientos del activo
-                $.ajax({
-                    url: urlref,
-                    data: {
-                        id: idref
-                    },
-                    success: function(response) {
-                        $('#act-man').html(response);
-                    }
-                });
-
-                // documentación del activo
-                $.ajax({
-                    url: $(this).data('url2'),
-                    data: {
-                        id: idref
-                    },
-                    success: function(response) {
-                        $('#act-doc').html(response);
-                    }
-                });
-            });
+            // comprobamos que cuadro estará visible
+            {% if not Doc %}
+                $('#doc-man').hide();
+            {% endif %}
+            {% if not Act %}
+                $('#act-man').hide();
+                $('#act-doc').hide();
+                $('#act-doc-man').hide();
+            {% endif %}
         });
 
-        $(document).ready (function () {
-            $('.documentacion').click(function(event) {
-                event.preventDefault();
-                alert('funciona');
+        function documento(idref) {
+            alert('documento');
+        };
+
+        function activo(idref) {
+            $.ajax({
+                url: '/rrhh/act_man_ajax/',
+                data: {
+                    id: idref
+                },
+                success: function(response) {
+                    $('#act-man').html(response);
+                }
             });
-        });
+
+            // documentación del activo
+            $.ajax({
+                url: '/rrhh/act_doc_ajax/',
+                data: {
+                    id: idref
+                },
+                success: function(response) {
+                    $('#act-doc').html(response);
+                }
+            });
+        };
+
+        function activo_documento(idref) {
+            // documento del mantenimientos del activo
+
+            $.ajax({
+                url: '/rrhh/act_doc_man_ajax/',
+                data: {
+                    id: idref
+                },
+                success: function(response) {
+                    $('#act-doc-man').html(response);
+                }
+            });
+         };
+
     </script>
 {% endblock %}

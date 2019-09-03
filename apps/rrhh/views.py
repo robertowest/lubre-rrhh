@@ -195,7 +195,9 @@ def asignacion(request, pk):
     # models.Documentacion.objects.filter(responsable_id=pk)
     # select id, tipo, identificacion, responsable_id from rrhh_activo where responsable_id = 2;
     # 'documentos': models.Documentacion.objects.all(),
-    context = {'activos': models.Activo.objects.filter(responsable_id=pk)}
+    context = {'Doc': models.Documentacion.objects.filter(responsable_id=pk), 'DocMan': None,
+               'Act': models.Activo.objects.filter(responsable_id=pk),
+               'ActMan': None, 'ActDoc': None, 'ActDocMan': None}
     return render(request, 'asignacion/index.html', context)
 
 def act_man_ajax(request):
@@ -209,11 +211,11 @@ def act_doc_ajax(request):
     return render(request, 'asignacion/ajax/act_doc_ajax.html', context)
 
 def act_doc_man_ajax(request):
+    # import pdb; pdb.set_trace()
     pk = request.GET.get('id', None)
     # content_type_id = 30  --> documentacion
     # content_type_id = 32  --> mantenimiento
     context = {'mantenimientos': models.Mantenimiento.objects.filter(content_type_id=30, object_id=pk)}
-    import pdb; pdb.set_trace()
     return render(request, 'asignacion/ajax/act_doc_man_ajax.html', context)
 
 

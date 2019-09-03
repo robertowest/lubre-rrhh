@@ -1,10 +1,27 @@
-<h5>Documentos del activo</h5>
-<hr>
-{% for obj in documentos %}
-<p>
-    <a href="#" class="documentacion" data-id="{{obj.pk}}"
-                                      data-url="{% url 'rrhh:act_doc_man_ajax' %}">
-        {{obj.descripcion}}
+<h5>
+    Documento del activo
+    <a href="">
+        <span class="glyphicon glyphicon-plus pull-right"></span>
     </a>
-</p>
-{% endfor %}
+</h5>
+<div id="act-doc" class="table-responsive">
+    <table class="table table-sm">
+        {% for obj in ActDoc %}
+        <tr>
+            <td>
+                <a href="#" onclick="activo_documento( {{obj.pk}} );">
+                    {{obj.descripcion}}
+                </a>
+            </td>
+            <td align="right">
+                <a href="">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </a>
+                <a href="">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>

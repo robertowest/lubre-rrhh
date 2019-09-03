@@ -1,16 +1,16 @@
 <h5>
-    Mantenimiento del activo
+    Activos
     <a href="">
         <span class="glyphicon glyphicon-plus pull-right"></span>
     </a>
 </h5>
-<div id="act-man" class="table-responsive">
+<div id="act" class="table-responsive">
     <table class="table table-sm">
-        {% for obj in ActMan %}
+        {% for obj in Act %}
         <tr>
             <td>
                 <a href="#" onclick="activo( {{obj.pk}} );">
-                    {{obj}}
+                    {{obj.get_tipo_display}} {{obj.identificacion}}
                 </a>
             </td>
             <td align="right">
