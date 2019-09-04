@@ -1,6 +1,16 @@
 {% extends "rrhh/base.html" %}
 {% load static %}
 
+{% block modal %}
+    <!-- modal -->
+    <div id="modal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
 {% comment %}
 
     Empleado
@@ -20,7 +30,7 @@
             <thead>
                 <tr>
                     <td id="seleccion" colspan="3">
-                        <h5>Selección:</h5>
+                        <h5>{{Empleado}}</h5>
                     </td>
                 </tr>
             </thead>
@@ -33,7 +43,7 @@
                 </td>
                 <!-- documento-mantenimiento -->
                 <td colspan="2" style="vertical-align: top">
-                    <div id="doc-man" class="shadow p-3 mb-5 bg-white rounded">
+                    <div id="doc-man" class="shadow p-3 mb-5 bg-white rounded" style="display: none;">
                         <h5>Mantenimiento del documento</h5>
                     </div>
                 </td>
@@ -47,7 +57,7 @@
                 </td>
                 <!-- activo-mantenimiento -->
                 <td colspan="2">
-                    <div id="act-man" class="shadow p-3 mb-5 bg-white rounded">
+                    <div id="act-man" class="shadow p-3 mb-5 bg-white rounded" style="display: none;">
                         <h5>Mantenimiento del activo</h5>
                     </div>
                 </td>
@@ -55,13 +65,13 @@
             <tr>
                 <!-- activo-documentos -->
                 <td>
-                    <div id="act-doc" class="shadow p-3 mb-5 bg-white rounded">
+                    <div id="act-doc" class="shadow p-3 mb-5 bg-white rounded" style="display: none;">
                         <h5>Documento del activo</h5>
                     </div>
                 </td>
                 <!-- activo-documento-mantenimiento -->
                 <td style="vertical-align: top">
-                    <div id="act-doc-man" class="shadow p-3 mb-5 bg-white rounded">
+                    <div id="act-doc-man" class="shadow p-3 mb-5 bg-white rounded" style="display: none;">
                         <h5>Mantenimiento del documento del activo</h5>
                     </div>
                 </td>
@@ -72,34 +82,49 @@
 {% endblock %}
 
 {% block js %}
-    <script>
-         // olcultamos los cuadros en función de la información
+    <!-- JS necesarios para que funcione #modal -->
+    <script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
+    <script type="text/javascript">
+        $(function() {
+            $(".create-modal").each(function() {
+                $(this).modalForm({
+                    formURL: $(this).data('url'),
+                });
+            });
+
+            $(".update-modal").each(function () {
+                $(this).modalForm({
+                    formURL: $(this).data('url')
+                });
+            });
+
+        });
+    </script>
+
+    <!-- jQuery del documento actual -->
+    <script type="text/javascript">
         $(document).ready (function () {
-            {% if not Doc %}
-                $('#doc-man').hide();
+            {% if Doc %}
+                $('#doc-man').show();
             {% endif %}
-            {% if not Act %}
-                $('#act-man').hide();
-                $('#act-doc').hide();
-                $('#act-doc-man').hide();
+
+            {% if Act %}
+                $('#act-man').show();
+                $('#act-doc').show();
             {% endif %}
-        });
 
-        // miga de pan, al pulsar sobre los enlaces habilitados
-        $(this).click(function(e) {
-            $('#seleccion').html('<h5>Selección: ' + $(e.target).text() + '</h5>');
-        });
+            {% if ActDoc %}
+                $('#act-doc-man').show();
+            {% endif %}
 
-        /*
-            // FUERA DE SERVICIO
-            $('a[name="doc"]').click(function(e) {
-                alert( 'documento' + ' ' + $(e.target).attr("data-id") );
+            $('.create-modal').click(function(e) {
+                // elimino el comportamiento por defecto del enlace
+                e.preventDefault();
+
+                // $('#modal').modal("show");
+                // alert( $(this).data('url') );
             });
-
-            $('a[name="act"]').click(function(e) {
-                alert( 'actividad' + ' ' + $(e.target).attr("data-id") );
-            });
-        */
+        });
 
         // cargamos la infromación al seleccionar un documento
         function documento(idref) {

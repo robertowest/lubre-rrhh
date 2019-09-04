@@ -1,9 +1,11 @@
 from bootstrap_modal_forms.forms import BSModalForm
 from django import forms
+from django.contrib.contenttypes.models import ContentType
 
 from betterforms.multiform import MultiModelForm
 
-from .models import Comunicacion, Denuncia_ART, Empleado, Persona
+from . import models
+
 
 # agregamos la clase form-control a todos los campos
 class MyModelForm(forms.ModelForm):
@@ -15,7 +17,7 @@ class MyModelForm(forms.ModelForm):
 
 class PersonaForm(MyModelForm):
     class Meta:
-        model = Persona
+        model = models.Persona
         fields = ['nombre', 'apellido', 'dni', 'cuil', 'sexo', 'fec_nac']
         # fields = ('__all__')
         # exclude = ('id',)
@@ -28,7 +30,7 @@ class PersonaForm(MyModelForm):
 
 class EmpleadoForm(MyModelForm):
     class Meta:
-        model = Empleado
+        model = models.Empleado
         fields = ['fec_ing', 'fec_egr', 'imagen'] # No agregar el campo 'persona'
         labels = {
             'fec_ing': 'Fecha Ingreso',
@@ -56,7 +58,7 @@ class EmpleadoMultiForm(MultiModelForm):
 
 class EmpleadoFiltro(MyModelForm):
     class Meta:
-        model = Empleado
+        model = models.Empleado
         fields = ('nombre', 'apellido', 'active')
         labels = {'active': 'Estado'}
         widgets = {
@@ -69,7 +71,7 @@ class EmpleadoFiltro(MyModelForm):
 
 class ComunicacionForm(MyModelForm):
     class Meta:
-        model = Comunicacion
+        model = models.Comunicacion
         fields = ['tipo', 'texto']
         labels = {
             'texto': 'Contenido',
@@ -86,7 +88,7 @@ class MyBSModelForm(BSModalForm):
 
 class DenunciaForm(MyBSModelForm):
     class Meta:
-        model = Denuncia_ART
+        model = models.Denuncia_ART
         fields = ['siniestro', 'empleado', 'fec_siniestro', 'fec_denuncia',
                   'tipo_accidente', 'tipologia', 'zona_afectada', 'estado',
                     'fec_alta_medica', 'motivo_alta']
@@ -95,13 +97,37 @@ class DenunciaForm(MyBSModelForm):
 
 
 
-from django.contrib.contenttypes.models import ContentType
-from django.db import models
-
 class MantenimientoForm(MyModelForm):
     def __init__(self, *args, **kwargs):
-        import pdb; pdb.set_trace()
         super().__init__(*args, **kwargs)
         if 'initial' in kwargs:
             self.fields['content_type'].queryset = \
                 ContentType.objects.filter(models.Q(model='activo') | models.Q(model='documentacion'))
+
+
+class DocumentoForm(MyBSModelForm):
+    # responsable = forms.ModelChoiceField(label='Empleado',
+    #                                      queryset=Empleado.objects.all(),
+    #                                      # to_field_name="name",
+    #                                      widget=forms.TextInput(attrs={'readonly': 'readonly'}))
+
+    class Meta:
+        model = models.Documentacion
+        fields = ('__all__')
+        exclude = ('active', 'created', 'created_by', 'modified', 'modified_by', )
+
+    def __init__(self, *args, **kwargs):
+        '''recogemos la variable pasada desde la vista'''
+        empleado_id = kwargs.pop('empleado_id', None)
+        super(DocumentoForm, self).__init__(*args, **kwargs)
+        if empleado_id:
+            self.fields['responsable'].initial = empleado_id
+        # solo lectura
+        self.fields['responsable'].widget.attrs['readonly'] = True
+
+
+class ActivoForm(MyBSModelForm):
+    class Meta:
+        model = models.Activo
+        fields = ('__all__')
+        exclude = ('active', 'created', 'created_by', 'modified', 'modified_by', )

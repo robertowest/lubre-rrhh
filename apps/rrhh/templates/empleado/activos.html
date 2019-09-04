@@ -15,9 +15,11 @@
             {% for obj in activos %}
             <tr>
                 <td>
+                    {% if obj.act_id %}
                     <a href="#" class="read-modal" data-id="{% url 'rrhh:activo_read' obj.act_id %}">
                         {{obj.activo}} ({{ obj.get_tipo_display }})
                     </a>
+                    {% endif %}
                 </td>
                 <td>
                     {% if obj.doc_id %}
@@ -27,9 +29,11 @@
                     {% endif %}
                 </td>
                 <td>
+                    {% if obj.mant_id %}
                     <a href="#" class="read-modal" data-id="{% url 'rrhh:mantenimiento_read' obj.mant_id %}">
                         {{obj.mantenimiento}}
                     </a>
+                    {% endif %}
                 </td>
                 <td class="color_{{obj.estado}}">
                     {{obj.get_estado_display}}

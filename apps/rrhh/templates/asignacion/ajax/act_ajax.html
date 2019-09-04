@@ -1,7 +1,7 @@
 {% load static %}
 <h5>
     Activos
-    <a href="" data-ref="{{referencia}}">
+    <a href="#" class="create-modal" data-url="{% url 'rrhh:act_create' Empleado.persona_id %}">
         <span class="glyphicon glyphicon-plus pull-right"></span>
     </a>
 </h5>

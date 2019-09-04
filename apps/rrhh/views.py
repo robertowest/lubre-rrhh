@@ -2,8 +2,6 @@ from betterforms.multiform import MultiModelForm
 from bootstrap_modal_forms.generic import \
     BSModalCreateView, BSModalUpdateView, BSModalReadView, BSModalDeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Q
-from django.http import JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -175,11 +173,6 @@ class MantenimientoReadView(BSModalReadView):
     template_name = 'comunes/read-modal.html'
 
 
-class MantenimientoReadView(BSModalReadView):
-    model = models.Mantenimiento
-    template_name = 'comunes/read-modal.html'
-
-
 class PostReadView(BSModalReadView):
     model = Post
     template_name = 'comunes/read-modal.html'
@@ -189,7 +182,8 @@ class PostReadView(BSModalReadView):
 
 
 def asignacion(request, pk):
-    context = {'Doc': models.Documentacion.objects.filter(responsable_id=pk), 'DocMan': None,
+    context = {'Empleado': models.Empleado.objects.get(persona_id=pk),
+               'Doc': models.Documentacion.objects.filter(responsable_id=pk), 'DocMan': None,
                'Act': models.Activo.objects.filter(responsable_id=pk),
                'ActMan': None, 'ActDoc': None, 'ActDocMan': None,
                'referencia': pk}
@@ -223,25 +217,34 @@ def act_doc_man_ajax(request):
     return render(request, 'asignacion/ajax/act_doc_man_ajax.html', context)
 
 
+# -------------------------------------------------------------------
 
 
+class DocumentacionCreateView(BSModalCreateView):
+    form_class = forms.DocumentoForm
+    template_name = 'asignacion/forms/doc_form.html'
+
+    def get_success_url(self):
+        return reverse_lazy('rrhh:asignacion', kwargs={'pk': self.kwargs['empl_id']})
+
+    def get_form_kwargs(self):
+        '''pasamos el valor de una variable al formulario'''
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'empleado_id': self.kwargs['empl_id']})
+        return kwargs
 
 
+class DocumentacionUpdateView(BSModalUpdateView):
+    model = models.Documentacion
+    template_name = 'asignacion/forms/doc_form.html'
+    form_class = forms.DocumentoForm
+    success_message = 'La documentación fue correctamente actualizada.'
+
+    def get_success_url(self):
+        return reverse_lazy('rrhh:asignacion', kwargs={'pk': self.kwargs['empl_id']})
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+class ActivoCreateView(BSModalCreateView):
+    form_class = forms.ActivoForm
+    template_name = 'asignacion/forms/act_form.html'
+    # success_url = reverse_lazy('rrhh:asignacion')

@@ -36,13 +36,12 @@ urlpatterns = [
     path('act_doc_ajax/', views.act_doc_ajax, name='act_doc_ajax'),             # actividad-documento
     path('act_doc_man_ajax/', views.act_doc_man_ajax, name='act_doc_man_ajax'), # actividad-documento-mantenimiento
 
-    path('asignacion/documento/nuevo', views.home, name='doc_create'),        # nuevo documento
-    path('asignacion/documento/editar', views.home, name='doc_update'),       # nuevo documento
-    # path('detalle/<int:pk>', views.Detalle.as_view(), name='detail'),
-    # path('crear', views.Crear.as_view(), name='create'),
-    # path('editar/<int:pk>', views.Editar.as_view(), name='edit'),
-    # path('eliminar/<int:pk>', views.Eliminar.as_view(), name='delete'),
-    # # actividades
-    # path('actividades/', views.Actividad_Listado.as_view(), name='act_show'),
-    # path('actividades/canal/<int:pk>', views.Actividad_Filtro.as_view(), name='act_filter'),
+    # documentación
+    path('asignacion/<int:empl_id>/documento/nuevo',
+         views.DocumentacionCreateView.as_view(), name='doc_create'),
+    path('asignacion/<int:empl_id>/documento/editar/<int:pk>',
+         views.DocumentacionUpdateView.as_view(), name='doc_update'),
+
+    # activo
+    path('asignacion/<int:empl_id>/activo/nuevo', views.ActivoCreateView.as_view(), name='act_create'),
 ]

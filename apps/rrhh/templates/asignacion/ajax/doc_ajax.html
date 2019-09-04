@@ -1,7 +1,7 @@
 {% load static %}
 <h5>
     Documentos
-    <a href="{% url 'rrhh:doc_create' %}" data-ref="{{referencia}}">
+    <a href="#" class="create-modal" data-url="{% url 'rrhh:doc_create' Empleado.persona_id %}" data-ref="{{referencia}}">
         <span class="glyphicon glyphicon-plus pull-right"></span>
     </a>
 </h5>
@@ -15,7 +15,7 @@
                 </a>
             </td>
             <td align="right">
-                <a href="{% url 'rrhh:doc_update' %}">
+                <a href="#" class="update-modal" data-url="{% url 'rrhh:doc_update' Empleado.persona_id obj.pk %}">
                     <span class="glyphicon glyphicon-pencil"></span>
                 </a>
                 <!--

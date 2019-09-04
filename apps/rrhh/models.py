@@ -250,7 +250,7 @@ class Documentacion(AudtoriaMixin):
                                limit_choices_to = {'active': True})
     descripcion = models.CharField(max_length=60)
     fecha_inicial = models.DateField('Fecha Inicial', default=timezone.now, blank=True, null=True)
-    fecha_final = models.DateField('Fecha Final', default=timezone.now, blank=True, null=True)
+    fecha_final = models.DateField('Fecha Final', blank=True, null=True)
     archivo = models.FileField(upload_to='rrhh/activos/', blank=True, null=True)
     responsable = models.ForeignKey(Empleado, models.DO_NOTHING, null=True, blank=True,
                                     limit_choices_to = {'active': True})
