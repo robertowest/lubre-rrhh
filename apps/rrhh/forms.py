@@ -81,7 +81,7 @@ class ComunicacionForm(MyModelForm):
 # agregamos la clase form-control a todos los campos
 class MyBSModelForm(BSModalForm):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super(MyBSModelForm, self).__init__(*args, **kwargs)
         for field in iter(self.fields):
             self.fields[field].widget.attrs.update({'class': 'form-control'})
 
@@ -94,7 +94,6 @@ class DenunciaForm(MyBSModelForm):
                     'fec_alta_medica', 'motivo_alta']
         # fields = ('__all__')
         # exclude = ('active', 'created', 'created_by', 'modified', 'modified_by')
-
 
 
 class MantenimientoForm(MyModelForm):
@@ -117,13 +116,24 @@ class DocumentoForm(MyBSModelForm):
         exclude = ('active', 'created', 'created_by', 'modified', 'modified_by', )
 
     def __init__(self, *args, **kwargs):
-        '''recogemos la variable pasada desde la vista'''
-        empleado_id = kwargs.pop('empleado_id', None)
-        super(DocumentoForm, self).__init__(*args, **kwargs)
-        if empleado_id:
-            self.fields['responsable'].initial = empleado_id
-        # solo lectura
-        self.fields['responsable'].widget.attrs['readonly'] = True
+        instance = super(DocumentoForm, self).__init__(*args, **kwargs)
+        if not self.instance.responsable:
+            # obtenemos el valor de empl_id pasado por la url
+            empl_id = self.request.resolver_match.kwargs['empl_id']
+            empleado = models.Empleado.objects.get(persona_id=empl_id)
+            self.fields['responsable'].initial = empleado
+        self.fields['responsable'].disabled = True
+
+    # def save(self, commit=False):
+    #     # import pdb; pdb.set_trace()
+    #     instance = super(DocumentoForm, self).save(commit=False)
+    #     if not self.instance.responsable:
+    #         empl_id = self.request.resolver_match.kwargs['empl_id']
+    #         empleado = models.Empleado.objects.get(persona_id=empl_id)
+    #         instance.responsable = empleado
+    #         if commit:
+    #             instance.save()
+    #     return instance
 
 
 class ActivoForm(MyBSModelForm):

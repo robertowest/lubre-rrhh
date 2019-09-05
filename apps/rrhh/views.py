@@ -227,11 +227,11 @@ class DocumentacionCreateView(BSModalCreateView):
     def get_success_url(self):
         return reverse_lazy('rrhh:asignacion', kwargs={'pk': self.kwargs['empl_id']})
 
-    def get_form_kwargs(self):
-        '''pasamos el valor de una variable al formulario'''
-        kwargs = super().get_form_kwargs()
-        kwargs.update({'empleado_id': self.kwargs['empl_id']})
-        return kwargs
+    # def get_form_kwargs(self):
+    #     if 'empl_id' in self.kwargs:
+    #         kwargs = super(DocumentacionCreateView, self).get_form_kwargs()
+    #         kwargs.update({'empleado_id': self.kwargs['empl_id']})
+    #     return kwargs
 
 
 class DocumentacionUpdateView(BSModalUpdateView):
@@ -247,4 +247,23 @@ class DocumentacionUpdateView(BSModalUpdateView):
 class ActivoCreateView(BSModalCreateView):
     form_class = forms.ActivoForm
     template_name = 'asignacion/forms/act_form.html'
-    # success_url = reverse_lazy('rrhh:asignacion')
+
+    def get_success_url(self):
+        return reverse_lazy('rrhh:asignacion', kwargs={'pk': self.kwargs['empl_id']})
+
+    def get_form_kwargs(self):
+        '''pasamos el valor de una variable al formulario'''
+        import pdb; pdb.set_trace()
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'empleado_id': self.kwargs['empl_id']})
+        return kwargs
+
+
+class ActivoUpdateView(BSModalUpdateView):
+    model = models.Activo
+    template_name = 'asignacion/forms/act_form.html'
+    form_class = forms.ActivoForm
+    success_message = 'El activo fue correctamente actualizado.'
+
+    def get_success_url(self):
+        return reverse_lazy('rrhh:asignacion', kwargs={'pk': self.kwargs['empl_id']})

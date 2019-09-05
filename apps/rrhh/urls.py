@@ -44,4 +44,5 @@ urlpatterns = [
 
     # activo
     path('asignacion/<int:empl_id>/activo/nuevo', views.ActivoCreateView.as_view(), name='act_create'),
+    path('asignacion/<int:empl_id>/activo/editar/<int:pk>', views.ActivoUpdateView.as_view(), name='act_update'),
 ]

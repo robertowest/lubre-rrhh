@@ -236,15 +236,6 @@ class Documentacion(AudtoriaMixin):
         verbose_name_plural = 'Documentaciones'
         ordering = ['activo', 'descripcion']
 
-    def __str__(self):
-        return str(self.descripcion)
-
-    @property
-    def dias_vencidos(self):
-        if self.fecha_final is None:
-            return 0
-        return (date.today() - self.fecha_final).days
-
     activo = models.ForeignKey(Activo, models.DO_NOTHING, null=True, blank=True,
                                related_name = 'documentaciones',
                                limit_choices_to = {'active': True})
@@ -256,6 +247,16 @@ class Documentacion(AudtoriaMixin):
                                     limit_choices_to = {'active': True})
     # campo necesario para utilizar ContentTypes asociado a la tabla Mantenimiento
     mantenimientos = GenericRelation(Mantenimiento)
+
+
+    def __str__(self):
+        return str(self.descripcion)
+
+    @property
+    def dias_vencidos(self):
+        if self.fecha_final is None:
+            return 0
+        return (date.today() - self.fecha_final).days
 
 
 # vista con activo/documentacion y mantenimiento
