@@ -17,7 +17,7 @@ def home(request):
     # Model.objects.filter(Q(x=1) & Q(y=2))
     # vencimientos = Documentacion.objects.filter(Q(dias_vencido='0'))
     mantenimientos = models.Mantenimiento.objects.filter(proximo__lt=timezone.now())
-    vencimientos = models.Documentacion.objects.filter(fecha_final__lt=timezone.now())
+    vencimientos = models.Mantenimiento.objects.filter(fecha_final__lt=timezone.now())
     # noticias = Post.objects.filter(estado=1).order_by('-created')
     noticias = Post.objects.all().order_by('-created')
     return render(request, 'rrhh/home.html', {'mantenimientos': mantenimientos,

@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
-from apps.comunes.models import AudtoriaMixin
+from apps.comunes.models import AuditoriaMixin
 
-class Post(AudtoriaMixin):
+class Post(AuditoriaMixin):
     ESTADO = ((0, 'Borrador'), (1, 'Publicado'))
 
     titulo = models.CharField(max_length=200, unique=True)

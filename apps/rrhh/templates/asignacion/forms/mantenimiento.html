@@ -45,6 +45,7 @@
                 {{ form.fecha_final }}
             </div>
         </div>
+        {% endif %}
 
         <div class="row">
             <div class="col-md-4 mb-3">
@@ -57,7 +58,6 @@
                 {{ form.proximo }}
             </div>
         </div>
-        {% endif %}
 
         {% if form.get_tipo_activo == 'A' %}
         <div class="row">

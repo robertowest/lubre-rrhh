@@ -1,5 +1,19 @@
-CREATE OR REPLACE
-VIEW `lubresrl`.`activo_mantenimiento_view` AS
+-- NUEVO
+CREATE OR REPLACE VIEW activo_mantenimiento_view
+AS
+   select a.responsable_id,
+          a.id as activo_id, a.tipo, a.descripcion as activo,
+          m.id as mantenimiento_id, m.descripcion as mantenimiento, m.estado, m.proximo, m.fecha_inicial, m.fecha_final, m.archivo
+     from rrhh_activo a
+left join rrhh_mantenimiento m on m.activo_id = a.id
+    where a.active = 1 and ifnull(m.active, 1) = 1
+ order by a.tipo, a.descripcion
+
+
+
+-- OBSOLETO
+CREATE OR REPLACE VIEW activo_mantenimiento_view
+AS
 -- documentos y mantenimientos
 select
     Null AS `act_id`,

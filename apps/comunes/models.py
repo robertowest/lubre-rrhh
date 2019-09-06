@@ -9,12 +9,11 @@ def get_current_user():
     # return username
     return 'admin'
 
-class AudtoriaMixin(models.Model):
+class AuditoriaMixin(models.Model):
     class Meta:
         abstract = True
 
     def get_fields(self):
-        # import pdb; pdb.set_trace()
         """Devuelve una lista con todos los nombres de campo de la entidad."""
         fields = []
         for f in self._meta.fields:
@@ -36,7 +35,7 @@ class AudtoriaMixin(models.Model):
         self.save()
 
     def hard_delete(self):
-        super(AudtoriaMixin, self).delete()
+        super(AuditoriaMixin, self).delete()
 
     def save(self, *args, **kwargs):
         self.modified = datetime.now()
@@ -47,7 +46,7 @@ class AudtoriaMixin(models.Model):
         # if not self.created_by:
         #     self.created_by = get_current_user()
         # self.modified_by = get_current_user()
-        super(AudtoriaMixin, self).save(*args, **kwargs)
+        super(AuditoriaMixin, self).save(*args, **kwargs)
 
     active = models.BooleanField('Activo', default=1)
     created = models.DateTimeField('Creado', auto_now_add=True, editable=False, null=True, blank=True)

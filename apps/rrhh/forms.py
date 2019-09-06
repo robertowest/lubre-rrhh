@@ -106,7 +106,7 @@ class ActivoForm(MyBSModelForm):
 
     def __init__(self, *args, **kwargs):
         instance = super(ActivoForm, self).__init__(*args, **kwargs)
-        if not self.instance:
+        if not self.instance.id:
             # asignamos el empleado al registro actual
             # obtenemos el valor de empl_id pasado por la url
             empl_id = self.request.resolver_match.kwargs['empl_id']
@@ -114,6 +114,15 @@ class ActivoForm(MyBSModelForm):
             self.fields['responsable'].initial = empleado
         self.fields['responsable'].disabled = True
 
+    # def get_form_kwargs(self):
+    #     # agregamos el uausio logeado
+    #     kwargs = {'user' : self.request.user , }
+    #     return kwargs
+
+    # def get_form_kwargs(self):
+    #     kwargs = super(VenueCreateView, self).get_form_kwargs()
+    #     kwargs.update({'user' : self.request.user})
+    #     return kwargs
 
 class MantenimientoForm(MyBSModelForm):
     class Meta:
@@ -123,7 +132,7 @@ class MantenimientoForm(MyBSModelForm):
 
     def __init__(self, *args, **kwargs):
         instance = super(MantenimientoForm, self).__init__(*args, **kwargs)
-        if not self.instance:
+        if not instance:
             # asignamos el activo al registro actual
             # obtenemos el valor de activo_id pasado por la url
             activo_id = self.request.resolver_match.kwargs['activo_id']

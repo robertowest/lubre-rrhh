@@ -1,5 +1,3 @@
-import pdb
-
 MYSQL_APPS = ['auth', 'contenttypes', 'admin', 'sessions', 'rrhh', 'blog']
 FIREBIRD_APPS = ['firebird', 'clientes']
 
