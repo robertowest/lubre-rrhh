@@ -1,0 +1,63 @@
+<!-- contenido modal -->
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <!-- Modal Header -->
+    <div class="modal-header">
+        <h4 class="modal-title">
+            {% if object %}Modificación de{% else %}Nuevo{% endif %} documento
+        </h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+    </div>
+
+    <!-- Modal body -->
+    <div class="modal-body">
+        <div class="row {% if form.non_field_errors %}invalid{% endif %} mb-2">
+            {% for error in form.non_field_errors %}
+            <p class="help-block">{{ error }}</p>
+            {% endfor %}
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 mb-3">
+                <label>Empleado</label>
+                {{ form.responsable }}
+            </div>
+            <div class="col-md-4 mb-3">
+                <label>Activo</label>
+                {{ form.activo }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 mb-3">
+                <label>Descripción</label>
+                {{ form.descripcion }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label>Fecha Inicial</label>
+                {{ form.fecha_inicial }}
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label>Fecha Final</label>
+                {{ form.fecha_final }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 mb-3">
+                <label>Archivo</label>
+                {{ form.archivo }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal footer -->
+    <div class="modal-footer">
+        <button type="button" class="submit-btn btn btn-primary">Guardar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+    </div>
+</form>

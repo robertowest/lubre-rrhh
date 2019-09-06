@@ -1,7 +1,7 @@
 {% load static %}
 <h5>
-    Documento del activo
-    <a href="" data-ref="{{referencia}}">
+    <span id="tit-act-doc">Documento del activo</span>
+    <a href="#" class="create-modal" data-url="{% url 'rrhh:act_doc_create' Empleado.persona_id %}">
         <span class="glyphicon glyphicon-plus pull-right"></span>
     </a>
 </h5>
@@ -10,12 +10,12 @@
         {% for obj in ActDoc %}
         <tr>
             <td>
-                <a href="#" onclick="activo_documento({{obj.pk}});">
+                <a href="#" onclick="activo_documento({{obj.pk}})" data-id="{{obj.pk}}" name="act-doc">
                     {{obj.descripcion}}
                 </a>
             </td>
             <td align="right">
-                <a href="">
+                <a href="#">
                     <span class="glyphicon glyphicon-pencil"></span>
                 </a>
             </td>

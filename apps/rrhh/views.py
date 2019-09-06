@@ -1,6 +1,7 @@
 from betterforms.multiform import MultiModelForm
 from bootstrap_modal_forms.generic import \
     BSModalCreateView, BSModalUpdateView, BSModalReadView, BSModalDeleteView
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -11,10 +12,10 @@ from django.views.generic import ListView, DetailView, UpdateView, CreateView, D
 from . import models, forms
 from apps.blog.models import Post
 
-# from django.contrib.auth.decorators import login_required
 # @login_required
 # def index(request):
 #     pass
+
 
 def home(request):
     # latest_question_list = Question.objects.order_by('-pub_date')[:5]
@@ -33,7 +34,7 @@ def home(request):
                                               'vencimientos': vencimientos})
 
 
-class EmpleadoShow(ListView, FormView):
+class EmpleadoShow(LoginRequiredMixin, ListView, FormView):
     def post(self, request, *args, **kwargs):
         self.object_list = self.get_queryset()
         form = self.form_class(self.request.POST or None)
@@ -57,7 +58,7 @@ class EmpleadoShow(ListView, FormView):
     success_url = reverse_lazy('rrhh:empl_show')
 
 
-class EmpleadoDetail(DetailView):
+class EmpleadoDetail(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # context['comunicaciones'] = context['empleado'].comunicaciones.all()
@@ -83,7 +84,7 @@ class EmpleadoCreate(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('rrhh:empl_show')
 
 
-class EmpleadoUpdate(UpdateView):
+class EmpleadoUpdate(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['comunicaciones'] = \
@@ -100,27 +101,12 @@ class EmpleadoUpdate(UpdateView):
     template_name = 'empleado/formulario.html'
     success_url = reverse_lazy('rrhh:empl_show')
 
-    # def get_success_url(self):
-    #     return reverse_lazy('rrhh:empl_detail', kwargs={'pk': self.object.pk})
-    #
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['comunicaciones'] = context['empleado'].comunicaciones.all()
-    #     return context
-    #
-    # def form_valid(self, form):
-    #     persona = form['persona'].save()
-    #     empleado = form['empleado'].save(commit=False)
-    #     empleado.persona = persona
-    #     empleado.save()
-    #     return reverse_lazy('rrhh:empl_show')
 
-
-class EmpleadoDelete(DeleteView):
+class EmpleadoDelete(LoginRequiredMixin, DeleteView):
     pass
 
 
-class CanalCreate(CreateView):
+class CanalCreate(LoginRequiredMixin, CreateView):
     form_class = forms.ComunicacionForm
     template_name = 'comunicacion/formulario.html'
 
@@ -128,14 +114,14 @@ class CanalCreate(CreateView):
 # -------------------------------------------------------------------
 
 
-class DenunciaCreateView(BSModalCreateView):
+class DenunciaCreateView(LoginRequiredMixin, BSModalCreateView):
     template_name = 'denuncia/formulario.html'
     form_class = forms.DenunciaForm
     success_message = 'Success: Book was created.'
     success_url = reverse_lazy('rrhh:empl_show')
 
 
-class DenunciaUpdateView(BSModalUpdateView):
+class DenunciaUpdateView(LoginRequiredMixin, BSModalUpdateView):
     model = models.Denuncia_ART
     template_name = 'denuncia/formulario.html'
     form_class = forms.DenunciaForm
@@ -143,12 +129,12 @@ class DenunciaUpdateView(BSModalUpdateView):
     success_url = reverse_lazy('rrhh:empl_show')
 
 
-class DenunciaReadView(BSModalReadView):
+class DenunciaReadView(LoginRequiredMixin, BSModalReadView):
     model = models.Denuncia_ART
     template_name = 'denuncia/detalle.html'
 
 
-class DenunciaDeleteView(BSModalDeleteView):
+class DenunciaDeleteView(LoginRequiredMixin, BSModalDeleteView):
     model = models.Denuncia_ART
     template_name = 'denuncia/confirmar_borrado.html'
     success_message = 'Success: Book was deleted.'
@@ -158,29 +144,50 @@ class DenunciaDeleteView(BSModalDeleteView):
 # -------------------------------------------------------------------
 
 
-class ActivoReadView(BSModalReadView):
+class ActivoReadView(LoginRequiredMixin, BSModalReadView):
     model = models.Activo
     template_name = 'comunes/read-modal.html'
 
 
-class DocumentacionReadView(BSModalReadView):
+class DocumentacionReadView(LoginRequiredMixin, BSModalReadView):
     model = models.Documentacion
     template_name = 'comunes/read-modal.html'
 
 
-class MantenimientoReadView(BSModalReadView):
+class MantenimientoReadView(LoginRequiredMixin, BSModalReadView):
     model = models.Mantenimiento
     template_name = 'comunes/read-modal.html'
 
 
-class PostReadView(BSModalReadView):
+class PostReadView(LoginRequiredMixin, BSModalReadView):
     model = Post
     template_name = 'comunes/read-modal.html'
 
 
 # -------------------------------------------------------------------
+#
+#  +---------------+   +---------------+
+#  |  Documentos   |   | Mantenimiento |
+#  +---------------+   +---------------+
+#
+#  +---------------+   +---------------+
+#  |   Activos     |   | Mantenimiento |
+#  |               |   +---------------+
+#  |               |   +---------------+   +---------------+
+#  |               |   |  Documentos   |   | Mantenimiento |
+#  +---------------+   +---------------+   +---------------+
+#
+#     Empleado
+#         puede tener documentación
+#             la documentación puede tener mantenimiento
+#
+#         puede tener asignación de activos
+#             el activo puede tener mantenimiento
+#             el activo puede tener documentación
+#                 la documentación del activo puede tener mantenimiento
+#
 
-
+@login_required
 def asignacion(request, pk):
     context = {'Empleado': models.Empleado.objects.get(persona_id=pk),
                'Doc': models.Documentacion.objects.filter(responsable_id=pk), 'DocMan': None,
@@ -189,24 +196,28 @@ def asignacion(request, pk):
                'referencia': pk}
     return render(request, 'asignacion/index.html', context)
 
+@login_required
 def doc_man_ajax(request):
     pk = request.GET.get('id', None)
     context = {'DocMan': models.Mantenimiento.objects.filter(object_id=pk),
                'referencia': pk}
     return render(request, 'asignacion/ajax/doc_man_ajax.html', context)
 
+@login_required
 def act_man_ajax(request):
     pk = request.GET.get('id', None)
     context = {'ActMan': models.Mantenimiento.objects.filter(object_id=pk),
                'referencia': pk}
     return render(request, 'asignacion/ajax/act_man_ajax.html', context)
 
+@login_required
 def act_doc_ajax(request):
     pk = request.GET.get('id', None)
     context = {'ActDoc': models.Documentacion.objects.filter(activo_id=pk),
                'referencia': pk}
     return render(request, 'asignacion/ajax/act_doc_ajax.html', context)
 
+@login_required
 def act_doc_man_ajax(request):
     # import pdb; pdb.set_trace()
     pk = request.GET.get('id', None)
@@ -220,7 +231,11 @@ def act_doc_man_ajax(request):
 # -------------------------------------------------------------------
 
 
-class DocumentacionCreateView(BSModalCreateView):
+def get_success_url(self):
+    return reverse_lazy('rrhh:asignacion', kwargs={'pk': self.kwargs['empl_id']})
+
+
+class DocumentacionCreateView(LoginRequiredMixin, BSModalCreateView):
     form_class = forms.DocumentoForm
     template_name = 'asignacion/forms/doc_form.html'
 
@@ -234,32 +249,43 @@ class DocumentacionCreateView(BSModalCreateView):
     #     return kwargs
 
 
-class DocumentacionUpdateView(BSModalUpdateView):
+class DocumentacionUpdateView(LoginRequiredMixin, BSModalUpdateView):
     model = models.Documentacion
     template_name = 'asignacion/forms/doc_form.html'
     form_class = forms.DocumentoForm
     success_message = 'La documentación fue correctamente actualizada.'
 
     def get_success_url(self):
-        return reverse_lazy('rrhh:asignacion', kwargs={'pk': self.kwargs['empl_id']})
+        return get_success_url(self)
 
 
-class ActivoCreateView(BSModalCreateView):
+class DocManCreateView(LoginRequiredMixin, BSModalCreateView):
+    form_class = forms.MantenimientoForm
+    template_name = 'asignacion/forms/doc_man_form.html'
+
+    def get_success_url(self):
+        return get_success_url(self)
+
+
+class DocManUpdateView(LoginRequiredMixin, BSModalUpdateView):
+    model = models.Mantenimiento
+    template_name = 'asignacion/forms/doc_man_form.html'
+    form_class = forms.MantenimientoForm
+    success_message = 'La documentación fue correctamente actualizada.'
+
+    def get_success_url(self):
+        return get_success_url(self)
+
+
+class ActivoCreateView(LoginRequiredMixin, BSModalCreateView):
     form_class = forms.ActivoForm
     template_name = 'asignacion/forms/act_form.html'
 
     def get_success_url(self):
         return reverse_lazy('rrhh:asignacion', kwargs={'pk': self.kwargs['empl_id']})
 
-    def get_form_kwargs(self):
-        '''pasamos el valor de una variable al formulario'''
-        import pdb; pdb.set_trace()
-        kwargs = super().get_form_kwargs()
-        kwargs.update({'empleado_id': self.kwargs['empl_id']})
-        return kwargs
 
-
-class ActivoUpdateView(BSModalUpdateView):
+class ActivoUpdateView(LoginRequiredMixin, BSModalUpdateView):
     model = models.Activo
     template_name = 'asignacion/forms/act_form.html'
     form_class = forms.ActivoForm

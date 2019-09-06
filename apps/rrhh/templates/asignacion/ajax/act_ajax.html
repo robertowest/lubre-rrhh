@@ -10,7 +10,7 @@
         {% for obj in Act %}
         <tr>
             <td>
-                <a href="#" onclick="activo({{obj.pk}});" data-id="{{obj.pk}}" name="act">
+                <a href="#" onclick="activo({{obj.pk}})" data-id="{{obj.pk}}" name="act">
                     {{obj.get_tipo_display}} {{obj.identificacion}}
                 </a>
             </td>

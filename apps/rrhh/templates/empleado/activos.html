@@ -46,9 +46,7 @@
         </tbody>
     </table>
     <hr>
-    <div class="row">
-        <div class="col-md-4 col-md-offset-4 text-center">
-            <ul class="pagination" id="myPager"></ul>
-        </div>
-    </div>
+    <a href="{% url 'rrhh:asignacion' object.pk %}" class="btn btn-success pull-right">
+        <span class="fa fa-pencil"></span> Asignaciones
+    </a>
 </div>

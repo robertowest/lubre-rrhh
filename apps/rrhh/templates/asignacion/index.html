@@ -103,6 +103,8 @@
 
     <!-- jQuery del documento actual -->
     <script type="text/javascript">
+        var titulo = ''
+
         $(document).ready (function () {
             {% if Doc %}
                 $('#doc-man').show();
@@ -117,16 +119,14 @@
                 $('#act-doc-man').show();
             {% endif %}
 
-            $('.create-modal').click(function(e) {
+            $('a').click(function(e) {
                 // elimino el comportamiento por defecto del enlace
                 e.preventDefault();
-
-                // $('#modal').modal("show");
-                // alert( $(this).data('url') );
+                titulo = $(this).text();
             });
         });
 
-        // cargamos la infromación al seleccionar un documento
+        // cargamos la información al seleccionar un documento
         function documento(idref) {
             $.ajax({
                 url: '/rrhh/doc_man_ajax/',
@@ -135,6 +135,7 @@
                 },
                 success: function(response) {
                     $('#doc-man').html(response);
+                    $('#tit-doc-man').html('Mantenimiento - ' + titulo);
                 }
             });
         };
@@ -148,6 +149,7 @@
                 },
                 success: function(response) {
                     $('#act-man').html(response);
+                    $('#tit-act-man').html('Mantenimiento - ' + titulo);
                 }
             });
 
@@ -159,6 +161,7 @@
                 },
                 success: function(response) {
                     $('#act-doc').html(response);
+                    $('#tit-act-doc').html('Doc. - ' + titulo);
                     $('#act-doc-man').show();
                 }
             });
@@ -175,6 +178,7 @@
                 },
                 success: function(response) {
                     $('#act-doc-man').html(response);
+                    $('#tit-act-doc-man').html('Mant. - ' + titulo);
                 }
             });
          };

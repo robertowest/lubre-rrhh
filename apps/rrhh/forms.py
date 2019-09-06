@@ -124,20 +124,18 @@ class DocumentoForm(MyBSModelForm):
             self.fields['responsable'].initial = empleado
         self.fields['responsable'].disabled = True
 
-    # def save(self, commit=False):
-    #     # import pdb; pdb.set_trace()
-    #     instance = super(DocumentoForm, self).save(commit=False)
-    #     if not self.instance.responsable:
-    #         empl_id = self.request.resolver_match.kwargs['empl_id']
-    #         empleado = models.Empleado.objects.get(persona_id=empl_id)
-    #         instance.responsable = empleado
-    #         if commit:
-    #             instance.save()
-    #     return instance
-
 
 class ActivoForm(MyBSModelForm):
     class Meta:
         model = models.Activo
         fields = ('__all__')
         exclude = ('active', 'created', 'created_by', 'modified', 'modified_by', )
+
+    def __init__(self, *args, **kwargs):
+        instance = super(ActivoForm, self).__init__(*args, **kwargs)
+        if not self.instance.responsable:
+            # obtenemos el valor de empl_id pasado por la url
+            empl_id = self.request.resolver_match.kwargs['empl_id']
+            empleado = models.Empleado.objects.get(persona_id=empl_id)
+            self.fields['responsable'].initial = empleado
+        self.fields['responsable'].disabled = True

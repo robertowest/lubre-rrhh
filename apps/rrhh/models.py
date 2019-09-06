@@ -272,7 +272,8 @@ class ActivoMantenimientoView(models.Model):
     mantenimiento = models.CharField(max_length=60, blank=True, null=True)
     estado = models.CharField(max_length=1, choices=Mantenimiento.ESTADO, default='C')
     proximo = models.DateField(blank=True, null=True)
-    responsable_id = models.IntegerField()
+    responsable = models.ForeignKey(Empleado, models.DO_NOTHING, null=True, blank=True,
+                                    limit_choices_to = {'active': True})
 
     def __str__(self):
         return str(self.activo)

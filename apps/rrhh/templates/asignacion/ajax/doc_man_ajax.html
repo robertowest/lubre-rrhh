@@ -1,7 +1,7 @@
 {% load static %}
 <h5>
-    Mantenimiento del documento
-    <a href="" data-ref="{{referencia}}">
+    <span id="tit-doc-man">Mantenimiento del documento</span>
+    <a href="#" class="create-modal" data-url="{% url 'rrhh:doc_man_create' referencia %}" data-ref="{{referencia}}">
         <span class="glyphicon glyphicon-plus pull-right"></span>
     </a>
 </h5>
