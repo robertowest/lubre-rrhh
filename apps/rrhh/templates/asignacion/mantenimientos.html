@@ -1,0 +1,31 @@
+{% load static %}
+<h5>
+    {% if activo %}
+        <!-- <span id="tit-mantenimiento">{{mantenimientos.0.activo}}</span> -->
+        <span id="tit-mantenimiento">{{activo}}</span>
+        <a href="#" class="create-modal"
+                    data-url="{% url 'rrhh:mantenimiento_create' activo.responsable.persona_id activo.id %}">
+            <span class="glyphicon glyphicon-plus pull-right"></span>
+        </a>
+    {% else %}
+        <h5>Mantenimientos</h5>
+    {% endif %}
+</h5>
+<div class="table-responsive">
+    <table class="table table-sm">
+        {% for obj in mantenimientos %}
+        <tr>
+            <td>
+                {{obj.descripcion}}
+            </td>
+            <td align="right">
+                <a href="#" class="update-modal"
+                            data-url="{% url 'rrhh:mantenimiento_update' empleado.persona_id activo.id obj.pk %}">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+

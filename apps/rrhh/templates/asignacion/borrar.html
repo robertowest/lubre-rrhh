@@ -1,0 +1,254 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="author" content="Roberto West">
+        <meta name="description" content="">
+
+        <title>Lubre SRL</title>
+
+        <!-- sytlesheets -->
+        <link rel="stylesheet" href="/static/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/static/bootstrap4/css/bootstrap-glyphicons.css">
+
+        <!-- favicon -->
+        <link rel="shortcut icon" type="image/png" href="/static/favicon.png"/>
+
+        <style>
+        .color_V { color: #155724;
+                   background-color: #c3e6cb; }
+        .color_A { color: #856404;
+                   background-color: #ffeeba; }
+        .color_R { color: #721c24;
+                   background-color: #f1b0b7;}
+        </style>
+    </head>
+    <body>
+
+
+
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="/">
+        <img src="/static/favicon.png" style="width: 26px;"> Lubre SRL
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+            <!--
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Inicio <span class="sr-only">(current)</span></a>
+            </li>
+            -->
+
+
+
+
+
+        </ul>
+        <!-- login -->
+        <ul class="navbar-nav">
+
+                <li class="nav-item">
+                    <a href="/usuarios/perfil/" class="btn btn-info">coliva</a>
+                    <a href="/usuarios/salir/" class="btn btn-light" href="">Salir</a>
+                    <!-- users/password_reset/ -->
+                </li>
+
+        </ul>
+    </div>
+</nav>
+
+
+        <div style="padding-top: 70px;">
+            <!-- separador -->
+        </div>
+
+
+    <!-- modal -->
+    <div id="modal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+
+
+        <div class="container-fluid">
+
+    <div class="container">
+        <table cellpadding="10" cellspacing="10" width="100%">
+            <thead>
+                <tr>
+                    <td id="seleccion" colspan="3">
+                        <h5>Mastrizzo, Jose Luis Mariano</h5>
+                    </td>
+                </tr>
+            </thead>
+            <tr>
+                <!-- activos -->
+                <td style="width: 50%">
+                    <div id="activo" class="shadow-lg p-3 mb-5 bg-white rounded">
+
+<h5>
+    Activos
+    <a href="#" class="create-modal"
+                data-url="/rrhh/asignacion/2/activo/nuevo">
+        <span class="glyphicon glyphicon-plus pull-right"></span>
+    </a>
+</h5>
+<div class="table-responsive">
+    <table class="table table-sm">
+
+        <tr>
+            <td>
+                <a name="activo" href="#" onclick="activo(29)">
+                    DNI
+                </a>
+                <span style="font-size: 80%;">(Documentación)</span>
+            </td>
+            <td align="right">
+                <a href="#" class="update-modal"
+                            data-url="/rrhh/asignacion/2/activo/editar/29">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </a>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <a name="activo" href="#" onclick="activo(30)">
+                    Planta
+                </a>
+                <span style="font-size: 80%;">(Depósito)</span>
+            </td>
+            <td align="right">
+                <a href="#" class="update-modal"
+                            data-url="/rrhh/asignacion/2/activo/editar/30">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </a>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <a name="activo" href="#" onclick="activo(31)">
+                    GWP990
+                </a>
+                <span style="font-size: 80%;">(Vehículo)</span>
+            </td>
+            <td align="right">
+                <a href="#" class="update-modal"
+                            data-url="/rrhh/asignacion/2/activo/editar/31">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </a>
+            </td>
+        </tr>
+
+    </table>
+</div>
+                    </div>
+                </td>
+                <!-- mantenimientos -->
+<td colspan="2" style="vertical-align: top">
+                    <div id="mantenimiento" class="shadow p-3 mb-5 bg-white rounded">
+<h5>
+    <span id="tit-mantenimiento">
+                    Planta
+                </span>
+    <a href="#" class="create-modal" data-url="/rrhh/asignacion/activo/30/nuevo">
+        <span class="glyphicon glyphicon-plus pull-right"></span>
+    </a>
+</h5>
+<div class="table-responsive">
+    <table class="table table-sm">
+
+        <tbody><tr>
+            <td>
+                Limpieza
+
+
+
+            </td>
+            <td align="right">
+                <a href="#" class="update-modal" data-url="/rrhh/asignacion/activo/30/editar/75">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </a>
+            </td>
+        </tr>
+
+    </tbody></table>
+</div>
+</div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
+        </div>
+
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="/static/js/jquery.js"></script>
+        <script src="/static/js/popper.min.js"></script>
+        <script src="/static/js/bootstrap.min.js"></script>
+
+
+    <!-- JS necesarios para que funcione #modal -->
+    <script src="/static/js/jquery.bootstrap.modal.forms.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $(".create-modal").each(function() {
+                $(this).modalForm({
+                    formURL: $(this).data('url'),
+                });
+            });
+
+            $(".update-modal").each(function () {
+                $(this).modalForm({
+                    formURL: $(this).data('url')
+                });
+            });
+        });
+    </script>
+
+    <!-- jQuery del documento actual -->
+    <script type="text/javascript">
+        var titulo = ''
+
+        $(document).ready (function () {
+            $('a[name=activo]').click(function(e) {
+                // elimino el comportamiento por defecto del enlace
+                e.preventDefault();
+                titulo = $(this).text();
+                // alert(titulo);
+            });
+        });
+
+        // cargamos los mantenimientos del activo
+        function activo(idref) {
+            $.ajax({
+                url: '/rrhh/mantenimiento_ajax/',
+                data: {
+                    id: idref
+                },
+                success: function(response) {
+                    $('#mantenimiento').html(response);
+                    $('#tit-mantenimiento').html(titulo);
+                }
+            });
+        };
+    </script>
+
+
+</body>
+</html>

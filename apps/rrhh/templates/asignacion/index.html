@@ -11,68 +11,27 @@
     </div>
 {% endblock %}
 
-{% comment %}
-
-    Empleado
-        puede tener documentación
-            la documentación puede tener mantenimiento
-
-        puede tener asignación de activos
-            el activo puede tener mantenimiento
-            el activo puede tener documentación
-                la documentación del activo puede tener mantenimiento
-
-{% endcomment %}
-
 {% block content %}
     <div class="container">
         <table cellpadding="10" cellspacing="10" width="100%">
             <thead>
                 <tr>
                     <td id="seleccion" colspan="3">
-                        <h5>{{Empleado}}</h5>
+                        <h5>{{empleado}}</h5>
                     </td>
                 </tr>
             </thead>
             <tr>
-                <!-- documentos -->
-                <td>
-                    <div id="doc" class="shadow-lg p-3 mb-5 bg-white rounded">
-                        {% include 'asignacion/ajax/doc_ajax.html' %}
-                    </div>
-                </td>
-                <!-- documento-mantenimiento -->
-                <td colspan="2" style="vertical-align: top">
-                    <div id="doc-man" class="shadow p-3 mb-5 bg-white rounded" style="display: none;">
-                        <h5>Mantenimiento del documento</h5>
-                    </div>
-                </td>
-            </tr>
-            <tr>
                 <!-- activos -->
-                <td rowspan="2" style="vertical-align: top">
-                    <div id="act" class="shadow p-3 mb-5 bg-white rounded">
-                        {% include 'asignacion/ajax/act_ajax.html' %}
+                <td style="width: 50%">
+                    <div id="activo" class="shadow-lg p-3 mb-5 bg-white rounded">
+                        {% include 'asignacion/activos.html' %}
                     </div>
                 </td>
-                <!-- activo-mantenimiento -->
-                <td colspan="2">
-                    <div id="act-man" class="shadow p-3 mb-5 bg-white rounded" style="display: none;">
-                        <h5>Mantenimiento del activo</h5>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <!-- activo-documentos -->
-                <td>
-                    <div id="act-doc" class="shadow p-3 mb-5 bg-white rounded" style="display: none;">
-                        <h5>Documento del activo</h5>
-                    </div>
-                </td>
-                <!-- activo-documento-mantenimiento -->
-                <td style="vertical-align: top">
-                    <div id="act-doc-man" class="shadow p-3 mb-5 bg-white rounded" style="display: none;">
-                        <h5>Mantenimiento del documento del activo</h5>
+                <!-- mantenimientos -->
+                <td colspan="2" style="vertical-align: top">
+                    <div id="mantenimiento" class="shadow p-3 mb-5 bg-white rounded">
+                        {% include 'asignacion/mantenimientos.html' %}
                     </div>
                 </td>
             </tr>
@@ -97,91 +56,6 @@
                     formURL: $(this).data('url')
                 });
             });
-
         });
-    </script>
-
-    <!-- jQuery del documento actual -->
-    <script type="text/javascript">
-        var titulo = ''
-
-        $(document).ready (function () {
-            {% if Doc %}
-                $('#doc-man').show();
-            {% endif %}
-
-            {% if Act %}
-                $('#act-man').show();
-                $('#act-doc').show();
-            {% endif %}
-
-            {% if ActDoc %}
-                $('#act-doc-man').show();
-            {% endif %}
-
-            $('a').click(function(e) {
-                // elimino el comportamiento por defecto del enlace
-                e.preventDefault();
-                titulo = $(this).text();
-            });
-        });
-
-        // cargamos la información al seleccionar un documento
-        function documento(idref) {
-            $.ajax({
-                url: '/rrhh/doc_man_ajax/',
-                data: {
-                    id: idref
-                },
-                success: function(response) {
-                    $('#doc-man').html(response);
-                    $('#tit-doc-man').html('Mantenimiento - ' + titulo);
-                }
-            });
-        };
-
-        // cargamos la infromación al seleccionar un activo
-        function activo(idref) {
-            $.ajax({
-                url: '/rrhh/act_man_ajax/',
-                data: {
-                    id: idref
-                },
-                success: function(response) {
-                    $('#act-man').html(response);
-                    $('#tit-act-man').html('Mantenimiento - ' + titulo);
-                }
-            });
-
-            // documentación del activo
-            $.ajax({
-                url: '/rrhh/act_doc_ajax/',
-                data: {
-                    id: idref
-                },
-                success: function(response) {
-                    $('#act-doc').html(response);
-                    $('#tit-act-doc').html('Doc. - ' + titulo);
-                    $('#act-doc-man').show();
-                }
-            });
-        };
-
-        // cargamos la infromación al seleccionar un activo-documento
-        function activo_documento(idref) {
-            // documento del mantenimientos del activo
-
-            $.ajax({
-                url: '/rrhh/act_doc_man_ajax/',
-                data: {
-                    id: idref
-                },
-                success: function(response) {
-                    $('#act-doc-man').html(response);
-                    $('#tit-act-doc-man').html('Mant. - ' + titulo);
-                }
-            });
-         };
-
     </script>
 {% endblock %}

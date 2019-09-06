@@ -1,0 +1,28 @@
+{% load static %}
+<h5>
+    Activos
+    <a href="#" class="create-modal"
+                data-url="{% url 'rrhh:activo_create' empleado.persona_id %}">
+        <span class="glyphicon glyphicon-plus pull-right"></span>
+    </a>
+</h5>
+<div class="table-responsive">
+    <table class="table table-sm">
+        {% for obj in activos %}
+        <tr>
+            <td>
+                <a href="{% url 'rrhh:activo' empleado.persona_id obj.pk %}">
+                    {{obj.descripcion}}
+                </a>
+                <span style="font-size: 80%;">({{obj.get_tipo_display}})</span>
+            </td>
+            <td align="right">
+                <a href="#" class="update-modal"
+                            data-url="{% url 'rrhh:activo_update' empleado.persona_id obj.pk %}">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>

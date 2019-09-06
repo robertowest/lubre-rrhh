@@ -95,35 +95,8 @@ class DenunciaForm(MyBSModelForm):
         # fields = ('__all__')
         # exclude = ('active', 'created', 'created_by', 'modified', 'modified_by')
 
-
-class MantenimientoForm(MyModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if 'initial' in kwargs:
-            self.fields['content_type'].queryset = \
-                ContentType.objects.filter(models.Q(model='activo') | models.Q(model='documentacion'))
-
-
-class DocumentoForm(MyBSModelForm):
-    # responsable = forms.ModelChoiceField(label='Empleado',
-    #                                      queryset=Empleado.objects.all(),
-    #                                      # to_field_name="name",
-    #                                      widget=forms.TextInput(attrs={'readonly': 'readonly'}))
-
-    class Meta:
-        model = models.Documentacion
-        fields = ('__all__')
-        exclude = ('active', 'created', 'created_by', 'modified', 'modified_by', )
-
-    def __init__(self, *args, **kwargs):
-        instance = super(DocumentoForm, self).__init__(*args, **kwargs)
-        if not self.instance.responsable:
-            # obtenemos el valor de empl_id pasado por la url
-            empl_id = self.request.resolver_match.kwargs['empl_id']
-            empleado = models.Empleado.objects.get(persona_id=empl_id)
-            self.fields['responsable'].initial = empleado
-        self.fields['responsable'].disabled = True
-
+# -----------------------------------------------------------------------------
+# formularios de asignaciones (activos y mantenimientos
 
 class ActivoForm(MyBSModelForm):
     class Meta:
@@ -133,9 +106,32 @@ class ActivoForm(MyBSModelForm):
 
     def __init__(self, *args, **kwargs):
         instance = super(ActivoForm, self).__init__(*args, **kwargs)
-        if not self.instance.responsable:
+        if not self.instance:
+            # asignamos el empleado al registro actual
             # obtenemos el valor de empl_id pasado por la url
             empl_id = self.request.resolver_match.kwargs['empl_id']
             empleado = models.Empleado.objects.get(persona_id=empl_id)
             self.fields['responsable'].initial = empleado
         self.fields['responsable'].disabled = True
+
+
+class MantenimientoForm(MyBSModelForm):
+    class Meta:
+        model = models.Mantenimiento
+        fields = ('__all__')
+        exclude = ('active', 'created', 'created_by', 'modified', 'modified_by', )
+
+    def __init__(self, *args, **kwargs):
+        instance = super(MantenimientoForm, self).__init__(*args, **kwargs)
+        if not self.instance:
+            # asignamos el activo al registro actual
+            # obtenemos el valor de activo_id pasado por la url
+            activo_id = self.request.resolver_match.kwargs['activo_id']
+            activo = models.Activo.objects.get(id=activo_id)
+            self.fields['activo'].initial = activo
+        self.fields['activo'].disabled = True
+
+    def get_tipo_activo(self):
+        activo_id = self.request.resolver_match.kwargs['activo_id']
+        activo = models.Activo.objects.get(id=activo_id)
+        return activo.tipo

@@ -5,10 +5,10 @@ from django.utils import timezone
 from django.db import models
 from django.urls import reverse_lazy, reverse
 
-from apps.comunes.models import AudtoriaMixin
+from apps.comunes.models import AuditoriaMixin
 
 
-class Persona(AudtoriaMixin):
+class Persona(AuditoriaMixin):
     class Meta:
         app_label = 'rrhh'
         verbose_name = 'Persona'
@@ -28,7 +28,7 @@ class Persona(AudtoriaMixin):
     fec_nac = models.DateField(blank=True, null=True)
 
 
-class Tarea(AudtoriaMixin):
+class Tarea(AuditoriaMixin):
     class Meta:
         app_label = 'rrhh'
         verbose_name = 'Tarea'
@@ -40,7 +40,7 @@ class Tarea(AudtoriaMixin):
     descripcion = models.CharField(max_length=40, blank=False, null=False)
 
 
-class Empleado(AudtoriaMixin):
+class Empleado(AuditoriaMixin):
     class Meta:
         app_label = 'rrhh'
         verbose_name = 'Empleado'
@@ -83,7 +83,7 @@ class Empleado(AudtoriaMixin):
                               limit_choices_to = {'active': True})
 
 
-class Comunicacion(AudtoriaMixin):
+class Comunicacion(AuditoriaMixin):
     class Meta:
         app_label = 'rrhh'
         verbose_name = 'Comunicacion'
@@ -104,7 +104,7 @@ class Comunicacion(AudtoriaMixin):
     texto = models.CharField(max_length=150)
 
 
-class Domicilio(AudtoriaMixin):
+class Domicilio(AuditoriaMixin):
     class Meta:
         app_label = 'rrhh'
         verbose_name = 'Domicilio'
@@ -121,7 +121,6 @@ class Domicilio(AudtoriaMixin):
     pais = models.CharField(max_length=30, blank=False, null=False)
 
 
-
 class Diccionario_ART(models.Model):
     class Meta:
         app_label = 'rrhh'
@@ -135,7 +134,7 @@ class Diccionario_ART(models.Model):
     diccionario = models.CharField(max_length=15)
 
 
-class Denuncia_ART(AudtoriaMixin):
+class Denuncia_ART(AuditoriaMixin):
     class Meta:
         app_label = 'rrhh'
         verbose_name = 'Denuncia ART'
@@ -184,10 +183,30 @@ class Denuncia_ART(AudtoriaMixin):
 # https://axiacore.com/blog/como-usar-genericforeignkey-en-django-554/
 # -------------------------------------------------------------------
 
+
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 
-class Mantenimiento(AudtoriaMixin):
+
+class Activo(AuditoriaMixin):
+    class Meta:
+        app_label = 'rrhh'
+        verbose_name = 'Activo'
+        verbose_name_plural = 'Activos'
+        ordering = ['tipo', 'descripcion']
+
+    def __str__(self):
+        return str(self.descripcion)
+
+    TIPO = [('D', 'Depósito'), ('V', 'Vehículo'), ('M', 'Material'), ('A', 'Documentación')]
+
+    tipo = models.CharField(max_length=1, choices=TIPO, default='D')
+    descripcion = models.CharField(max_length=40)
+    responsable = models.ForeignKey(Empleado, models.DO_NOTHING, null=True, blank=True,
+                                    limit_choices_to = {'active': True})
+
+
+class Mantenimiento(AuditoriaMixin):
     class Meta:
         app_label = 'rrhh'
         verbose_name = 'Mantenimiento'
@@ -196,58 +215,17 @@ class Mantenimiento(AudtoriaMixin):
     def __str__(self):
         return str(self.descripcion)
 
-    ESTADO = [('A', 'Atención'), ('C', 'Cumple'), ('N', 'No Cumple')]
-
-    # campos necesarios para utilizar ContentTypes
-    content_type = models.ForeignKey(ContentType, models.DO_NOTHING,
-                                     limit_choices_to={'model__in': ('activo', 'documentacion')})
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey('content_type', 'object_id')
-
-    descripcion = models.CharField(max_length=60)
-    estado = models.CharField(max_length=1, choices=ESTADO, default='C')
-    proximo = models.DateField('Próxima Verificación', default=timezone.now, blank=True, null=True)
-
-
-class Activo(AudtoriaMixin):
-    class Meta:
-        app_label = 'rrhh'
-        verbose_name = 'Activo'
-        verbose_name_plural = 'Activos'
-        ordering = ['tipo', 'identificacion']
-
-    def __str__(self):
-        return str(self.identificacion)
-
-    TIPO = [('D', 'Depósito'), ('V', 'Vehículo')]
-
-    tipo = models.CharField(max_length=1, choices=TIPO, default='D')
-    identificacion = models.CharField(max_length=40)
-    responsable = models.ForeignKey(Empleado, models.DO_NOTHING, null=True, blank=True,
-                                    limit_choices_to = {'active': True})
-    # campo necesario para utilizar ContentTypes asociado a la tabla Mantenimiento
-    mantenimientos = GenericRelation(Mantenimiento)
-
-
-class Documentacion(AudtoriaMixin):
-    class Meta:
-        app_label = 'rrhh'
-        verbose_name = 'Documentación'
-        verbose_name_plural = 'Documentaciones'
-        ordering = ['activo', 'descripcion']
+    SEMAFORO = [('R', 'No Cumple'), ('A', 'Atención'), ('V', 'Cumple')]
 
     activo = models.ForeignKey(Activo, models.DO_NOTHING, null=True, blank=True,
-                               related_name = 'documentaciones',
+                               related_name = 'mantenimientos',
                                limit_choices_to = {'active': True})
     descripcion = models.CharField(max_length=60)
+    estado = models.CharField(max_length=1, choices=SEMAFORO, default='C')
+    proximo = models.DateField('Próxima acción', default=timezone.now, blank=True, null=True)
     fecha_inicial = models.DateField('Fecha Inicial', default=timezone.now, blank=True, null=True)
     fecha_final = models.DateField('Fecha Final', blank=True, null=True)
     archivo = models.FileField(upload_to='rrhh/activos/', blank=True, null=True)
-    responsable = models.ForeignKey(Empleado, models.DO_NOTHING, null=True, blank=True,
-                                    limit_choices_to = {'active': True})
-    # campo necesario para utilizar ContentTypes asociado a la tabla Mantenimiento
-    mantenimientos = GenericRelation(Mantenimiento)
-
 
     def __str__(self):
         return str(self.descripcion)
@@ -259,24 +237,23 @@ class Documentacion(AudtoriaMixin):
         return (date.today() - self.fecha_final).days
 
 
-# vista con activo/documentacion y mantenimiento
+# vista con activo-mantenimiento
 class ActivoMantenimientoView(models.Model):
-    act_id = models.IntegerField()
-    tipo = models.CharField(max_length=1, choices=Activo.TIPO, default='D')
-    activo = models.CharField(max_length=40)
-    doc_id = models.IntegerField(blank=True, null=True)
-    documentacion = models.CharField(max_length=60, blank=True, null=True)
-    valido_desde = models.DateField(blank=True, null=True)
-    valido_hasta = models.DateField(blank=True, null=True)
-    mant_id = models.IntegerField(primary_key=True)
-    mantenimiento = models.CharField(max_length=60, blank=True, null=True)
-    estado = models.CharField(max_length=1, choices=Mantenimiento.ESTADO, default='C')
-    proximo = models.DateField(blank=True, null=True)
+    id = models.IntegerField(primary_key=True)
     responsable = models.ForeignKey(Empleado, models.DO_NOTHING, null=True, blank=True,
                                     limit_choices_to = {'active': True})
+    activo_id = models.IntegerField()
+    tipo = models.CharField(max_length=1, choices=Activo.TIPO, default='D')
+    activo = models.CharField(max_length=40)
+    mantenimiento_id = models.IntegerField()
+    mantenimiento = models.CharField(max_length=60, blank=True, null=True)
+    estado = models.CharField(max_length=1, choices=Mantenimiento.SEMAFORO, default='V')
+    proximo = models.DateField(blank=True, null=True)
+    fecha_inicial = models.DateField('Válido desde', blank=True, null=True)
+    fecha_final = models.DateField('Válido hasta', blank=True, null=True)
 
     def __str__(self):
-        return str(self.activo)
+        return '{} - {}'.format(self.activo, self.mantenimiento)
 
     class Meta:
         managed = False  # Created from a view. Don't remove.

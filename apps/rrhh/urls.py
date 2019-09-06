@@ -25,26 +25,19 @@ urlpatterns = [
 
     # lectura de registros
     path('activo/info/<int:pk>', views.ActivoReadView.as_view(), name='activo_read'),
-    path('documentacion/info/<int:pk>', views.DocumentacionReadView.as_view(), name='documentacion_read'),
     path('mantenimiento/info/<int:pk>', views.MantenimientoReadView.as_view(), name='mantenimiento_read'),
     path('noticia/<slug:slug>/', views.PostReadView.as_view(), name='post_detail'),
 
     # asignaciones
-    path('asignacion/<int:pk>', views.asignacion, name='asignacion'),
-    path('doc_man_ajax/', views.doc_man_ajax, name='doc_man_ajax'),             # documento-mantenimiento
-    path('act_man_ajax/', views.act_man_ajax, name='act_man_ajax'),             # actividad-mantenimiento
-    path('act_doc_ajax/', views.act_doc_ajax, name='act_doc_ajax'),             # actividad-documento
-    path('act_doc_man_ajax/', views.act_doc_man_ajax, name='act_doc_man_ajax'), # actividad-documento-mantenimiento
-
-    # documentación
-    path('asignacion/<int:empl_id>/documento/nuevo', views.DocumentacionCreateView.as_view(), name='doc_create'),
-    path('asignacion/<int:empl_id>/documento/editar/<int:pk>', views.DocumentacionUpdateView.as_view(), name='doc_update'),
-    # documentacion-mantenimiento
-    path('asignacion/doc-man/<int:doc_id>/nuevo', views.DocManCreateView.as_view(), name='doc_man_create'),
-    path('asignacion/doc-man/<int:doc_id>/editar/<int:pk>', views.DocManUpdateView.as_view(), name='doc_man_update'),
+    path('asignacion/<int:empl_id>', views.asignacion, name='asignacion'),
+    path('asignacion/<int:empl_id>/activo/<int:activo_id>', views.activo, name='activo'),
 
     # activo
-    path('asignacion/<int:empl_id>/activo/nuevo', views.ActivoCreateView.as_view(), name='act_create'),
-    path('asignacion/<int:empl_id>/activo/editar/<int:pk>', views.ActivoUpdateView.as_view(), name='act_update'),
-
+    path('asignacion/<int:empl_id>/activo/nuevo', views.ActivoCreateView.as_view(), name='activo_create'),
+    path('asignacion/<int:empl_id>/activo/editar/<int:pk>', views.ActivoUpdateView.as_view(), name='activo_update'),
+    # mantenimiento de activo
+    path('asignacion/<int:empl_id>/activo/<int:activo_id>/nuevo', views.MantenimientoCreateView.as_view(),
+                                                                  name='mantenimiento_create'),
+    path('asignacion/<int:empl_id>/activo/<int:activo_id>/editar/<int:pk>', views.MantenimientoUpdateView.as_view(),
+                                                                            name='mantenimiento_update'),
 ]

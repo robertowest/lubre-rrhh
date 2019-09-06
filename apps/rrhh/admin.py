@@ -32,23 +32,15 @@ admin.site.register(models.Denuncia_ART, DenunciaAdmin)
 # -------------------------------------------------------------------
 
 class ActivoAdmin(admin.ModelAdmin):
-    list_display = ('identificacion', 'tipo', 'responsable')
+    list_display = ('descripcion', 'tipo', 'responsable')
     list_filter = ('tipo',)
     list_per_page = 20
 
 admin.site.register(models.Activo, ActivoAdmin)
 
-class DocumentacionAdmin(admin.ModelAdmin):
-    list_display = ('descripcion', 'activo', 'fecha_inicial', 'fecha_final')
-    list_filter = ('activo',)
-    search_fields = ('descripcion',)
-    list_per_page = 20
-
-admin.site.register(models.Documentacion, DocumentacionAdmin)
-
 class MantenimientoAdmin(admin.ModelAdmin):
-    list_display = ('descripcion', 'estado', 'proximo', 'content_type')
-    list_filter = ('estado', 'content_type', )
+    list_display = ('descripcion', 'activo', 'estado', 'proximo', 'fecha_inicial', 'fecha_final')
+    list_filter = ('activo', 'estado', )
     search_fields=('descripcion', )
     list_per_page = 20
 
