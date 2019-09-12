@@ -4,34 +4,56 @@
 {% block content %}
     <div class="row">
         <div class="col-sm-3">
+            <!-- proximos -->
+            {% if proximos %}
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5 class="card-title">Próximos</h5>
+                </div>
+                <div class="list-group">
+                    {% for obj in proximos %}
+                    <a href="#" class="list-group-item">
+                        {{obj}}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- vencidos -->
+            {% if vencimientos %}
+            <div class="card text-white bg-danger mb-3">
+                <div class="card-header">
+                    <h5 class="card-title">Vencidos</h5>
+                </div>
+                <div class="list-group">
+                    {% for obj in vencimientos %}
+                    <a href="#" class="read-modal list-group-item"
+                                data-url="{% url 'rrhh:mantenimiento_read' obj.pk %}">
+                        {{obj}}
+                        <span class="badge badge-dark pull-right">{{obj.dias_vencidos}}</span>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
             <!-- mantenimientos -->
-            <div class="card">
+            {% if mantenimientos %}
+            <div class="card border-warning mb-3">
                 <div class="card-header">
                     <h5 class="card-title">Mantenimientos</h5>
                 </div>
                 <div class="list-group">
                     {% for obj in mantenimientos %}
-                    <a href="{% url 'rrhh:mantenimiento_read' obj.pk %}" class="list-group-item">{{obj}}
-                        <spam class="pull-right">{{obj.content_object}}</spam>
+                    <a href="#" class="list-group-item">
+                        {{obj}}
                     </a>
                     {% endfor %}
                 </div>
             </div>
-            <br>
+            {% endif %}
 
-            <!-- documentación vencida -->
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title">Vencimientos</h5>
-                </div>
-                <div class="list-group">
-                    {% for obj in vencimientos %}
-                    <a href="#" class="list-group-item">{{obj}}
-                        {% if obj.dias_vencidos == 1 %} <span class="badge progress-bar-danger">Hoy</span>{% endif %}
-                    </a>
-                    {% endfor %}
-                </div>
-            </div>
         </div>
 
         <div class="col-sm-6">
@@ -70,7 +92,7 @@
         </div>
 
         <div class="col-sm-3">
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-header">
                     <h5 class="card-title">Semáforo</h5>
                 </div>
@@ -89,6 +111,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 {% endblock %}
@@ -108,9 +131,9 @@
         $(function() {
             // read book buttons
             $(".read-modal").each(function() {
+                // alert($(this).data('url'));
                 $(this).modalForm({
                     formURL: $(this).data('id'),
-                    modalContent: ".modal-dialog",
                 });
             });
         });

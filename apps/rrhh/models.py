@@ -215,16 +215,16 @@ class Mantenimiento(AuditoriaMixin):
     def __str__(self):
         return str(self.descripcion)
 
-    SEMAFORO = [('R', 'No Cumple'), ('A', 'Atención'), ('V', 'Cumple')]
+    SEMAFORO = [(None, '---'), ('R', 'No Cumple'), ('A', 'Atención'), ('V', 'Cumple')]
 
     activo = models.ForeignKey(Activo, models.DO_NOTHING, null=True, blank=True,
                                related_name = 'mantenimientos',
                                limit_choices_to = {'active': True})
     descripcion = models.CharField(max_length=60)
-    estado = models.CharField(max_length=1, choices=SEMAFORO, default='C')
+    estado = models.CharField(max_length=1, choices=SEMAFORO, default='V', blank=True, null=True)
     proximo = models.DateField('Próxima acción', default=timezone.now, blank=True, null=True)
     fecha_inicial = models.DateField('Fecha Inicial', default=timezone.now, blank=True, null=True)
-    fecha_final = models.DateField('Fecha Final', blank=True, null=True)
+    fecha_final = models.DateField('Fecha Final', default=timezone.now, blank=True, null=True)
     archivo = models.FileField(upload_to='rrhh/activos/', blank=True, null=True)
 
     def __str__(self):
@@ -232,9 +232,11 @@ class Mantenimiento(AuditoriaMixin):
 
     @property
     def dias_vencidos(self):
-        if self.fecha_final is None:
-            return 0
-        return (date.today() - self.fecha_final).days
+        if self.proximo is not None:
+            return (date.today() - self.proximo).days
+        if self.fecha_final is not None:
+            return (date.today() - self.fecha_final).days
+        return 0
 
 
 # vista con activo-mantenimiento

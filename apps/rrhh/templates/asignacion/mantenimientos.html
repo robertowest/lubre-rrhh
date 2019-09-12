@@ -1,7 +1,6 @@
 {% load static %}
 <h5>
     {% if activo %}
-        <!-- <span id="tit-mantenimiento">{{mantenimientos.0.activo}}</span> -->
         <span id="tit-mantenimiento">{{activo}}</span>
         <a href="#" class="create-modal"
                     data-url="{% url 'rrhh:mantenimiento_create' activo.responsable.persona_id activo.id %}">
@@ -17,6 +16,9 @@
         <tr>
             <td>
                 {{obj.descripcion}}
+
+
+
             </td>
             <td align="right">
                 <a href="#" class="update-modal"

@@ -55,16 +55,12 @@ def mantenimiento_ajax(request):
 # altas y modificaciones de activos y mantenimientos
 # ---------------------------------------------------------------------------------------
 
-def get_success_url(self):
-    return reverse_lazy('rrhh:asignacion', kwargs={'pk': self.kwargs['empl_id']})
-
-
 class ActivoCreateView(LoginRequiredMixin, BSModalCreateView):
     form_class = forms.ActivoForm
     template_name = 'asignacion/forms/activo.html'
 
     def get_success_url(self):
-        return reverse_lazy('rrhh:asignacion', kwargs={'pk': self.kwargs['empl_id']})
+        return reverse_lazy('rrhh:asignacion', kwargs={'empl_id': self.kwargs['empl_id']})
 
 
 class ActivoUpdateView(LoginRequiredMixin, BSModalUpdateView):
@@ -74,21 +70,18 @@ class ActivoUpdateView(LoginRequiredMixin, BSModalUpdateView):
     success_message = 'El activo fue correctamente actualizado.'
 
     def get_success_url(self):
-        return reverse_lazy('rrhh:asignacion', kwargs={'pk': self.kwargs['empl_id']})
+        return reverse_lazy('rrhh:asignacion', kwargs={'empl_id': self.kwargs['empl_id']})
 
 
 class MantenimientoCreateView(LoginRequiredMixin, BSModalCreateView):
     model = models.Mantenimiento
     form_class = forms.MantenimientoForm
     template_name = 'asignacion/forms/mantenimiento.html'
-
-    # def get_context_data(self, **kwargs):
-    #     # context = super(MantenimientoCreateView, self).get_context_data(**kwargs)
-    #     # context['info_sended'] = self.info_sended
-    #     return None
+    # success_url = reverse_lazy('rrhh:home')
 
     def get_success_url(self):
-        return reverse_lazy('rrhh:asignacion', kwargs={'pk': self.kwargs['empl_id']})
+        return reverse_lazy('rrhh:activo', kwargs={'empl_id': self.kwargs['empl_id'],
+                                                   'activo_id': self.kwargs['activo_id']})
 
 
 class MantenimientoUpdateView(LoginRequiredMixin, BSModalUpdateView):
@@ -98,4 +91,15 @@ class MantenimientoUpdateView(LoginRequiredMixin, BSModalUpdateView):
     success_message = 'El mantenimiento fue correctamente actualizado.'
 
     def get_success_url(self):
-        return reverse_lazy('rrhh:asignacion', kwargs={'pk': self.kwargs['empl_id']})
+        return reverse_lazy('rrhh:activo', kwargs={'empl_id': self.kwargs['empl_id'],
+                                                   'activo_id': self.kwargs['activo_id']})
+
+
+class MantenimientoReadView(LoginRequiredMixin, BSModalUpdateView):
+    model = models.Mantenimiento
+    form_class = forms.MantenimientoForm
+    template_name = 'asignacion/forms/mantenimiento.html'
+    success_message = 'El mantenimiento fue correctamente actualizado.'
+
+    def get_success_url(self):
+        return reverse_lazy('rrhh:home')

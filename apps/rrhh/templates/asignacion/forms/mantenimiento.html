@@ -1,3 +1,5 @@
+{% load custom_tags %}
+
 <!-- contenido modal -->
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
@@ -18,7 +20,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-6 mb-3">
+            <div class="col-md-8 mb-3">
                 <label>Activo</label>
                 {{ form.activo }}
             </div>
@@ -33,7 +35,7 @@
 
         {# TIPO = [('D', 'Depósito'), ('V', 'Vehículo'), ('M', 'Material'), ('A', 'Documentación')] #}
 
-        {% if form.get_tipo_activo == 'V' %}
+        {% if form.get_tipo_activo|in_list:'A,M,V' %}
         <div class="row">
             <div class="col-md-4 mb-3">
                 <label>Fecha Inicial</label>
@@ -47,6 +49,7 @@
         </div>
         {% endif %}
 
+        {% if form.get_tipo_activo|in_list:'A,D,M,V' %}
         <div class="row">
             <div class="col-md-4 mb-3">
                 <label>Estado</label>
@@ -58,6 +61,7 @@
                 {{ form.proximo }}
             </div>
         </div>
+        {% endif %}
 
         {% if form.get_tipo_activo == 'A' %}
         <div class="row">
