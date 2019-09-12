@@ -46,4 +46,5 @@ def home(request):
 
 class PostReadView(LoginRequiredMixin, BSModalReadView):
     model = Post
-    template_name = 'comunes/read-modal.html'
+    # template_name = 'comunes/read-modal.html'
+    template_name = 'rrhh/post-read.html'

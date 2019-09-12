@@ -144,3 +144,13 @@ class MantenimientoForm(MyBSModelForm):
         activo_id = self.request.resolver_match.kwargs['activo_id']
         activo = models.Activo.objects.get(id=activo_id)
         return activo.tipo
+
+class MantenimientoFormCheck(MyModelForm):
+    class Meta:
+        model = models.Mantenimiento
+        fields = ('__all__')
+        # fields = ['fec_ing', 'fec_egr', 'imagen'] # No agregar el campo 'persona'
+        # labels = {
+        #     'fec_ing': 'Fecha Ingreso',
+        #     'fec_egr': 'Fecha Egreso',
+        # }

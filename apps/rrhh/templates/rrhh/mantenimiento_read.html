@@ -1,0 +1,77 @@
+{% load static %}
+
+<div class="modal-dialog modal-md" role="document">
+    <!-- contenido modal -->
+    <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+            <h4 class="modal-title">{{object.activo.responsable}}</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            <table>
+                <tr>
+                    <td><b>Activo</b></td>
+                    <td style="padding:5px;">:</td>
+                    <td>{{object.activo}} ({{object.activo.get_tipo_display}})</td>
+                </tr>
+                <tr>
+                    <td><b>Mantenimiento</b></td>
+                    <td style="padding:5px;">:</td>
+                    <td>{{object}}</td>
+                </tr>
+
+                {% if object.estado %}
+                <tr>
+                    <td><b>Estado</b></td>
+                    <td style="padding:5px;">:</td>
+                    <td>{{object.estado}}</td>
+                </tr>
+                {% endif %}
+
+                {% if object.proximo %}
+                <tr>
+                    <td><b>Próxima Acción</b></td>
+                    <td style="padding:5px;">:</td>
+                    <td>{{object.proximo}}</td>
+                </tr>
+                {% endif %}
+
+                {% if object.fecha_inicial %}
+                <tr>
+                    <td><b>Fecha Inicial</b></td>
+                    <td style="padding:5px;">:</td>
+                    <td>{{object.fecha_inicial}}</td>
+                </tr>
+                {% endif %}
+
+                {% if object.fecha_final %}
+                <tr>
+                    <td><b>Fecha Final</b></td>
+                    <td style="padding:5px;">:</td>
+                    <td>{{object.fecha_final}}</td>
+                </tr>
+                {% endif %}
+
+                {% if object.archivo %}
+                <tr>
+                    <td><b>Archivo</b></td>
+                    <td style="padding:5px;">:</td>
+                    <td>
+                        <a href="{{object.archivo_url}}" target="_blank">{{object.archivo}}</a>
+                    </td>
+                </tr>
+                {% endif %}
+            </table>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+            <a href="{% url 'rrhh:mantenimiento_check' object.pk %}"
+               class="btn btn-primary float-left" target="_blank">Ir a &rarr;</a>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        </div>
+    </div>
+</div>

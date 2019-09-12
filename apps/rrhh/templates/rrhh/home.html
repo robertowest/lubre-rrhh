@@ -28,8 +28,7 @@
                 </div>
                 <div class="list-group">
                     {% for obj in vencimientos %}
-                    <a href="#" class="read-modal list-group-item"
-                                data-url="{% url 'rrhh:mantenimiento_read' obj.pk %}">
+                    <a href="#" class="read-modal list-group-item" data-url="{% url 'rrhh:mantenimiento_read' obj.pk %}">
                         {{obj}}
                         <span class="badge badge-dark pull-right">{{obj.dias_vencidos}}</span>
                     </a>
@@ -84,7 +83,7 @@
                     -->
 
                     <button type="button" class="read-modal btn btn-primary float-right"
-                            data-id="{% url 'rrhh:post_detail' post.slug %}">Leer más &rarr;</button>
+                            data-url="{% url 'rrhh:post_detail' post.slug %}">Leer más &rarr;</button>
                 </div>
             </div>
             <hr>
@@ -119,8 +118,6 @@
 {% block modal %}
     <!-- modal -->
     <div id="modal" class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
-        </div>
     </div>
 {% endblock %}
 
@@ -131,9 +128,9 @@
         $(function() {
             // read book buttons
             $(".read-modal").each(function() {
-                // alert($(this).data('url'));
                 $(this).modalForm({
-                    formURL: $(this).data('id'),
+                    formURL: $(this).data('url'),
+                    modalContent: ".modal",
                 });
             });
         });

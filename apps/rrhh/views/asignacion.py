@@ -1,8 +1,9 @@
-from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView
+from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView, BSModalReadView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.views.generic import UpdateView
 
 from . import models, forms
 
@@ -95,11 +96,16 @@ class MantenimientoUpdateView(LoginRequiredMixin, BSModalUpdateView):
                                                    'activo_id': self.kwargs['activo_id']})
 
 
-class MantenimientoReadView(LoginRequiredMixin, BSModalUpdateView):
+class MantenimientoReadView(BSModalReadView):
     model = models.Mantenimiento
-    form_class = forms.MantenimientoForm
-    template_name = 'asignacion/forms/mantenimiento.html'
-    success_message = 'El mantenimiento fue correctamente actualizado.'
+    template_name = 'rrhh/mantenimiento_read.html'
 
-    def get_success_url(self):
-        return reverse_lazy('rrhh:home')
+
+class MantenimientoCheckView(UpdateView):
+    # model = models.Mantenimiento
+    form_class = forms.MantenimientoFormCheck
+    template_name = 'rrhh/mantenimiento_check.html'
+    success_url = reverse_lazy('rrhh:home')
+
+    def get_queryset(self):
+        return models.Mantenimiento.objects.filter(id=self.kwargs['pk'])

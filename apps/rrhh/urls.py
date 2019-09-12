@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.urls import path
 
 from . import views
@@ -26,6 +27,8 @@ urlpatterns = [
     # lectura de registros
     path('activo/info/<int:pk>', views.ActivoReadView.as_view(), name='activo_read'),
     path('mantenimiento/info/<int:pk>', views.MantenimientoReadView.as_view(), name='mantenimiento_read'),
+    path('mantenimiento/editar/<int:pk>', login_required(views.MantenimientoCheckView.as_view()),
+                                          name='mantenimiento_check'),
     path('noticia/<slug:slug>/', views.PostReadView.as_view(), name='post_detail'),
 
     # asignaciones

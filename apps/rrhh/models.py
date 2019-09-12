@@ -238,6 +238,11 @@ class Mantenimiento(AuditoriaMixin):
             return (date.today() - self.fecha_final).days
         return 0
 
+    @property
+    def archivo_url(self):
+        if self.archivo and hasattr(self.archivo, 'url'):
+            return self.archivo.url
+
 
 # vista con activo-mantenimiento
 class ActivoMantenimientoView(models.Model):
