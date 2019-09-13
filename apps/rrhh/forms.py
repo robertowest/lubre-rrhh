@@ -149,8 +149,11 @@ class MantenimientoFormCheck(MyModelForm):
     class Meta:
         model = models.Mantenimiento
         fields = ('__all__')
-        # fields = ['fec_ing', 'fec_egr', 'imagen'] # No agregar el campo 'persona'
-        # labels = {
-        #     'fec_ing': 'Fecha Ingreso',
-        #     'fec_egr': 'Fecha Egreso',
-        # }
+        exclude = ('active', 'created', 'created_by', 'modified', 'modified_by',)
+
+    def __init__(self, *args, **kwargs):
+        super(MantenimientoFormCheck, self).__init__(*args, **kwargs)
+        instance = getattr(self, 'instance', None)
+        if instance and instance.pk:
+            self.fields['activo'].widget.attrs['readonly'] = True
+            self.fields['descripcion'].widget.attrs['readonly'] = True

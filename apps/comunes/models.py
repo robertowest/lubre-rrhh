@@ -24,7 +24,8 @@ class AuditoriaMixin(models.Model):
                 value = None
 
             # descarta los campos especiales y los campos sin valor
-            descarte = ('id', 'active', 'created', 'created_by', 'modified', 'modified_by',
+            descarte = ('id', 'active',
+                        'created', 'created_by', 'modified', 'modified_by',
                         'status', 'workshop', 'user', 'complete')
             if f.editable and value and f.name not in descarte:
                 fields.append({'name': f.verbose_name, 'value': value, })

@@ -12,7 +12,8 @@
                 </div>
                 <div class="list-group">
                     {% for obj in proximos %}
-                    <a href="#" class="list-group-item">
+                    <a href="#" class="read-modal list-group-item"
+                                data-url="{% url 'rrhh:mantenimiento_read' obj.pk %}">
                         {{obj}}
                     </a>
                     {% endfor %}
@@ -28,7 +29,8 @@
                 </div>
                 <div class="list-group">
                     {% for obj in vencimientos %}
-                    <a href="#" class="read-modal list-group-item" data-url="{% url 'rrhh:mantenimiento_read' obj.pk %}">
+                    <a href="#" class="read-modal list-group-item"
+                                data-url="{% url 'rrhh:mantenimiento_read' obj.pk %}">
                         {{obj}}
                         <span class="badge badge-dark pull-right">{{obj.dias_vencidos}}</span>
                     </a>
@@ -45,7 +47,8 @@
                 </div>
                 <div class="list-group">
                     {% for obj in mantenimientos %}
-                    <a href="#" class="list-group-item">
+                    <a href="#" class="read-modal list-group-item"
+                                data-url="{% url 'rrhh:mantenimiento_read' obj.pk %}">
                         {{obj}}
                     </a>
                     {% endfor %}

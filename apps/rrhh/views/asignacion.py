@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import UpdateView
+from django.views.generic import CreateView, DeleteView, UpdateView
 
 from . import models, forms
 
@@ -101,11 +101,20 @@ class MantenimientoReadView(BSModalReadView):
     template_name = 'rrhh/mantenimiento_read.html'
 
 
-class MantenimientoCheckView(UpdateView):
-    # model = models.Mantenimiento
-    form_class = forms.MantenimientoFormCheck
+class MantenimientoCheckView(LoginRequiredMixin, UpdateView):
+    model = models.Mantenimiento
+    # template_name = 'comunes/generic_form.html'
     template_name = 'rrhh/mantenimiento_check.html'
+
+    form_class = forms.MantenimientoFormCheck
     success_url = reverse_lazy('rrhh:home')
 
-    def get_queryset(self):
-        return models.Mantenimiento.objects.filter(id=self.kwargs['pk'])
+    # def get_queryset(self):
+    #     return models.Mantenimiento.objects.filter(id=self.kwargs['pk'])
+
+    def get_success_url(self):
+        return reverse_lazy('rrhh:home')
+
+    def form_valid(self, form):
+        form.instance.modified_by = self.request.user
+        return super().form_valid(form)

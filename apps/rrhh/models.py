@@ -147,7 +147,7 @@ class Denuncia_ART(AuditoriaMixin):
     @property
     def dias_perdidos(self):
         if self.fec_alta_medica is None:
-            return (timezone.now() - self.fec_siniestro).days
+            return (date.today() - self.fec_siniestro).days
         else:
             return (self.fec_alta_medica - self.fec_siniestro).days
 
@@ -220,7 +220,7 @@ class Mantenimiento(AuditoriaMixin):
     activo = models.ForeignKey(Activo, models.DO_NOTHING, null=True, blank=True,
                                related_name = 'mantenimientos',
                                limit_choices_to = {'active': True})
-    descripcion = models.CharField(max_length=60)
+    descripcion = models.CharField('Descripción', max_length=60)
     estado = models.CharField(max_length=1, choices=SEMAFORO, default='V', blank=True, null=True)
     proximo = models.DateField('Próxima acción', default=timezone.now, blank=True, null=True)
     fecha_inicial = models.DateField('Fecha Inicial', default=timezone.now, blank=True, null=True)

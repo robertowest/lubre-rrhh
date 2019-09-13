@@ -5,9 +5,9 @@ from apps.rrhh import models
 
 class ActivoReadView(LoginRequiredMixin, BSModalReadView):
     model = models.Activo
-    template_name = 'comunes/read-modal.html'
+    template_name = 'comunes/read_modal.html'
 
 
 class MantenimientoReadView(LoginRequiredMixin, BSModalReadView):
     model = models.Mantenimiento
-    template_name = 'comunes/read-modal.html'
+    template_name = 'comunes/read_modal.html'
