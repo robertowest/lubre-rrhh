@@ -13,28 +13,32 @@
         <tbody id="items">
             {% for obj in denuncias %}
             <tr>
-                <td><a href="{% url 'rrhh:art_update' obj.pk %}">{{obj.siniestro}}</a></td>
+                <td>{{obj.siniestro}}</td>
                 <td>{{obj.fec_siniestro|date:"d/m/Y"}}</td>
                 <td>{{obj.tipo_accidente}}</td>
                 <td>{{obj.get_estado_display}}</td>
                 <td>{{obj.dias_perdidos}}</td>
                 <td>
-                    <button type="button" class="read-book btn btn-sm btn-primary" data-id="{% url 'rrhh:art_read' obj.pk %}">
+                    <a href="#" class="read-modal btn btn-sm btn-primary" data-url="{% url 'rrhh:art_read' obj.empleado.persona_id obj.pk %}">
                         <span class="fa fa-eye"></span>
-                    </button>
-                    {% comment %}
-                    <button type="button" class="update-book btn btn-sm btn-success" data-id="{% url 'rrhh:art_update' obj.pk %}">
-                        <span class="fa fa-pencil"></span>
-                    </button>
-                    <button type="button" class="delete-book btn btn-sm btn-danger" data-id="{% url 'rrhh:art_delete' obj.pk %}">
+                    </a>
+                    <a href="#" class="update-modal btn btn-sm btn-primary"
+                                data-url="{% url 'rrhh:art_update' obj.empleado.persona_id obj.pk %}">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </a>
+                    <a href="#" class="delete-modal btn btn-sm btn-danger" data-url="{% url 'rrhh:art_delete' obj.empleado.persona_id obj.pk %}">
                         <span class="fa fa-trash"></span>
-                    </button>
-                    {% endcomment %}
+                    </a>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+    <hr>
+    <a href="#" class="read-modal btn btn-success pull-right" data-url="{% url 'rrhh:art_create' object.persona.id %}">
+        <span class="fa fa-pencil"></span> Nueva denuncia
+    </a>
+
     {% comment %}
     <hr>
     <div class="row">

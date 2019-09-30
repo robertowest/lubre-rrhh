@@ -19,7 +19,12 @@ class EmpleadoShow(LoginRequiredMixin, ListView, FormView):
         return self.render_to_response(self.get_context_data(object_list=self.object_list.order_by('persona'), form=form))
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        form = self.form_class(self.request.POST or None)
+        if form.is_valid():
+            queryset = super().get_queryset()
+        else:
+            queryset = super().get_queryset().filter(active=form.fields['active'].initial)
+
         return queryset.order_by('persona')
 
     model = models.Empleado
@@ -35,7 +40,7 @@ class EmpleadoDetail(LoginRequiredMixin, DetailView):
         # context['comunicaciones'] = context['empleado'].comunicaciones.all()
         context['domicilio'] = \
             models.Domicilio.objects.filter(empleado_id=context['empleado'].persona_id)
-        context['comunicaciones'] = \
+        context['comunicacion<int:empl_id>/es'] = \
             models.Comunicacion.objects.filter(empleado_id=context['empleado'].persona_id).order_by('tipo')
         context['denuncias'] = models.Denuncia_ART.objects.filter(empleado_id=context['empleado'].persona_id)
         context['activos'] = models.ActivoMantenimientoView.objects.filter(responsable_id=context['empleado'].persona_id)

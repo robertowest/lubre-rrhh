@@ -3,6 +3,7 @@
 <!-- contenido modal -->
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
+
     <!-- Modal Header -->
     <div class="modal-header">
         <h4 class="modal-title">
@@ -13,13 +14,19 @@
 
     <!-- Modal body -->
     <div class="modal-body">
+        {% if form.errors %}
         <div class="row {% if form.non_field_errors %}invalid{% endif %} mb-2">
-            {% for error in form.non_field_errors %}
-            <p class="help-block">{{ error }}</p>
-            {% endfor %}
+			<p>Hubo algunos errores en la información que ingresó. Por favor, corrija el siguiente:</p>
+			{{ form.non_field_errors }}
+			<ul>
+				{% for field in form %}
+					{% if field.errors %}<li>{{ field.label }}: {{ field.errors|striptags }}</li>{% endif %}
+				{% endfor %}
+			</ul>
         </div>
+        {% endif %}
 
-        <div class="row">
+        <div class="row deshabilitar">
             <div class="col-md-8 mb-3">
                 <label>Activo</label>
                 {{ form.activo }}
@@ -79,3 +86,17 @@
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
     </div>
 </form>
+
+<script type="text/javascript">
+    // la grabación no funciona cuando deshabilito el control FK desde forms.py
+    // para solvar el error, lo inhabilito al ingresar o habilito al grabar
+    $(document).ready(function() {
+        // $(".deshabilitar").css("background-color", "yellow");
+        $("select#id_activo").prop('disabled', true);
+    });
+
+    $(".submit-btn").click(function() {
+      $("select#id_activo").prop('disabled', false);
+      event.preventDefault();
+    });
+</script>

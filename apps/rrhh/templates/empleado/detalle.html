@@ -2,6 +2,7 @@
 
 {% load humanize %}
 {% load static %}
+{% load custom_tags %}
 
 {% block content %}
     <div class="row">
@@ -61,10 +62,12 @@
                 </div>
                 <div class="list-group list-group-flush">
                     {% for obj in comunicaciones %}
-                    <div class="list-group-item">
-                        {{obj.get_tipo_display}}
-                        <spam class="pull-right">{{obj.texto}}</spam>
-                    </div>
+                        {% if obj.tipo|in_list:'movil,tel,sms,wa,email' %}
+                        <div class="list-group-item">
+                            {{obj.get_tipo_display}}
+                            <spam class="pull-right">{{obj.texto}}</spam>
+                        </div>
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>
@@ -132,15 +135,34 @@
     <!-- JS necesarios para que funcione autotabla -->
     <script src="{% static 'js/autotabla.js' %}"></script>
     <!-- JS necesarios para que funcione #modal -->
-    <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+    <script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
     <script type="text/javascript">
         $(function() {
-            // read book buttons
+            $(".create-modal").each(function() {
+                $(this).modalForm({
+                    formURL: $(this).data('url'),
+                });
+            });
+
             $(".read-modal").each(function() {
                 $(this).modalForm({
-                    formURL: $(this).data('id'),
+                    formURL: $(this).data('url'),
                     modalContent: ".modal-dialog",
-                    modalForm: ".modal-dialog form"
+                    modalForm: ".modal-dialog form",
+                });
+            });
+
+            $(".update-modal").each(function () {
+                $(this).modalForm({
+                    formURL: $(this).data('url'),
+                    modalContent: ".modal-dialog",
+                    modalForm: ".modal-dialog form",
+                });
+            });
+
+            $(".delete-modal").each(function () {
+                $(this).modalForm({
+                    formURL: $(this).data('url'),
                 });
             });
 

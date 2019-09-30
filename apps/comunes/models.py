@@ -16,19 +16,23 @@ class AuditoriaMixin(models.Model):
     def get_fields(self):
         """Devuelve una lista con todos los nombres de campo de la entidad."""
         fields = []
+
+        # descarta los campos especiales y los campos sin valor
+        descarte = ('id', 'active',
+                    'created', 'created_by', 'modified', 'modified_by',
+                    'status', 'workshop', 'user', 'complete')
+
         for f in self._meta.fields:
             fname = f.name
             try:
                 value = getattr(self, fname)
+                if len(f.flatchoices) > 0:
+                    value = dict(f.flatchoices).get(value)
+
             except:
                 value = None
-
-            # descarta los campos especiales y los campos sin valor
-            descarte = ('id', 'active',
-                        'created', 'created_by', 'modified', 'modified_by',
-                        'status', 'workshop', 'user', 'complete')
             if f.editable and value and f.name not in descarte:
-                fields.append({'name': f.verbose_name, 'value': value, })
+                fields.append({'name': f.verbose_name, 'value': value, 'type': f.get_internal_type()})
         return fields
 
     def delete(self):

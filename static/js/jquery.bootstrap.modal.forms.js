@@ -9,6 +9,7 @@ https://github.com/trco/django-bootstrap-modal-forms
 
     // Open modal & load the form at formURL to the modalContent element
     var newForm = function (modalID, modalContent, modalForm, formURL, errorClass, submitBtn) {
+        // alert(formURL);
         $(modalContent).load(formURL, function () {
             $(modalID).modal("show");
             $(modalForm).attr("action", formURL);

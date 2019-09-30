@@ -65,9 +65,15 @@ class EmpleadoFiltro(MyModelForm):
             'active': forms.Select(choices=((False, 'Todos'), (True, 'Activos')))
         }
 
+    def __init__(self, *args, **kwargs):
+        super(EmpleadoFiltro, self).__init__(*args, **kwargs)
+        self.fields['active'].initial = True
+
     nombre = forms.CharField(label='Nombre', max_length=60, required=False)
     apellido = forms.CharField(label='Apellido', max_length=60, required=False)
 
+    # CHOICES = [(False, 'Todos'), (True, 'Activos')]
+    # estado = forms.ChoiceField(label='Estado', initial=True, choices=CHOICES)
 
 class ComunicacionForm(MyModelForm):
     class Meta:
@@ -91,9 +97,22 @@ class DenunciaForm(MyBSModelForm):
         model = models.Denuncia_ART
         fields = ['siniestro', 'empleado', 'fec_siniestro', 'fec_denuncia',
                   'tipo_accidente', 'tipologia', 'zona_afectada', 'estado',
-                    'fec_alta_medica', 'motivo_alta']
+                  'fec_alta_medica', 'motivo_alta']
         # fields = ('__all__')
         # exclude = ('active', 'created', 'created_by', 'modified', 'modified_by')
+        widgets = {
+            # 'zona_afectada': forms.Textarea(attrs={'rows': 2, 'cols': 15}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        instance = super(DenunciaForm, self).__init__(*args, **kwargs)
+        if not self.instance.id:
+            # asignamos el empleado al registro actual
+            # obtenemos el valor de empl_id pasado por la url
+            empl_id = self.request.resolver_match.kwargs['empl_id']
+            empleado = models.Empleado.objects.get(persona_id=empl_id)
+            self.fields['empleado'].initial = empleado
+        self.fields['empleado'].disabled = True
 
 # -----------------------------------------------------------------------------
 # formularios de asignaciones (activos y mantenimientos
@@ -124,6 +143,7 @@ class ActivoForm(MyBSModelForm):
     #     kwargs.update({'user' : self.request.user})
     #     return kwargs
 
+
 class MantenimientoForm(MyBSModelForm):
     class Meta:
         model = models.Mantenimiento
@@ -132,18 +152,19 @@ class MantenimientoForm(MyBSModelForm):
 
     def __init__(self, *args, **kwargs):
         instance = super(MantenimientoForm, self).__init__(*args, **kwargs)
-        if not instance:
+        if instance == None:
             # asignamos el activo al registro actual
             # obtenemos el valor de activo_id pasado por la url
             activo_id = self.request.resolver_match.kwargs['activo_id']
-            activo = models.Activo.objects.get(id=activo_id)
-            self.fields['activo'].initial = activo
-        self.fields['activo'].disabled = True
+            activo_obj = models.Activo.objects.get(id=activo_id)
+            self.fields['activo'].initial = activo_obj
+        # self.fields['activo'].disabled = True
 
     def get_tipo_activo(self):
         activo_id = self.request.resolver_match.kwargs['activo_id']
         activo = models.Activo.objects.get(id=activo_id)
         return activo.tipo
+
 
 class MantenimientoFormCheck(MyModelForm):
     class Meta:
