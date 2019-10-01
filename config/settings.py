@@ -173,6 +173,7 @@ INSTALLED_APPS += [
     # aplicacione de terceros
     'bootstrap_modal_forms',
     'crispy_forms',
+    'django_extensions',        # AGREGAR ES CONFIG DE PRODUCCION
     'django_filters',
     'widget_tweaks',
     # mis aplicaciones

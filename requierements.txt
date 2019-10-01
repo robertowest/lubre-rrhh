@@ -3,6 +3,7 @@ django-betterforms==1.2
 django-bootstrap-modal-forms==1.4.2
 django-crispy-forms==1.7.2
 django-debug-toolbar==2.0
+django-extensions==2.2.1
 django-widget-tweaks==1.4.5
 fdb==2.0.1
 
