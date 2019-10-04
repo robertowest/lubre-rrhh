@@ -183,6 +183,7 @@ INSTALLED_APPS += [
     'apps.juridico',
     'apps.rrhh',
     'apps.usuarios',
+    'apps.empleados',
 ]
 
 # redirecciona a home al realizar un login exitoso

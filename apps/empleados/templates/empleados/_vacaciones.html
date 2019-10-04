@@ -1,0 +1,27 @@
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Estado</th>
+            <th>Inicio</th>
+            <th>Fin</th>
+            <th>Solicitud</th>
+            <th>Observación</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for object in vacaciones %}
+        <tr>
+            <td>{{ object.get_estado_display }}</td>
+            <td>{{ object.fec_inicio|date:"d/m/Y" }}</td>
+            <td>{{ object.fec_fin|date:"d/m/Y" }}</td>
+            <td>{{ object.fec_solicitud|date:"d/m/Y" }}</td>
+            <td>{{ object.observacion }}</td>
+            <td>
+                <!-- onclick="return abrir_modal('{% url 'rrhh:empl_delete' object.pk %}')" -->
+                <a href=""><span class="glyphicon glyphicon-trash"></span></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

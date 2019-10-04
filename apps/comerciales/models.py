@@ -9,8 +9,8 @@ class Comercial(models.Model):
         app_label = 'firebird'
         db_table = 'vendedor'
         managed = False
-        verbose_name = 'Vendedor'
-        verbose_name_plural = 'Vendedores'
+        verbose_name = 'Comercial'
+        verbose_name_plural = 'Comerciales'
 
     def __str__(self):
         return self.nombre

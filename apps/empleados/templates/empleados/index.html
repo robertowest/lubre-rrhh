@@ -1,0 +1,28 @@
+{% extends "empleados/base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-2">
+            {% block sidebar %}
+                {% include 'empleados/_sidebar.html' %}
+            {% endblock %}
+        </div>
+        <div class="col-md-8">
+            <h1 class="mb-3">{{ object.persona }}</h1>
+            {% include 'empleados/_vacaciones.html' %}
+        </div>
+        <div class="col-md-2">
+            <div class="card mb-3">
+                <div class="card-header">Vacaciones</div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><b>{{ object.vacaciones.totales }}</b> días totales</li>
+                    <li class="list-group-item"><b>{{ object.vacaciones.habiles }}</b> días hábiles</li>
+                    <li class="list-group-item"><b>{{ object.vacaciones.aprobados }}</b> días aprobados</li>
+                    <li class="list-group-item"><b>{{ object.vacaciones.aprobacion }}</b> días para aprobación</li>
+                    <li class="list-group-item"><b>{{ object.vacaciones.pendientes }}</b> días pendientes</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -19,25 +19,10 @@
             -->
             {# comprobamos si es un usuario autenticado #}
             {% if user.is_authenticated %}
-                {# comprobamos si el usuario pertenece al grupo RRHH #}
-                {% if request.user|has_group:"RRHH" %}
-                    {# comprobamos si la url contiene rrhh #}
-                    {% if '/rrhh/' in request.path %}
-                    <li class="nav-item dropdown active">
-                        <a class="nav-link dropdown-toggle" href="#" id="rrhh"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">RRHH</a>
-                        <div class="dropdown-menu" aria-labelledby="dropdown01">
-                            <a class="dropdown-item" href="{% url 'rrhh:home' %}">Inicio</a>
-                            <a class="dropdown-item" href="{% url 'rrhh:empl_show' %}">Empleados</a>
-                            <a class="dropdown-item" href="{% url 'blog:home' %}">Blog</a>
-                        </div>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'rrhh:home' %}">RRHH <span class="sr-only">(current)</span></a>
-                    </li>
-                    {% endif %}
-                {% endif %}
+                <!-- empleados -->
+                {% if request.user|has_group:"Empleados" %}{% include 'layouts/b4/_empleados.html' %}{% endif %}
+                <!-- rrhh -->
+                {% if request.user|has_group:"RRHH" %}{% include 'layouts/b4/_rrhh.html' %}{% endif %}
             {% endif %}
         </ul>
         <!-- login -->

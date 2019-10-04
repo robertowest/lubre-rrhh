@@ -1,10 +1,8 @@
-from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect
-from django.urls import reverse
 
 
 def register(request):
@@ -32,9 +30,4 @@ def profile(request):
 
 @login_required
 def index(request):
-    group = request.user.groups.filter(user=request.user)[0]
-    if group.name == "RRHH":
-        return HttpResponseRedirect(reverse('rrhh:home'))
-    # elif group.name=="admin":
-    #     return HttpResponseRedirect(reverse('adm'))
     return redirect('/')

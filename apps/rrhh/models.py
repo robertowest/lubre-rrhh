@@ -73,6 +73,37 @@ class Empleado(AuditoriaMixin):
     #
     # def get_delete_url(self):
     #     return reverse('rrhh:empl_delete', args=(self.pk,))
+    @property
+    def vacaciones(self):
+        # Tu derecho se encuentra regulado en el art. 150 de la LCT y establece que: el trabajador gozará de un período
+        # mínimo y continuado de descanso anual remunerado por los siguientes plazos:
+        #
+        # a) De catorce (14) días corridos cuando la antigüedad en el empleo no exceda de cinco (5) años.
+        # b) De veintiún (21) días corridos cuando siendo la antigüedad mayor de cinco (5) años no exceda de diez (10).
+        # c) De veintiocho (28) días corridos cuando la antigüedad siendo mayor de diez (10) años no exceda de veinte (20).
+        # d) De treinta y cinco (35) días corridos cuando la antigüedad exceda de veinte (20) años.
+        #
+        # Para determinar la extensión de las vacaciones atendiendo a la antigüedad en el empleo, se computará como tal
+        # aquélla que tendría el trabajador al 31 de diciembre del año al que correspondan las mismas. Si tu antigüedad
+        # es menor a un año, para tener derecho a gozar de los días de vacaciones (mencionados en el punto a), deberías
+        # haber prestado servicios durante la mitad, como mínimo, de los días hábiles comprendidos en el año calendario
+        # o aniversario respectivo. Si no llegas a esta cantidad de días trabajados te corresponde 1 día de vacaciones
+        # por cada 20 días de trabajo efectivo.
+        x = date(date.today().year, 12, 31)
+
+        trabajado = int((x - self.fec_ing).days / 365)
+        if trabajado >= 1 and trabajado < 5:
+            total = 14
+        elif trabajado >= 5 and trabajado < 10:
+            total = 21
+        elif trabajado >= 10 and trabajado < 20:
+            total = 28
+        elif trabajado >= 20:
+            total = 35
+
+        habiles = int((total / 7) * 5)
+        dic = {'totales': total, 'habiles': habiles, 'aprobados': 0, 'aprobacion': 0, 'pendientes': 0}
+        return dic
 
     persona = models.OneToOneField(Persona, on_delete=models.CASCADE, primary_key=True)
     legajo = models.CharField(max_length=4, blank=False, null=False)
@@ -81,6 +112,7 @@ class Empleado(AuditoriaMixin):
     imagen = models.FileField(upload_to='rrhh/empleados/', blank=True, null=True)
     tarea = models.ForeignKey(Tarea, on_delete=models.CASCADE, blank=True, null=True,
                               limit_choices_to = {'active': True})
+    # persona = models.OneToOneField(Persona, on_delete=models.CASCADE, blank=True, null=True)
 
 
 class Comunicacion(AuditoriaMixin):
@@ -173,6 +205,28 @@ class Denuncia_ART(AuditoriaMixin):
                                     related_name='motivo_alta_id',
                                     verbose_name='Motivo de Alta',
                                     limit_choices_to = {'diccionario': 'motivoAlta'})
+
+
+class Vacaciones(AuditoriaMixin):
+    class Meta:
+        app_label = 'rrhh'
+        verbose_name = 'Vacación'
+        verbose_name_plural = 'Vacaciones'
+        ordering = ['fec_inicio']
+
+    def __str__(self):
+        return '{} - {}'.format(self.fec_inicio.strftime("%d/%m/%y"), self.fec_fin.strftime("%d/%m/%y"))
+
+    ESTADO = [('A', 'Aprobada'), ('P', 'Pendiente')]
+
+    empleado = models.ForeignKey(Empleado,
+                                 on_delete=models.CASCADE, null=False,
+                                 limit_choices_to = {'active': True})
+    fec_inicio = models.DateField('Fecha Inicio', blank=True, null=False)
+    fec_fin = models.DateField('Fecha Fin',blank=True, null=False)
+    fec_solicitud = models.DateField('Fecha Solicitud', blank=True, null=True)
+    observacion = models.TextField('Observación', blank=True, null=True)
+    estado = models.CharField(max_length=1, choices=ESTADO, default='P', blank=True, null=False)
 
 
 # -------------------------------------------------------------------
