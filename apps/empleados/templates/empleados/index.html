@@ -2,15 +2,6 @@
 {% load static %}
 
 
-{% block css %}
-    <!-- requisitos para datapicker -->
-    <link rel="stylesheet" href="{% static 'css/tempusdominus-bootstrap-4.min.css' %}" />
-    <script src="{% static 'js/jquery-3.3.1.slim.min.js' %}"></script>
-    <script src="{% static 'js/moment.min.js' %}"></script>
-    <script src="{% static 'js/tempusdominus-bootstrap-4.min.js' %}"></script>
-{% endblock %}
-
-
 {% block content %}
     <div class="row">
         <div class="col-md-2">
@@ -90,18 +81,6 @@
             // autofocus to first input field of a modal
             $('.modal').on('shown.bs.modal', function() {
                 $('form').find('input[type=text]').filter(':visible:first').focus();
-            });
-        });
-    </script>
-
-    <script type="text/javascript">
-        $(function () {
-            $("#datetimepicker1").datetimepicker({
-                format: 'DD/MM/YYYY',
-            });
-
-            $("#datetimepicker2").datetimepicker({
-                format: 'DD/MM/YYYY',
             });
         });
     </script>

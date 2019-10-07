@@ -6,21 +6,20 @@ from apps.rrhh.forms import MyBSModelForm
 from apps.rrhh import models
 
 
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
+
 class VacacionesForm(MyBSModelForm):
     class Meta:
         model = models.Vacaciones
         fields = ('__all__')
         exclude = ('active', 'created', 'created_by', 'modified', 'modified_by', )
         widgets = {
+            'fec_inicio': DateInput(),
+            'fec_fin': DateInput(),
             'observacion': forms.Textarea(attrs={'rows': 4}),
         }
-        fec_inicial = forms.DateTimeField(
-            input_formats=['%d/%m/%Y'],
-            widget=forms.DateTimeInput(attrs={
-                'class': 'form-control datetimepicker-input',
-                'data-target': '#datetimepicker1'
-            })
-        )
 
     def __init__(self, *args, **kwargs):
         instance = super(VacacionesForm, self).__init__(*args, **kwargs)

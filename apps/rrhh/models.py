@@ -1,9 +1,9 @@
 from datetime import date
 
-from django.http import HttpResponseRedirect
+from django.contrib.auth.models import User
 from django.utils import timezone
 from django.db import models
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 
 from apps.comunes.models import AuditoriaMixin
 
@@ -112,7 +112,7 @@ class Empleado(AuditoriaMixin):
     imagen = models.FileField(upload_to='rrhh/empleados/', blank=True, null=True)
     tarea = models.ForeignKey(Tarea, on_delete=models.CASCADE, blank=True, null=True,
                               limit_choices_to = {'active': True})
-    # persona = models.OneToOneField(Persona, on_delete=models.CASCADE, blank=True, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
 
 
 class Comunicacion(AuditoriaMixin):

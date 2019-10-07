@@ -12,15 +12,17 @@ def home(request):
 
     if request.user.is_anonymous == False:
         # dirige la ejecución a la aplicación del grupo proncipal
-        group = request.user.groups.filter(user=request.user)[0]
-        if group.name == "Empleados":
-            return HttpResponseRedirect(reverse('empleados:index'))
-        elif group.name == "RRHH":
-            return HttpResponseRedirect(reverse('rrhh:home'))
-        # elif group.name=="admin":
-        #     return HttpResponseRedirect(reverse('adm'))
+        groups = request.user.groups.filter(user=request.user)
+        if groups:
+            group = groups[0]
+            if group.name == "Empleados":
+                return HttpResponseRedirect(reverse('empleados:index'))
+            elif group.name == "RRHH":
+                return HttpResponseRedirect(reverse('rrhh:home'))
+            # elif group.name=="admin":
+            #     return HttpResponseRedirect(reverse('adm'))
     # por defecto
-    return HttpResponseRedirect('/rrhh/')
+    return HttpResponseRedirect('/empleados/')
 
 
 
