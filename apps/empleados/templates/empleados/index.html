@@ -9,9 +9,21 @@
                 {% include 'empleados/_sidebar.html' %}
             {% endblock %}
         </div>
+
         <div class="col-md-8">
-            <h1 class="mb-3">{{ object.persona }}</h1>
-            {% include 'empleados/_vacaciones.html' %}
+            <div class="row">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-success" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="row">
+                <h1 class="mb-3">{{ object.persona }}</h1>
+                {% include 'empleados/_vacaciones.html' %}
+            </div>
         </div>
         <div class="col-md-2">
             <div class="card mb-3">
@@ -43,33 +55,11 @@
     <script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
     <script type="text/javascript">
         $(function() {
-            $(".create-modal").each(function() {
+            $(".open-modal").each(function () {
                 $(this).modalForm({
                     formURL: $(this).data('url'),
                     modalContent: ".modal-dialog",
                     modalForm: ".modal-dialog form",
-                });
-            });
-
-            $(".read-modal").each(function() {
-                $(this).modalForm({
-                    formURL: $(this).data('url'),
-                    modalContent: ".modal-dialog",
-                    modalForm: ".modal-dialog form",
-                });
-            });
-
-            $(".update-modal").each(function () {
-                $(this).modalForm({
-                    formURL: $(this).data('url'),
-                    modalContent: ".modal-dialog",
-                    modalForm: ".modal-dialog form",
-                });
-            });
-
-            $(".delete-modal").each(function () {
-                $(this).modalForm({
-                    formURL: $(this).data('url'),
                 });
             });
 

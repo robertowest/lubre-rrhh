@@ -18,8 +18,14 @@
             <td>{{ vac.fec_solicitud|date:"d/m/Y" }}</td>
             <td>{{ vac.observacion }}</td>
             <td>
-                <!-- onclick="return abrir_modal('{% url 'rrhh:empl_delete' vac.pk %}')" -->
-                <a href=""><span class="glyphicon glyphicon-trash"></span></a>
+                {% if vac.estado == 'P' %}
+                <a href="#" class="open-modal" data-url="{% url 'empleados:vacaciones_update' vac.pk %}">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </a> |
+                <a href="#" class="open-modal" data-url="{% url 'empleados:vacaciones_delete' vac.pk %}">
+                    <span class="glyphicon glyphicon-trash text-danger"></span>
+                </a>
+                {% endif %}
             </td>
         </tr>
         {% endfor %}
@@ -27,6 +33,6 @@
 </table>
 
 <br>
-<a href="#" class="create-modal btn btn-success pull-right" data-url="{% url 'empleados:vacaciones_create' object.persona.id %}">
-    <span class="fa fa-plus"></span> Solicitar vacaciones
+<a href="#" class="open-modal btn btn-success pull-right" data-url="{% url 'empleados:vacaciones_create' object.persona.id %}">
+    <span class="glyphicon glyphicon-plus"></span> Solicitar vacaciones
 </a>
