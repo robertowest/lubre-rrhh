@@ -10,18 +10,23 @@
         </tr>
     </thead>
     <tbody>
-        {% for object in vacaciones %}
+        {% for vac in vacaciones %}
         <tr>
-            <td>{{ object.get_estado_display }}</td>
-            <td>{{ object.fec_inicio|date:"d/m/Y" }}</td>
-            <td>{{ object.fec_fin|date:"d/m/Y" }}</td>
-            <td>{{ object.fec_solicitud|date:"d/m/Y" }}</td>
-            <td>{{ object.observacion }}</td>
+            <td>{{ vac.get_estado_display }}</td>
+            <td>{{ vac.fec_inicio|date:"d/m/Y" }}</td>
+            <td>{{ vac.fec_fin|date:"d/m/Y" }}</td>
+            <td>{{ vac.fec_solicitud|date:"d/m/Y" }}</td>
+            <td>{{ vac.observacion }}</td>
             <td>
-                <!-- onclick="return abrir_modal('{% url 'rrhh:empl_delete' object.pk %}')" -->
+                <!-- onclick="return abrir_modal('{% url 'rrhh:empl_delete' vac.pk %}')" -->
                 <a href=""><span class="glyphicon glyphicon-trash"></span></a>
             </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+
+<br>
+<a href="#" class="create-modal btn btn-success pull-right" data-url="{% url 'empleados:vacaciones_create' object.persona.id %}">
+    <span class="fa fa-plus"></span> Solicitar vacaciones
+</a>

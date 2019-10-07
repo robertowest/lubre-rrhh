@@ -1,6 +1,16 @@
 {% extends "empleados/base.html" %}
 {% load static %}
 
+
+{% block css %}
+    <!-- requisitos para datapicker -->
+    <link rel="stylesheet" href="{% static 'css/tempusdominus-bootstrap-4.min.css' %}" />
+    <script src="{% static 'js/jquery-3.3.1.slim.min.js' %}"></script>
+    <script src="{% static 'js/moment.min.js' %}"></script>
+    <script src="{% static 'js/tempusdominus-bootstrap-4.min.js' %}"></script>
+{% endblock %}
+
+
 {% block content %}
     <div class="row">
         <div class="col-md-2">
@@ -25,4 +35,74 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+
+{% block modal %}
+    <!-- modal -->
+    <div id="modal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <!-- JS necesarios para que funcione #modal -->
+    <script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
+    <script type="text/javascript">
+        $(function() {
+            $(".create-modal").each(function() {
+                $(this).modalForm({
+                    formURL: $(this).data('url'),
+                    modalContent: ".modal-dialog",
+                    modalForm: ".modal-dialog form",
+                });
+            });
+
+            $(".read-modal").each(function() {
+                $(this).modalForm({
+                    formURL: $(this).data('url'),
+                    modalContent: ".modal-dialog",
+                    modalForm: ".modal-dialog form",
+                });
+            });
+
+            $(".update-modal").each(function () {
+                $(this).modalForm({
+                    formURL: $(this).data('url'),
+                    modalContent: ".modal-dialog",
+                    modalForm: ".modal-dialog form",
+                });
+            });
+
+            $(".delete-modal").each(function () {
+                $(this).modalForm({
+                    formURL: $(this).data('url'),
+                });
+            });
+
+            // hide message
+            $(".alert").fadeTo(2000, 500).slideUp(500, function() {
+                $(".alert").slideUp(500);
+            });
+
+            // autofocus to first input field of a modal
+            $('.modal').on('shown.bs.modal', function() {
+                $('form').find('input[type=text]').filter(':visible:first').focus();
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("#datetimepicker1").datetimepicker({
+                format: 'DD/MM/YYYY',
+            });
+
+            $("#datetimepicker2").datetimepicker({
+                format: 'DD/MM/YYYY',
+            });
+        });
+    </script>
 {% endblock %}
