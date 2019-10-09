@@ -1,3 +1,5 @@
+{% load group_tags %}
+
 <table class="table table-hover">
     <thead>
         <tr>
@@ -23,11 +25,19 @@
             <td align="center">{{ vac.dias_habiles }}</td>
             <td>
                 {% if vac.estado == 'P' %}
+                <a href="{% url 'rrhh:empl_vaca_aceptar' empl_id vac.pk %}">
+                    <span class="mr-1 glyphicon glyphicon-thumbs-up text-success" data-toggle="tooltip" title="Aprobar"></span>
+                </a>
+                <spam class="ml-1 mr-1">|</spam>
                 <a href="#" class="open-modal" data-url="{% url 'rrhh:empl_vaca_update' vac.pk %}">
-                    <span class="glyphicon glyphicon-pencil"></span>
-                </a> |
+                    <span class="mr-1 glyphicon glyphicon-pencil"></span>
+                </a>
                 <a href="#" class="open-modal" data-url="{% url 'rrhh:empl_vaca_delete' vac.pk %}">
-                    <span class="glyphicon glyphicon-trash text-danger"></span>
+                    <span class="mr-1 glyphicon glyphicon-trash text-danger"></span>
+                </a>
+                {% elif request.user|has_group:"RRHH" %}
+                <a href="{% url 'rrhh:empl_vaca_pendiente' empl_id vac.pk %}">
+                    <span class="mr-1 glyphicon glyphicon-thumbs-down text-danger" data-toggle="tooltip" title="Pendiente"></span>
                 </a>
                 {% endif %}
             </td>

@@ -4,25 +4,9 @@ from django.urls import reverse
 
 from apps.rrhh.models import Empleado
 
-# Create your views here.
-def home(request):
-    url = a_donde_voy(request)
-    return HttpResponseRedirect(url)
-
-
-def example(request):
-    return render(request, 'homepage.html')
-
-
-def demo(request):
-    return render(request, 'demo.html')
-
-
-def modal(request):
-    return render(request, 'modal.html')
-
-
 def a_donde_voy(request):
+    url = reverse('rrhh:empl_index')
+
     if request.user.is_anonymous:
         url = reverse('rrhh:empl_index')
 
@@ -46,3 +30,20 @@ def a_donde_voy(request):
                 url = reverse('rrhh:empl_index')
 
     return url
+
+
+def home(request):
+    url = a_donde_voy(request)
+    return HttpResponseRedirect(url)
+
+
+def example(request):
+    return render(request, 'homepage.html')
+
+
+def demo(request):
+    return render(request, 'demo.html')
+
+
+def modal(request):
+    return render(request, 'modal.html')

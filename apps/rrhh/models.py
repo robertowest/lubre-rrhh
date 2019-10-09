@@ -249,7 +249,7 @@ class Vacaciones(AuditoriaMixin):
                 dias += 1
         return dias
 
-    ESTADO = [('A', 'Aprobada'), ('P', 'Pendiente')]
+    ESTADO = [('A', 'Aprobada'), ('P', 'Pendiente'), ('C', 'Cancelada')]
 
     empleado = models.ForeignKey(Empleado,
                                  on_delete=models.CASCADE, null=False,

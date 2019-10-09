@@ -2,7 +2,7 @@ from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView, 
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView, FormView
 from django.urls import reverse_lazy
 
@@ -125,10 +125,14 @@ class VacacionesReadView(LoginRequiredMixin, ListView):
 
 
 class VacacionesCreateView(LoginRequiredMixin, BSModalCreateView):
+    model = models.Vacaciones
     form_class = forms.VacacionesForm
     template_name = 'empleado/vacaciones/forms/vacaciones.html'
     success_message = 'Nuevo registro dado de alta.'
-    success_url = reverse_lazy('rrhh:empl_vaca')
+    # success_url = reverse_lazy('rrhh:empl_vaca')
+
+    def get_success_url(self):
+        return reverse_lazy('rrhh:empl_vaca', args=(self.kwargs['empl_id'],))
 
 
 class VacacionesUpdateView(LoginRequiredMixin, BSModalUpdateView):
@@ -144,3 +148,21 @@ class VacacionesDeleteView(LoginRequiredMixin, BSModalDeleteView):
     template_name = 'empleado/vacaciones/forms/confirmar_borrado.html'
     success_message = 'Registro eliminado correctamente.'
     success_url = reverse_lazy('rrhh:empl_vaca')
+
+
+def VacacionesAceptar(request, empl_id, pk):
+    vaca = models.Vacaciones.objects.get(id=pk)
+    vaca.estado = 'A'
+    vaca.save()
+
+    url = reverse_lazy('rrhh:empl_vaca', kwargs={'empl_id':empl_id})
+    return redirect( url )
+
+
+def VacacionesPendiente(request, empl_id, pk):
+    vaca = models.Vacaciones.objects.get(id=pk)
+    vaca.estado = 'P'
+    vaca.save()
+
+    url = reverse_lazy('rrhh:empl_vaca', kwargs={'empl_id':empl_id})
+    return redirect( url )
