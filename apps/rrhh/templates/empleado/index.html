@@ -1,0 +1,8 @@
+{% extends "rrhh/base.html" %}
+
+
+{% block content %}
+    {% if empl_id == 0 %}
+        <p>Debe asociar el usuario a algún empleado para poder ver el contenido de esta página.</p>
+    {% endif %}
+{% endblock%}

@@ -8,8 +8,10 @@ app_name = 'rrhh'
 urlpatterns = [
     path('', views.home, name='home'),
 
+    path('empleado/', views.index, name='empl_index'),
+
     # CRUD empleado
-    path('empleado/', views.EmpleadoShow.as_view(), name='empl_show'),
+    path('empleado/listado/', views.EmpleadoShow.as_view(), name='empl_show'),
     path('empleado/nuevo/', views.EmpleadoCreate.as_view(), name='empl_new'),
     path('empleado/editar/<int:pk>', views.EmpleadoUpdate.as_view(), name='empl_edit'),
     path('empleado/eliminar/<int:pk>', views.EmpleadoDelete.as_view(), name='empl_delete'),
@@ -17,8 +19,11 @@ urlpatterns = [
     # detalle del empleado
     path('empleado/detalle/<int:pk>', views.EmpleadoDetail.as_view(), name='empl_detail'),
 
-    # enlace a la aplicaciones de solicitud de vacaciones
-    # path('empleado/vacaciones/', views.vacaciones, name='empl_vaca'),
+    # vacaciones
+    path('empleado/<int:empl_id>/vacaciones/', views.VacacionesReadView.as_view(), name='empl_vaca'),
+    path('empleado/<int:empl_id>/vacaciones/solicitar/', views.VacacionesCreateView.as_view(), name='empl_vaca_create'),
+    path('empleado/vacaciones/<int:pk>/modificar/', views.VacacionesUpdateView.as_view(), name='empl_vaca_update'),
+    path('empleado/vacaciones/<int:pk>/eliminar/', views.VacacionesDeleteView.as_view(), name='empl_vaca_delete'),
 
     # canales de comunicacion
     path('canal/nuevo/', views.CanalCreate.as_view(), name='canal_new'),

@@ -91,21 +91,25 @@ class Empleado(AuditoriaMixin):
         # por cada 20 días de trabajo efectivo.
         x = date(date.today().year, 12, 31)
 
-        trabajado = int((x - self.fec_ing).days / 365)
-        if trabajado >= 1 and trabajado < 5:
-            total = 14
-        elif trabajado >= 5 and trabajado < 10:
-            total = 21
-        elif trabajado >= 10 and trabajado < 20:
-            total = 28
-        elif trabajado >= 20:
-            total = 35
-        else:
-            total = int((x - self.fec_ing).days / 30)
-
-        habiles = int((total / 7) * 5)
+        total = 0
+        habiles = 0
         aprobadas = 0
         pendientes = 0
+
+        if (self.fec_ing != None):
+            trabajado = int((x - self.fec_ing).days / 365)
+            if trabajado >= 1 and trabajado < 5:
+                total = 14
+            elif trabajado >= 5 and trabajado < 10:
+                total = 21
+            elif trabajado >= 10 and trabajado < 20:
+                total = 28
+            elif trabajado >= 20:
+                total = 35
+            else:
+                total = int((x - self.fec_ing).days / 30)
+
+            habiles = int((total / 7) * 5)
 
         solicitadas = Vacaciones.objects.filter(empleado_id = self.persona.id).filter(active=True)
         for vac in solicitadas:

@@ -172,12 +172,12 @@ if DEBUG:
 INSTALLED_APPS += [
     # aplicacione de terceros
     'bootstrap_modal_forms',
-    'business_calendar',        # AGREGAR EN CONFIG DE PRODUCCION
+    'business_calendar',
     'crispy_forms',
     'datetimepicker',
-    'django_extensions',        # AGREGAR EN CONFIG DE PRODUCCION
+    'django_extensions',
     'django_filters',
-    'mathfilters',              # AGREGAR EN CONFIG DE PRODUCCION
+    'mathfilters',
     'widget_tweaks',
     # mis aplicaciones
     'apps.blog',
@@ -186,7 +186,6 @@ INSTALLED_APPS += [
     'apps.juridico',
     'apps.rrhh',
     'apps.usuarios',
-    'apps.empleados',
 ]
 
 # redirecciona a home al realizar un login exitoso

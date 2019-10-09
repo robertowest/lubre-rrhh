@@ -1,9 +1,24 @@
+from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView, BSModalDeleteView
+
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect
+from django.db.models import Q
+from django.shortcuts import render
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView, FormView
 from django.urls import reverse_lazy
 
 from apps.rrhh import models, forms
+
+
+def index(request):
+    empl_id = 0
+    if not request.user.is_anonymous:
+        usuario = request.user
+        try:
+            empleado = models.Empleado.objects.get(user_id=usuario.id)
+            empl_id = empleado.persona.id
+        except:
+            empl_id = 0
+    return render(request, 'empleado/index.html', {'empl_id': empl_id})
 
 
 class EmpleadoShow(LoginRequiredMixin, ListView, FormView):
@@ -87,6 +102,45 @@ class CanalCreate(LoginRequiredMixin, CreateView):
     template_name = 'comunicacion/formulario.html'
 
 
-# def vacaciones(request):
-#     if request.user.is_authenticated:
-#         return HttpResponseRedirect("{% url 'empleados:vacaciones' %}")
+class VacacionesReadView(LoginRequiredMixin, ListView):
+    template_name = 'empleado/vacaciones/index.html'
+    # model = models.Vacaciones
+    # context_object_name = 'data'
+    #context_object_name = 'object_list'
+
+    def get_context_data(self, **kwargs):
+        context = super(VacacionesReadView, self).get_context_data(**kwargs)
+        context['empl_id'] = self.kwargs['empl_id']
+        context['empleado'] = models.Empleado.objects.get(persona_id=self.kwargs['empl_id'])
+        return context
+
+    def get_queryset(self):
+        empl_id = self.kwargs['empl_id']
+        filtro = Q(empleado_id=empl_id) & Q(active=True)
+
+        # queryset = {'empleado': models.Empleado.objects.get(id=empl_id),
+        #             'vacaciones': models.Vacaciones.objects.filter(filtro)}
+        queryset = models.Vacaciones.objects.filter(filtro)
+        return queryset
+
+
+class VacacionesCreateView(LoginRequiredMixin, BSModalCreateView):
+    form_class = forms.VacacionesForm
+    template_name = 'empleado/vacaciones/forms/vacaciones.html'
+    success_message = 'Nuevo registro dado de alta.'
+    success_url = reverse_lazy('rrhh:empl_vaca')
+
+
+class VacacionesUpdateView(LoginRequiredMixin, BSModalUpdateView):
+    model = models.Vacaciones
+    template_name = 'empleado/vacaciones/forms/vacaciones.html'
+    form_class = forms.VacacionesForm
+    success_message = 'Registro actualizado correctamente.'
+    success_url = reverse_lazy('rrhh:empl_vaca')
+
+
+class VacacionesDeleteView(LoginRequiredMixin, BSModalDeleteView):
+    model = models.Vacaciones
+    template_name = 'empleado/vacaciones/forms/confirmar_borrado.html'
+    success_message = 'Registro eliminado correctamente.'
+    success_url = reverse_lazy('rrhh:empl_vaca')

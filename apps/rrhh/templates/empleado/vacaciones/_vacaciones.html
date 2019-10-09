@@ -12,7 +12,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for vac in vacaciones %}
+        {% for vac in object_list %}
         <tr>
             <td>{{ vac.fec_solicitud|date:"d/m/Y" }}</td>
             <td>{{ vac.get_estado_display }}</td>
@@ -23,10 +23,10 @@
             <td align="center">{{ vac.dias_habiles }}</td>
             <td>
                 {% if vac.estado == 'P' %}
-                <a href="#" class="open-modal" data-url="{% url 'empleados:vacaciones_update' vac.pk %}">
+                <a href="#" class="open-modal" data-url="{% url 'rrhh:empl_vaca_update' vac.pk %}">
                     <span class="glyphicon glyphicon-pencil"></span>
                 </a> |
-                <a href="#" class="open-modal" data-url="{% url 'empleados:vacaciones_delete' vac.pk %}">
+                <a href="#" class="open-modal" data-url="{% url 'rrhh:empl_vaca_delete' vac.pk %}">
                     <span class="glyphicon glyphicon-trash text-danger"></span>
                 </a>
                 {% endif %}
