@@ -46,6 +46,9 @@
                             </a> |
                             <a onclick="return abrir_modal('{% url 'rrhh:empl_delete' object.pk %}')">
                                 <span class="glyphicon glyphicon-trash"></span>
+                            </a> |
+                            <a href="{% url 'empleados:vacaciones' object.pk %}" target="_blank" data-toggle="tooltip" title="Vacaciones!">
+                                <span class="glyphicon glyphicon-time"></span>
                             </a>
                             {% endif %}
                         </td>

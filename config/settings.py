@@ -172,10 +172,12 @@ if DEBUG:
 INSTALLED_APPS += [
     # aplicacione de terceros
     'bootstrap_modal_forms',
+    'business_calendar',        # AGREGAR EN CONFIG DE PRODUCCION
     'crispy_forms',
     'datetimepicker',
-    'django_extensions',        # AGREGAR ES CONFIG DE PRODUCCION
+    'django_extensions',        # AGREGAR EN CONFIG DE PRODUCCION
     'django_filters',
+    'mathfilters',              # AGREGAR EN CONFIG DE PRODUCCION
     'widget_tweaks',
     # mis aplicaciones
     'apps.blog',

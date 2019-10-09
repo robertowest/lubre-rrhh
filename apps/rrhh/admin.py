@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.contrib import admin
 
 # Register your models here.
@@ -32,7 +33,7 @@ admin.site.register(models.Denuncia_ART, DenunciaAdmin)
 # -------------------------------------------------------------------
 
 class ActivoAdmin(admin.ModelAdmin):
-    list_display = ('descripcion', 'tipo', 'responsable')
+    list_display = ('descripcion', 'responsable')
     list_filter = ('tipo',)
     list_per_page = 20
 
@@ -45,3 +46,17 @@ class MantenimientoAdmin(admin.ModelAdmin):
     list_per_page = 20
 
 admin.site.register(models.Mantenimiento, MantenimientoAdmin)
+
+# -------------------------------------------------------------------
+# Calendario
+# -------------------------------------------------------------------
+
+class FeriadoAdmin(admin.ModelAdmin):
+    def fecha2(self, obj):
+        return obj.fecha.strftime("%A, %d %B %Y")
+
+    date_hierarchy = 'fecha'
+    list_display = ('fecha', 'descripcion', 'fecha2')
+    list_per_page = 20
+
+admin.site.register(models.Feriados, FeriadoAdmin)

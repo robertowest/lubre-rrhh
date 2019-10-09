@@ -22,7 +22,7 @@ def home(request):
             # elif group.name=="admin":
             #     return HttpResponseRedirect(reverse('adm'))
     # por defecto
-    return HttpResponseRedirect('/empleados/')
+    return HttpResponseRedirect('/rrhh/')
 
 
 

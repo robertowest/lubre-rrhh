@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView, FormView
 from django.urls import reverse_lazy
 
@@ -84,3 +85,8 @@ class EmpleadoDelete(LoginRequiredMixin, DeleteView):
 class CanalCreate(LoginRequiredMixin, CreateView):
     form_class = forms.ComunicacionForm
     template_name = 'comunicacion/formulario.html'
+
+
+# def vacaciones(request):
+#     if request.user.is_authenticated:
+#         return HttpResponseRedirect("{% url 'empleados:vacaciones' %}")

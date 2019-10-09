@@ -1,0 +1,34 @@
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Persona</th>
+            <th>Legajo</th>
+            <th>Ingreso</th>
+            <th>Egreso</th>
+            <th>Usuario</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for object in object_list %}
+        <tr>
+            <td>{{ object.persona }}</td>
+            <td>{{ object.legajo }}</td>
+            <td>{{ object.fec_ing|date:"d/m/Y" }}</td>
+            <td>{{ object.fec_egr|date:"d/m/Y" }}</td>
+            <td>{{ object.user }}</td>
+            <td>
+                {% if vac.estado == 'P' %}
+                <a href="#" class="open-modal" data-url="{% url 'empleados:vacaciones_update' vac.pk %}">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </a> |
+                <a href="#" class="open-modal" data-url="{% url 'empleados:vacaciones_delete' vac.pk %}">
+                    <span class="glyphicon glyphicon-trash text-danger"></span>
+                </a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% include 'paginator.html' %}

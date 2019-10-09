@@ -1,22 +1,26 @@
 <table class="table table-hover">
     <thead>
         <tr>
+            <th>Solicitud</th>
             <th>Estado</th>
             <th>Inicio</th>
             <th>Fin</th>
-            <th>Solicitud</th>
             <th>Observación</th>
+            <th>Solicitados</th>
+            <th>Hábiles</th>
             <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
         {% for vac in vacaciones %}
         <tr>
+            <td>{{ vac.fec_solicitud|date:"d/m/Y" }}</td>
             <td>{{ vac.get_estado_display }}</td>
             <td>{{ vac.fec_inicio|date:"d/m/Y" }}</td>
             <td>{{ vac.fec_fin|date:"d/m/Y" }}</td>
-            <td>{{ vac.fec_solicitud|date:"d/m/Y" }}</td>
             <td>{{ vac.observacion }}</td>
+            <td align="center">{{ vac.dias_solicitados }}</td>
+            <td align="center">{{ vac.dias_habiles }}</td>
             <td>
                 {% if vac.estado == 'P' %}
                 <a href="#" class="open-modal" data-url="{% url 'empleados:vacaciones_update' vac.pk %}">
@@ -31,8 +35,3 @@
         {% endfor %}
     </tbody>
 </table>
-
-<br>
-<a href="#" class="open-modal btn btn-success pull-right" data-url="{% url 'empleados:vacaciones_create' object.persona.id %}">
-    <span class="glyphicon glyphicon-plus"></span> Solicitar vacaciones
-</a>

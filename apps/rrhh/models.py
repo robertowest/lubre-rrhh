@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 
 from django.contrib.auth.models import User
 from django.utils import timezone
@@ -100,9 +100,25 @@ class Empleado(AuditoriaMixin):
             total = 28
         elif trabajado >= 20:
             total = 35
+        else:
+            total = int((x - self.fec_ing).days / 30)
 
         habiles = int((total / 7) * 5)
-        dic = {'totales': total, 'habiles': habiles, 'aprobados': 0, 'aprobacion': 0, 'pendientes': 0}
+        aprobadas = 0
+        pendientes = 0
+
+        solicitadas = Vacaciones.objects.filter(empleado_id = self.persona.id).filter(active=True)
+        for vac in solicitadas:
+            if vac.estado == 'A':
+                aprobadas += vac.dias_habiles
+            elif vac.estado == 'P':
+                pendientes += vac.dias_habiles
+
+        dic = {'totales': total,
+               'habiles': habiles,
+               'aprobadas': aprobadas,
+               'pendientes': pendientes,
+               'faltan': habiles - (aprobadas + pendientes)}
         return dic
 
     persona = models.OneToOneField(Persona, on_delete=models.CASCADE, primary_key=True)
@@ -217,6 +233,18 @@ class Vacaciones(AuditoriaMixin):
     def __str__(self):
         return '{} - {}'.format(self.fec_inicio.strftime("%d/%m/%y"), self.fec_fin.strftime("%d/%m/%y"))
 
+    @property
+    def dias_solicitados(self):
+        return (self.fec_fin - self.fec_inicio).days + 1
+
+    @property
+    def dias_habiles(self):
+        dias = 0
+        for n in range(self.dias_solicitados):
+            if (self.fec_inicio + timedelta(n)).weekday() < 5:
+                dias += 1
+        return dias
+
     ESTADO = [('A', 'Aprobada'), ('P', 'Pendiente')]
 
     empleado = models.ForeignKey(Empleado,
@@ -227,6 +255,20 @@ class Vacaciones(AuditoriaMixin):
     fec_solicitud = models.DateField('Fecha Solicitud', blank=True, null=True)
     observacion = models.TextField('Observación', blank=True, null=True)
     estado = models.CharField(max_length=1, choices=ESTADO, default='P', blank=True, null=False)
+
+
+class Feriados(AuditoriaMixin):
+    class Meta:
+        app_label = 'rrhh'
+        verbose_name = 'Feriado'
+        verbose_name_plural = 'Feriados'
+        ordering = ['fecha']
+
+    def __str__(self):
+        return '{} ({})'.format(self.descripcion, self.fecha.strftime("%d/%m/%y"))
+
+    fecha = models.DateField(blank=False, null=False)
+    descripcion = models.CharField('Descripción', max_length=60, blank=True, null=True)
 
 
 # -------------------------------------------------------------------

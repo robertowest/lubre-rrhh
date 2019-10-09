@@ -1,7 +1,6 @@
 {% extends "empleados/base.html" %}
 
 {% load static %}
-{% load mathfilters %}
 
 
 {% block content %}
@@ -24,7 +23,7 @@
             </div>
             <div class="row">
                 <h1 class="mb-3">{{ object.persona }}</h1>
-                {% include 'empleados/_tabla.html' %}
+                {% include 'vacaciones/_vacaciones.html' %}
             </div>
         </div>
         <div class="col-md-2">

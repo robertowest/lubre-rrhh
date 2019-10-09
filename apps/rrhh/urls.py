@@ -17,6 +17,9 @@ urlpatterns = [
     # detalle del empleado
     path('empleado/detalle/<int:pk>', views.EmpleadoDetail.as_view(), name='empl_detail'),
 
+    # enlace a la aplicaciones de solicitud de vacaciones
+    # path('empleado/vacaciones/', views.vacaciones, name='empl_vaca'),
+
     # canales de comunicacion
     path('canal/nuevo/', views.CanalCreate.as_view(), name='canal_new'),
 

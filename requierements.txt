@@ -1,11 +1,15 @@
+business-calendar==0.2.1
+fdb==2.0.1
+
 django==2.2.4
 django-betterforms==1.2
 django-bootstrap-modal-forms==1.4.2
 django-crispy-forms==1.7.2
+django-datetimepicker==3.14
 django-debug-toolbar==2.0
 django-extensions==2.2.1
+django_mathfilters==0.4.0
 django-widget-tweaks==1.4.5
-fdb==2.0.1
 
 # el instalador de django-firebird es antiguo y no funciona con la versión 2.5
 # por lo que habrá que instalarlo manualmente
