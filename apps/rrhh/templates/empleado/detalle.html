@@ -12,7 +12,7 @@
     </div>
     <hr>
     <div class="row">
-        <div class="col-sm-9">
+        <div class="col-md-9 col-sm-12">
             <ul class="nav nav-tabs" id="myTab">
                 <li class="nav-item">
                     <a class="nav-link active" href="#datos" data-toggle="tab">Datos Personales</a>
@@ -40,14 +40,18 @@
             </div>
         </div>
 
+        <!--  style="max-width: 255px;"
         <div class="col-sm-3 hidden-xs">
+        style="max-width: 300px;"
+        -->
+        <div class="col-md-3 hidden-sm hidden-xs">
             <div class="card card-info">
                 <div class="card-header">
                     Foto <i class="fa fa-photo fa-1x"></i>
                 </div>
                 <div class="card-body" style="text-align: center;">
                     {% if object.imagen %}
-                    <img class="rounded-circle img-responsive" src="{{ object.imagen.url }}">
+                    <img class="rounded-circle img-fluid" src="{{ object.imagen.url }}">
                     {% else %}
                     <img class="rounded-circle img-responsive" src="https://bootdey.com/img/Content/avatar/avatar1.png">
                     {% endif %}
@@ -55,7 +59,7 @@
             </div>
             <br>
 
-            {% if comunicaciones  %}
+            {% if comunicaciones %}
             <div class="card">
                 <div class="card-header">
                     Comunicación <i class="fa fa-phone fa-1x"></i>

@@ -16,7 +16,7 @@ class Persona(AuditoriaMixin):
         ordering = ['apellido', 'nombre']
 
     def __str__(self):
-        return '{} {}'.format(self.nombre, self.apellido)
+        return '{}, {}'.format(self.apellido, self.nombre)
 
     SEXO = (('M', 'Masculino'), ('F', 'Femenino'))
 
@@ -33,6 +33,7 @@ class Tarea(AuditoriaMixin):
         app_label = 'rrhh'
         verbose_name = 'Tarea'
         verbose_name_plural = 'Tareas'
+        ordering = ['descripcion']
 
     def __str__(self):
         return self.descripcion
@@ -140,6 +141,7 @@ class Comunicacion(AuditoriaMixin):
         app_label = 'rrhh'
         verbose_name = 'Comunicacion'
         verbose_name_plural = 'Comunicaciones'
+        ordering = ['empleado', 'tipo', 'texto']
 
     def __str__(self):
         return '{}: {}'.format(self.get_tipo_display(), self.texto)

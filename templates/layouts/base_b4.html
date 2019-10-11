@@ -27,11 +27,15 @@
         {% endblock %}
     </head>
     <body>
-        {% include "layouts/b4/navbar.html" %}
+        {% block header-navbar %}
+            {% include "layouts/b4/navbar.html" %}
+        {% endblock %}
 
-        <div style="padding-top: 70px;">
-            <!-- separador -->
-        </div>
+        {% block header-separate %}
+            <div style="padding-top: 70px;">
+                <!-- separador -->
+            </div>
+        {% endblock %}
 
         <div class="container-fluid">
             {% block content %}

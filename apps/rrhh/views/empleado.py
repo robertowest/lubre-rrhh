@@ -56,7 +56,7 @@ class EmpleadoDetail(LoginRequiredMixin, DetailView):
         # context['comunicaciones'] = context['empleado'].comunicaciones.all()
         context['domicilio'] = \
             models.Domicilio.objects.filter(empleado_id=context['empleado'].persona_id)
-        context['comunicacion<int:empl_id>/es'] = \
+        context['comunicaciones'] = \
             models.Comunicacion.objects.filter(empleado_id=context['empleado'].persona_id).order_by('tipo')
         context['denuncias'] = models.Denuncia_ART.objects.filter(empleado_id=context['empleado'].persona_id)
         context['activos'] = models.ActivoMantenimientoView.objects.filter(responsable_id=context['empleado'].persona_id)
@@ -140,14 +140,18 @@ class VacacionesUpdateView(LoginRequiredMixin, BSModalUpdateView):
     template_name = 'empleado/vacaciones/forms/vacaciones.html'
     form_class = forms.VacacionesForm
     success_message = 'Registro actualizado correctamente.'
-    success_url = reverse_lazy('rrhh:empl_vaca')
+
+    def get_success_url(self):
+        return reverse_lazy('rrhh:empl_vaca', args=(self.kwargs['empl_id'],))
 
 
 class VacacionesDeleteView(LoginRequiredMixin, BSModalDeleteView):
     model = models.Vacaciones
     template_name = 'empleado/vacaciones/forms/confirmar_borrado.html'
     success_message = 'Registro eliminado correctamente.'
-    success_url = reverse_lazy('rrhh:empl_vaca')
+
+    def get_success_url(self):
+        return reverse_lazy('rrhh:empl_vaca', args=(self.kwargs['empl_id'],))
 
 
 def VacacionesAceptar(request, empl_id, pk):

@@ -26,17 +26,21 @@
             {% endif %}
         </ul>
         <!-- login -->
-        <ul class="navbar-nav">
+        <ul class="navbar-nav text-nowrap">
             {% if user.is_authenticated %}
                 <li class="nav-item">
+                    <!--
                     <a href="{% url 'usuarios:profile' %}" class="btn btn-info">{{ user.username }}</a>
+                    -->
+                    <a href="{% url 'usuarios:profile' %}" class="nav-link mr-2"><i class="glyphicon glyphicon-user"></i> {{ user.username }}</a>
+                </li>
+                <li class="nav-item">
                     <a href="{% url 'usuarios:logout' %}" class="btn btn-light" href="">Salir</a>
-                    <!-- users/password_reset/ -->
                 </li>
             {% else %}
                 <li class="nav-item">
-                    <a href="{% url 'usuarios:register' %}" class="btn btn-light" href="">Registrarse</a>
-                    <a href="{% url 'usuarios:login' %}" class="btn btn-light" href="">Iniciar</a>
+                    <a href="{% url 'usuarios:register' %}" class="btn btn-light">Registrarse</a>
+                    <a href="{% url 'usuarios:login' %}" class="btn btn-light">Iniciar</a>
                 </li>
             {% endif %}
         </ul>

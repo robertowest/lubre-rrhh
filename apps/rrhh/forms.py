@@ -201,7 +201,20 @@ class VacacionesForm(MyBSModelForm):
             empleado = models.Empleado.objects.get(persona_id=empl_id)
             self.fields['empleado'].initial = empleado
             self.fields["fec_solicitud"].initial = datetime.date.today()
+            self.fields["fec_inicio"].initial = datetime.date.today()
+            self.fields["fec_fin"].initial = datetime.date.today()
 
         self.fields['empleado'].disabled = True
         self.fields["fec_solicitud"].disabled = True
         self.fields['estado'].disabled = True
+
+    def clean(self):
+        cleaned_data = super(VacacionesForm, self).clean()
+        fec_inicio = cleaned_data.get("fec_inicio")
+        fec_fin = cleaned_data.get("fec_fin")
+
+        if fec_inicio <= datetime.date.today():
+            raise forms.ValidationError("La fecha inicial debe ser posterior al día de hoy.")
+        elif fec_inicio > fec_fin:
+            raise forms.ValidationError("La fecha de inicio no puede ser posterior a la de finalización.")
+        return cleaned_data

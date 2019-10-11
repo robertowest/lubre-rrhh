@@ -5,12 +5,9 @@ from django.urls import reverse
 from apps.rrhh.models import Empleado
 
 def a_donde_voy(request):
-    url = reverse('rrhh:empl_index')
+    url = reverse('homepage:index')
 
-    if request.user.is_anonymous:
-        url = reverse('rrhh:empl_index')
-
-    else:
+    if not request.user.is_anonymous:
         # obtenemos todos los grupos del usuario
         groups = request.user.groups.filter(user=request.user)
 
@@ -32,13 +29,17 @@ def a_donde_voy(request):
     return url
 
 
+def index(request):
+    return render(request, 'homepage.html')
+
+
 def home(request):
     url = a_donde_voy(request)
     return HttpResponseRedirect(url)
 
 
 def example(request):
-    return render(request, 'homepage.html')
+    return render(request, 'example.html')
 
 
 def demo(request):
