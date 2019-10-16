@@ -63,7 +63,7 @@
         </div>
 
         <div class="col-sm-2">
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-header"> {#  text-white bg-primary #}
                     <h5 class="panel-title">Filtro</h5>
                 </div>
@@ -72,6 +72,14 @@
                         {% csrf_token %}
                         {% include 'comunes/filter_fields.html' %}
                     </form>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Vacaciones</h5>
+                    <p class="card-text">Asignación global de vacaciones a los empleados activos.</p>
+                    <a href="{% url 'rrhh:empl_vaca_asignar' %}" class="btn btn-primary">Asignar ...</a>
                 </div>
             </div>
         </div>

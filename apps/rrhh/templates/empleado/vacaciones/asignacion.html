@@ -1,0 +1,58 @@
+{% extends "rrhh/base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Asignación de Vacaciones</h1>
+    <br>
+    <p>Este proceso creará un registro con la información de los días disponibles de vacaciones para todos los empleados activos.</p>
+    <p>Para tal fin, será necesario que el empleado tenga definida su fecha de inicio de las actividades en la empresa, ya que a partir de esta fecha se calcularán los días hábiles de vacaciones.</p>
+    <p>Si el empleado ya poseé un registro <b>activo</b> para el año calculado, se descartará el nuevo cálculo. Para poder recalcular, primero deberá anular el registro activo.</p>
+
+    <h2>Cálculo</h2>
+
+    <p>
+        Suponiendo que el empleado ingresó el día <b>{{data.fecha_inicio}}</b>
+        y se desea calcular las vacaciones correspondientes al año <b>{{data.periodo}}</b>,
+        se tomará como fecha de finalización del cálculo el último día del año ({{data.fecha_fin}}),
+        por lo que le corresponderán:
+    </p>
+
+    <pre>
+        {{data.dias_totales}} días de vacaciones, lo que es igual a <b>{{data.dias_habiles}}</b> días hábiles.
+    </pre>
+
+    <a href="{% url 'rrhh:empl_vaca_calcular' %}" class="btn btn-primary float-right">Procesar &rarr;</a>
+</div>
+
+<div id="progress-wrapper">
+    <button id="progress-bar-trigger">Run</button>
+    <div id="progress-bar" style="background-color: blue; width: 0%;">&nbsp;</div>
+    <div id="progress-bar-message">Waiting for progress to start...</div>
+</div>
+
+{% endblock %}
+
+
+{% block js %}
+<script type="text/javascript">
+
+    function updateProgress(progressBarElement, progressBarMessageElement, progress) {
+        progressBarElement.style.width = progress.percent + "%";
+        progressBarMessageElement.innerHTML = progress.current + ' of ' + progress.total + ' processed.';
+    }
+
+    var trigger = document.getElementById('progress-bar-trigger');
+    trigger.addEventListener('click', function(e) {
+        var bar = document.getElementById("progress-bar");
+        var barMessage = document.getElementById("progress-bar-message");
+        for (var i = 0; i < 11; i++) {
+            setTimeout(updateProgress, 500 * i, bar, barMessage, {
+                percent: 10 * i,
+                current: 10 * i,
+                total: 100
+            })
+        }
+    })
+
+</script>
+{% endblock %}

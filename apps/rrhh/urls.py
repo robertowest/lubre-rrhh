@@ -27,6 +27,10 @@ urlpatterns = [
     path('empleado/<int:empl_id>/vacaciones/<int:pk>/aceptar/', views.VacacionesAceptar, name='empl_vaca_aceptar'),
     path('empleado/<int:empl_id>/vacaciones/<int:pk>/pendiente/', views.VacacionesPendiente, name='empl_vaca_pendiente'),
 
+    path('empleado/asignar/vacaciones/', views.AsignarVacaciones, name='empl_vaca_asignar'),
+    path('empleado/calcular/vacaciones/', views.CalcularVacaciones, name='empl_vaca_calcular'),
+    path('<task_id>', views.get_progress, name='task_status'),
+
     # canales de comunicacion
     path('canal/nuevo/', views.CanalCreate.as_view(), name='canal_new'),
 

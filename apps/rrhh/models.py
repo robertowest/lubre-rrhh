@@ -277,6 +277,23 @@ class Feriados(AuditoriaMixin):
     descripcion = models.CharField('Descripción', max_length=60, blank=True, null=True)
 
 
+class DiasVacaciones(AuditoriaMixin):
+    class Meta:
+        app_label = 'rrhh'
+        ordering = ['empleado', 'periodo']
+
+    def __str__(self):
+        return '{} ({})'.format(self.descripcion, self.fecha.strftime("%d/%m/%y"))
+
+    empleado = models.ForeignKey(Empleado,
+                                 on_delete=models.CASCADE, null=False,
+                                 limit_choices_to = {'active': True})
+    periodo = models.SmallIntegerField('Año')
+    dias_vacaciones = models.SmallIntegerField('Días de vacaciones')
+    dias_disfrutados = models.SmallIntegerField('Días disfrutados')
+    dias_pendientes = models.SmallIntegerField('Días pendientes')
+
+
 # -------------------------------------------------------------------
 # Mantenimiento
 #         +-----> Activo

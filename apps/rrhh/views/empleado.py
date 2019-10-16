@@ -1,7 +1,13 @@
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView, BSModalDeleteView
+from datetime import date
 
+from celery.result import AsyncResult
+from dateutil.relativedelta import relativedelta
+from celery import task
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.serializers import json
 from django.db.models import Q
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView, FormView
 from django.urls import reverse_lazy
@@ -170,3 +176,40 @@ def VacacionesPendiente(request, empl_id, pk):
 
     url = reverse_lazy('rrhh:empl_vaca', kwargs={'empl_id':empl_id})
     return redirect( url )
+
+
+def AsignarVacaciones(request):
+    f_inicio = date.today() - relativedelta(months=14)
+    f_fin = date(date.today().year, 12, 31)
+
+    persona = models.Persona()
+    persona.nombre = 'Diego'
+    persona.apellido = 'Maradona'
+
+    empleado = models.Empleado()
+    empleado.persona = persona
+    empleado.fec_ing = date.today() - relativedelta(months=14)
+
+    tot = empleado.vacaciones['totales']
+    hab = empleado.vacaciones['habiles']
+
+    valores = {'fecha_inicio': f_inicio,
+               'periodo': date.today().year,
+               'fecha_fin': f_fin,
+               'dias_totales': tot,
+               'dias_habiles': hab,
+               'empleado': empleado}
+
+    return render(request, 'empleado/vacaciones/asignacion.html', {'data': valores})
+
+
+def CalcularVacaciones(request):
+    pass
+
+def get_progress(request, task_id):
+    result = AsyncResult(task_id)
+    response_data = {
+        'state': result.state,
+        'details': result.info,
+    }
+    return HttpResponse(json.dumps(response_data), content_type='application/json')
