@@ -1,6 +1,7 @@
 from datetime import date, timedelta
 
 from django.contrib.auth.models import User
+from django.db.models import Q
 from django.utils import timezone
 from django.db import models
 from django.urls import reverse_lazy
@@ -48,6 +49,18 @@ class Empleado(AuditoriaMixin):
         verbose_name_plural = 'Empleados'
         ordering = ['persona__apellido', 'persona__nombre']
 
+    # definimos una propiedad que no será persistente
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._anio = date.today().year
+
+    def get_anio(self):
+        return self._anio
+
+    def set_anio(self, value):
+        self._anio = value
+    # fin de la definimos no persistente
+        
     def __str__(self):
         return '{}, {}'.format(self.persona.apellido, self.persona.nombre)
 
@@ -90,7 +103,9 @@ class Empleado(AuditoriaMixin):
         # haber prestado servicios durante la mitad, como mínimo, de los días hábiles comprendidos en el año calendario
         # o aniversario respectivo. Si no llegas a esta cantidad de días trabajados te corresponde 1 día de vacaciones
         # por cada 20 días de trabajo efectivo.
-        x = date(date.today().year, 12, 31)
+        # x = date(date.today().year, 12, 31)
+        x = date(self.get_anio(), 12, 31)
+
 
         total = 0
         habiles = 0
@@ -112,7 +127,11 @@ class Empleado(AuditoriaMixin):
 
             habiles = int((total / 7) * 5)
 
-        solicitadas = Vacaciones.objects.filter(empleado_id = self.persona.id).filter(active=True)
+        # solicitadas = Vacaciones.objects.filter(empleado_id = self.persona.id)\
+        #                                 .filter(fec_inicio__year = self.get_anio())\
+        #                                 .filter(active = True)
+        filtro = Q(empleado_id = self.persona.id) & Q(fec_inicio__year = self.get_anio()) & Q(active = True)
+        solicitadas = Vacaciones.objects.filter(filtro)
         for vac in solicitadas:
             if vac.estado == 'A':
                 aprobadas += vac.dias_habiles
@@ -134,6 +153,7 @@ class Empleado(AuditoriaMixin):
     tarea = models.ForeignKey(Tarea, on_delete=models.CASCADE, blank=True, null=True,
                               limit_choices_to = {'active': True})
     user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
+    anio = property(get_anio, set_anio)
 
 
 class Comunicacion(AuditoriaMixin):
@@ -229,6 +249,25 @@ class Denuncia_ART(AuditoriaMixin):
                                     limit_choices_to = {'diccionario': 'motivoAlta'})
 
 
+class DiasVacaciones(AuditoriaMixin):
+    class Meta:
+        app_label = 'rrhh'
+        verbose_name = 'Dia de Vacación'
+        verbose_name_plural = 'Dias de Vacaciones'
+        ordering = ['empleado', 'periodo']
+
+    def __str__(self):
+        return '{} ({})'.format(self.empleado, self.periodo)
+
+    empleado = models.ForeignKey(Empleado,
+                                 on_delete=models.CASCADE, null=False,
+                                 limit_choices_to = {'active': True})
+    periodo = models.SmallIntegerField('Año')
+    dias_vacaciones = models.SmallIntegerField('Días de vacaciones')
+    dias_disfrutados = models.SmallIntegerField('Días disfrutados')
+    dias_pendientes = models.SmallIntegerField('Días pendientes')
+
+
 class Vacaciones(AuditoriaMixin):
     class Meta:
         app_label = 'rrhh'
@@ -259,6 +298,7 @@ class Vacaciones(AuditoriaMixin):
     fec_inicio = models.DateField('Fecha Inicio', blank=True, null=False)
     fec_fin = models.DateField('Fecha Fin',blank=True, null=False)
     fec_solicitud = models.DateField('Fecha Solicitud', blank=True, null=True)
+    periodo = models.SmallIntegerField('Año', blank=True, null=True)
     observacion = models.TextField('Observación', blank=True, null=True)
     estado = models.CharField(max_length=1, choices=ESTADO, default='P', blank=True, null=False)
 
@@ -275,23 +315,6 @@ class Feriados(AuditoriaMixin):
 
     fecha = models.DateField(blank=False, null=False)
     descripcion = models.CharField('Descripción', max_length=60, blank=True, null=True)
-
-
-class DiasVacaciones(AuditoriaMixin):
-    class Meta:
-        app_label = 'rrhh'
-        ordering = ['empleado', 'periodo']
-
-    def __str__(self):
-        return '{} ({})'.format(self.descripcion, self.fecha.strftime("%d/%m/%y"))
-
-    empleado = models.ForeignKey(Empleado,
-                                 on_delete=models.CASCADE, null=False,
-                                 limit_choices_to = {'active': True})
-    periodo = models.SmallIntegerField('Año')
-    dias_vacaciones = models.SmallIntegerField('Días de vacaciones')
-    dias_disfrutados = models.SmallIntegerField('Días disfrutados')
-    dias_pendientes = models.SmallIntegerField('Días pendientes')
 
 
 # -------------------------------------------------------------------

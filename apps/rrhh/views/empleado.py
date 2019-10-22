@@ -1,11 +1,8 @@
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView, BSModalDeleteView
 from datetime import date
 
-from celery.result import AsyncResult
 from dateutil.relativedelta import relativedelta
-from celery import task
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.serializers import json
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -115,17 +112,19 @@ class VacacionesReadView(LoginRequiredMixin, ListView):
     #context_object_name = 'object_list'
 
     def get_context_data(self, **kwargs):
-        context = super(VacacionesReadView, self).get_context_data(**kwargs)
+        empleado = models.Empleado.objects.get(persona_id=self.kwargs['empl_id'])
+        empleado.set_anio(self.kwargs['anio'])
+        context = super().get_context_data(**kwargs)
         context['empl_id'] = self.kwargs['empl_id']
-        context['empleado'] = models.Empleado.objects.get(persona_id=self.kwargs['empl_id'])
+        context['anio'] = self.kwargs['anio']
+        context['empleado'] = empleado
         return context
 
     def get_queryset(self):
         empl_id = self.kwargs['empl_id']
-        filtro = Q(empleado_id=empl_id) & Q(active=True)
-
-        # queryset = {'empleado': models.Empleado.objects.get(id=empl_id),
-        #             'vacaciones': models.Vacaciones.objects.filter(filtro)}
+        anio    = self.kwargs['anio']
+        # filtro = Q(empleado_id=empl_id) & Q(fec_inicio__year=anio) & Q(active=True)
+        filtro = Q(empleado_id=empl_id) & Q(periodo=anio) & Q(active=True)
         queryset = models.Vacaciones.objects.filter(filtro)
         return queryset
 
@@ -137,8 +136,12 @@ class VacacionesCreateView(LoginRequiredMixin, BSModalCreateView):
     success_message = 'Nuevo registro dado de alta.'
     # success_url = reverse_lazy('rrhh:empl_vaca')
 
+    def form_valid(self, form):
+        form.instance.periodo = self.kwargs['anio']
+        return super(VacacionesCreateView, self).form_valid(form)
+
     def get_success_url(self):
-        return reverse_lazy('rrhh:empl_vaca', args=(self.kwargs['empl_id'],))
+        return reverse_lazy('rrhh:empl_vaca', args=(self.kwargs['empl_id'], date.today().year))
 
 
 class VacacionesUpdateView(LoginRequiredMixin, BSModalUpdateView):
@@ -148,7 +151,7 @@ class VacacionesUpdateView(LoginRequiredMixin, BSModalUpdateView):
     success_message = 'Registro actualizado correctamente.'
 
     def get_success_url(self):
-        return reverse_lazy('rrhh:empl_vaca', args=(self.kwargs['empl_id'],))
+        return reverse_lazy('rrhh:empl_vaca', args=(self.kwargs['empl_id'], date.today().year))
 
 
 class VacacionesDeleteView(LoginRequiredMixin, BSModalDeleteView):
@@ -157,7 +160,7 @@ class VacacionesDeleteView(LoginRequiredMixin, BSModalDeleteView):
     success_message = 'Registro eliminado correctamente.'
 
     def get_success_url(self):
-        return reverse_lazy('rrhh:empl_vaca', args=(self.kwargs['empl_id'],))
+        return reverse_lazy('rrhh:empl_vaca', args=(self.kwargs['empl_id'], date.today().year))
 
 
 def VacacionesAceptar(request, empl_id, pk):
@@ -165,7 +168,7 @@ def VacacionesAceptar(request, empl_id, pk):
     vaca.estado = 'A'
     vaca.save()
 
-    url = reverse_lazy('rrhh:empl_vaca', kwargs={'empl_id':empl_id})
+    url = reverse_lazy('rrhh:empl_vaca', kwargs={'empl_id':empl_id, 'anio':date.today().year})
     return redirect( url )
 
 
@@ -174,13 +177,13 @@ def VacacionesPendiente(request, empl_id, pk):
     vaca.estado = 'P'
     vaca.save()
 
-    url = reverse_lazy('rrhh:empl_vaca', kwargs={'empl_id':empl_id})
+    url = reverse_lazy('rrhh:empl_vaca', kwargs={'empl_id':empl_id, 'anio':date.today().year})
     return redirect( url )
 
 
-def AsignarVacaciones(request):
-    f_inicio = date.today() - relativedelta(months=14)
-    f_fin = date(date.today().year, 12, 31)
+def AsignarVacaciones(request, anio):
+    f_inicio = date(anio, date.today().month, date.today().day) - relativedelta(months=14)
+    f_fin = date(anio, 12, 31)
 
     persona = models.Persona()
     persona.nombre = 'Diego'
@@ -188,13 +191,13 @@ def AsignarVacaciones(request):
 
     empleado = models.Empleado()
     empleado.persona = persona
-    empleado.fec_ing = date.today() - relativedelta(months=14)
+    empleado.fec_ing = f_inicio
 
     tot = empleado.vacaciones['totales']
     hab = empleado.vacaciones['habiles']
 
     valores = {'fecha_inicio': f_inicio,
-               'periodo': date.today().year,
+               'periodo': anio,
                'fecha_fin': f_fin,
                'dias_totales': tot,
                'dias_habiles': hab,
@@ -203,13 +206,48 @@ def AsignarVacaciones(request):
     return render(request, 'empleado/vacaciones/asignacion.html', {'data': valores})
 
 
-def CalcularVacaciones(request):
-    pass
+def CalcularVacaciones(request, anio):
+    # anio = date.today().year
 
-def get_progress(request, task_id):
-    result = AsyncResult(task_id)
-    response_data = {
-        'state': result.state,
-        'details': result.info,
-    }
-    return HttpResponse(json.dumps(response_data), content_type='application/json')
+    # obtenemos todos los registros activos con fecha de ingreso informada
+    # filtro = Q(created__year=2018)
+    filtro = Q(fec_ing__isnull=False) & Q(active=True)
+    empleados = models.Empleado.objects.filter(filtro)
+
+    # calculamos la información para el año 2018
+    for empleado in empleados:
+        x = date(anio, 12, 31)
+
+        if (empleado.fec_ing != None):
+            trabajado = int((x - empleado.fec_ing).days / 365)
+            if trabajado >= 1 and trabajado < 5:
+                total = 14
+            elif trabajado >= 5 and trabajado < 10:
+                total = 21
+            elif trabajado >= 10 and trabajado < 20:
+                total = 28
+            elif trabajado >= 20:
+                total = 35
+            else:
+                total = int((x - empleado.fec_ing).days / 30)
+
+        if total > 0:
+            vaca = models.DiasVacaciones()
+            vaca.empleado = empleado
+            vaca.periodo = anio
+            vaca.dias_vacaciones = total
+            vaca.dias_disfrutados = 0
+            vaca.dias_pendientes = 0
+            vaca.save()
+
+    return HttpResponse('Se cargaron los días de vacaciones para el año {{anio}}')
+
+
+# def get_progress(request, task_id):
+#     result = AsyncResult(task_id)
+#     response_data = {
+#         'state': result.state,
+#         'details': result.info,
+#     }
+#     return HttpResponse(json.dumps(response_data), content_type='application/json')
+

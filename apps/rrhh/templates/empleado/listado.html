@@ -41,13 +41,16 @@
                         <td>
                             {# comprobamos si el usuario pertenece al grupo RRHH #}
                             {% if request.user|has_group:"RRHH" %}
-                            <a href="{{object.get_update_url}}" target="_blank">
+                            <a href="{{object.get_update_url}}" target="_blank" data-toggle="tooltip" title="Modificación">
                                 <span class="glyphicon glyphicon-pencil"></span>
                             </a> |
+                            {% comment %}
                             <a onclick="return abrir_modal('{% url 'rrhh:empl_delete' object.pk %}')">
                                 <span class="glyphicon glyphicon-trash"></span>
                             </a> |
-                            <a href="{% url 'rrhh:empl_vaca' object.pk %}" data-toggle="tooltip" title="Vacaciones!">
+                            {% endcomment %}
+                            {% now "Y" as current_year %}
+                            <a href="{% url 'rrhh:empl_vaca' object.pk current_year %}" data-toggle="tooltip" title="Vacaciones">
                                 <span class="glyphicon glyphicon-time"></span>
                             </a>
                             {% endif %}
@@ -75,13 +78,17 @@
                 </div>
             </div>
 
+            {# ya no hace falta, se pasará el año como parámetro en la URL #}
+            {% comment %}
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Vacaciones</h5>
                     <p class="card-text">Asignación global de vacaciones a los empleados activos.</p>
-                    <a href="{% url 'rrhh:empl_vaca_asignar' %}" class="btn btn-primary">Asignar ...</a>
+                    {% now "Y" as current_year %}
+                    <a href="{% url 'rrhh:empl_vaca_asignar' current_year %}" class="btn btn-primary">Asignar ...</a>
                 </div>
             </div>
+            {% endcomment %}
         </div>
     </div>
 {% endblock %}

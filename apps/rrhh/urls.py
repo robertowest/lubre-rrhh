@@ -20,16 +20,17 @@ urlpatterns = [
     path('empleado/detalle/<int:pk>', views.EmpleadoDetail.as_view(), name='empl_detail'),
 
     # vacaciones
-    path('empleado/<int:empl_id>/vacaciones/', views.VacacionesReadView.as_view(), name='empl_vaca'),
-    path('empleado/<int:empl_id>/vacaciones/solicitar/', views.VacacionesCreateView.as_view(), name='empl_vaca_create'),
-    path('empleado/<int:empl_id>/vacaciones/<int:pk>/modificar/', views.VacacionesUpdateView.as_view(), name='empl_vaca_update'),
-    path('empleado/<int:empl_id>/vacaciones/<int:pk>/eliminar/', views.VacacionesDeleteView.as_view(), name='empl_vaca_delete'),
-    path('empleado/<int:empl_id>/vacaciones/<int:pk>/aceptar/', views.VacacionesAceptar, name='empl_vaca_aceptar'),
-    path('empleado/<int:empl_id>/vacaciones/<int:pk>/pendiente/', views.VacacionesPendiente, name='empl_vaca_pendiente'),
+    path('empleado/<int:empl_id>/vacaciones/<int:anio>/', views.VacacionesReadView.as_view(), name='empl_vaca'),
+    path('empleado/<int:empl_id>/vacaciones/solicitar/<int:anio>/', views.VacacionesCreateView.as_view(), name='empl_vaca_create'),
+    path('empleado/<int:empl_id>/vacaciones/modificar/<int:pk>/', views.VacacionesUpdateView.as_view(), name='empl_vaca_update'),
+    path('empleado/vacaciones/eliminar/<int:pk>/', views.VacacionesDeleteView.as_view(), name='empl_vaca_delete'),
 
-    path('empleado/asignar/vacaciones/', views.AsignarVacaciones, name='empl_vaca_asignar'),
-    path('empleado/calcular/vacaciones/', views.CalcularVacaciones, name='empl_vaca_calcular'),
-    path('<task_id>', views.get_progress, name='task_status'),
+    path('empleado/<int:empl_id>/vacaciones/aceptar/<int:pk>/', views.VacacionesAceptar, name='empl_vaca_aceptar'),
+    path('empleado/<int:empl_id>/vacaciones/pendiente/<int:pk>/', views.VacacionesPendiente, name='empl_vaca_pendiente'),
+
+    path('empleado/asignar/vacaciones/<int:anio>/', views.AsignarVacaciones, name='empl_vaca_asignar'),
+    path('empleado/calcular/vacaciones/<int:anio>/', views.CalcularVacaciones, name='empl_vaca_calcular'),
+    # path('<task_id>', views.get_progress, name='task_status'),
 
     # canales de comunicacion
     path('canal/nuevo/', views.CanalCreate.as_view(), name='canal_new'),

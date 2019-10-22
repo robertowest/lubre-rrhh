@@ -134,6 +134,37 @@ class FeriadoAdmin(admin.ModelAdmin):
 
 
 admin.site.register(models.Feriados, FeriadoAdmin)
-
-
 admin.site.register(models.Tarea)
+
+
+# -------------------------------------------------------------------
+# Vacaciones
+# -------------------------------------------------------------------
+class DiasVacacionesAdmin(admin.ModelAdmin):
+    def fld_empleado(self, obj):
+        return '{}, {}'.format(obj.empleado.persona.apellido, obj.empleado.persona.nombre)
+    fld_empleado.admin_order_field = 'empleado'   # ordenado
+    fld_empleado.short_description = 'Empleado'
+
+    list_display = ['fld_empleado', 'periodo', 'dias_vacaciones', 'dias_disfrutados', 'dias_pendientes']
+    list_filter = ['active', 'periodo']
+    search_fields = ['empleado__persona__apellido', 'empleado__persona__nombre']
+    list_per_page = 20
+
+
+admin.site.register(models.DiasVacaciones, DiasVacacionesAdmin)
+
+
+class VacacionesAdmin(admin.ModelAdmin):
+    def fld_empleado(self, obj):
+        return '{}, {}'.format(obj.empleado.persona.apellido, obj.empleado.persona.nombre)
+    fld_empleado.admin_order_field = 'empleado'   # ordenado
+    fld_empleado.short_description = 'Empleado'
+
+    list_display = ['fld_empleado', 'fec_inicio', 'fec_fin', 'fec_solicitud', 'estado']
+    list_filter = ['estado']
+    search_fields = ['empleado__persona__apellido', 'empleado__persona__nombre']
+    list_per_page = 20
+
+
+admin.site.register(models.Vacaciones, VacacionesAdmin)

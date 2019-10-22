@@ -21,14 +21,16 @@
         {{data.dias_totales}} días de vacaciones, lo que es igual a <b>{{data.dias_habiles}}</b> días hábiles.
     </pre>
 
-    <a href="{% url 'rrhh:empl_vaca_calcular' %}" class="btn btn-primary float-right">Procesar &rarr;</a>
+    <a href="{% url 'rrhh:empl_vaca_calcular' data.periodo %}" class="btn btn-primary float-right">Procesar vacaciones {{data.periodo}}</a>
 </div>
 
+{% comment %}
 <div id="progress-wrapper">
     <button id="progress-bar-trigger">Run</button>
     <div id="progress-bar" style="background-color: blue; width: 0%;">&nbsp;</div>
     <div id="progress-bar-message">Waiting for progress to start...</div>
 </div>
+{% endcomment %}
 
 {% endblock %}
 
