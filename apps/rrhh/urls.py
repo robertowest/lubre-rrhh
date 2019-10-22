@@ -61,4 +61,7 @@ urlpatterns = [
                                                                   name='mantenimiento_create'),
     path('asignacion/<int:empl_id>/activo/<int:activo_id>/editar/<int:pk>', views.MantenimientoUpdateView.as_view(),
                                                                             name='mantenimiento_update'),
+
+    # listado de vacaciones
+    path('vacaciones/', views.VacacionesView.as_view(), name='vaca_index'),
 ]

@@ -75,6 +75,7 @@ class EmpleadoFiltro(MyModelForm):
     # CHOICES = [(False, 'Todos'), (True, 'Activos')]
     # estado = forms.ChoiceField(label='Estado', initial=True, choices=CHOICES)
 
+
 class ComunicacionForm(MyModelForm):
     class Meta:
         model = models.Comunicacion
@@ -221,3 +222,19 @@ class VacacionesForm(MyBSModelForm):
                 raise forms.ValidationError("La fecha de inicio no puede ser posterior a la de finalización.")
 
         return cleaned_data
+
+
+class VacacionesFiltro(MyModelForm):
+    class Meta:
+        model = models.Vacaciones
+        fields = ('empleado', 'periodo', 'estado')
+
+    def __init__(self, *args, **kwargs):
+        super(VacacionesFiltro, self).__init__(*args, **kwargs)
+        self.fields['empleado'].required = False
+        self.fields['periodo'].initial = datetime.date.today().year
+        self.fields['estado'].initial = None
+        self.fields['estado'].required = False
+
+    # empleado = forms.ChoiceField(models.Empleado)
+    periodo = forms.IntegerField(label='Período', required=False)

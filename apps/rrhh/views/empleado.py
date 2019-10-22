@@ -146,8 +146,8 @@ class VacacionesCreateView(LoginRequiredMixin, BSModalCreateView):
 
 class VacacionesUpdateView(LoginRequiredMixin, BSModalUpdateView):
     model = models.Vacaciones
-    template_name = 'empleado/vacaciones/forms/vacaciones.html'
     form_class = forms.VacacionesForm
+    template_name = 'empleado/vacaciones/forms/vacaciones.html'
     success_message = 'Registro actualizado correctamente.'
 
     def get_success_url(self):
@@ -229,7 +229,10 @@ def CalcularVacaciones(request, anio):
             elif trabajado >= 20:
                 total = 35
             else:
-                total = int((x - empleado.fec_ing).days / 30)
+                if empleado.fec_ing.month < 7:
+                    total = 14
+                else:
+                    total = int((x - empleado.fec_ing).days / 30)
 
         if total > 0:
             vaca = models.DiasVacaciones()
@@ -251,3 +254,33 @@ def CalcularVacaciones(request, anio):
 #     }
 #     return HttpResponse(json.dumps(response_data), content_type='application/json')
 
+
+class VacacionesView(ListView, FormView):
+    def get_queryset(self):
+        form = self.form_class(self.request.POST or None)
+        if form.is_valid():
+            queryset = super(VacacionesView, self).get_queryset()
+        else:
+            queryset = super(VacacionesView, self).get_queryset()\
+                .filter(periodo=form.fields['periodo'].initial)\
+                .filter(active=True)
+        # return queryset.order_by('persona')
+        # queryset = models.Vacaciones.objects.filter(active=True)
+        return queryset
+
+    def post(self, request, *args, **kwargs):
+        self.object_list = self.get_queryset()
+        form = self.form_class(self.request.POST or None)
+        if form.is_valid():
+            if form.cleaned_data['empleado']:
+                self.object_list = self.object_list.filter(empleado=form.cleaned_data['empleado'])
+            if form.cleaned_data['periodo']:
+                self.object_list = self.object_list.filter(periodo=form.cleaned_data['periodo'])
+            if form.cleaned_data['estado']:
+                self.object_list = self.object_list.filter(estado=form.cleaned_data['estado'])
+            self.object_list = self.object_list.filter(active=True)
+        return self.render_to_response(self.get_context_data(object_list=self.object_list, form=form))
+
+    model = models.Vacaciones
+    form_class = forms.VacacionesFiltro
+    template_name = 'vacaciones/index.html'

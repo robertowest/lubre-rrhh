@@ -123,7 +123,10 @@ class Empleado(AuditoriaMixin):
             elif trabajado >= 20:
                 total = 35
             else:
-                total = int((x - self.fec_ing).days / 30)
+                if self.fec_ing.month < 7:
+                    total = 14
+                else:
+                    total = int((x - self.fec_ing).days / 30)
 
             habiles = int((total / 7) * 5)
 
@@ -273,7 +276,7 @@ class Vacaciones(AuditoriaMixin):
         app_label = 'rrhh'
         verbose_name = 'Vacación'
         verbose_name_plural = 'Vacaciones'
-        ordering = ['fec_inicio']
+        ordering = ['empleado', 'periodo', 'fec_inicio']
 
     def __str__(self):
         return '{} - {}'.format(self.fec_inicio.strftime("%d/%m/%y"), self.fec_fin.strftime("%d/%m/%y"))
