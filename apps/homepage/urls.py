@@ -10,4 +10,11 @@ urlpatterns = [
     path('example/', views.example, name='example'),
     path('demo/', views.demo, name='demo'),
     path('modal/', views.modal, name='modal'),
+    path('prueba/', views.prueba, name='prueba'),
+]
+
+
+from django.views.generic import TemplateView
+urlpatterns += [
+    path('chart/', TemplateView.as_view(template_name='chart.html'), name='chart'),
 ]
