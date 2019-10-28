@@ -5,14 +5,14 @@
     <style>
         #chartdiv {
               width: 100%;
-              height: 400px;
+              height: 1600px;
         }
     </style>
 {% endblock %}
 
 
 {% block content %}
-    {{parametro}}
+    <h1>Gráfico de Vacaciones</h1>
     <div id="chartdiv"></div>
 {% endblock %}
 
@@ -28,18 +28,6 @@
 
     <!-- Chart code -->
     <script>
-        $(window).on('load2', function () {
-            alert('lectura de django');
-
-            alert('{{ parametro }}');
-
-            var datos = [];
-            var cadena = {"category": "Eleonora", "start": "2019-01-01", "end": "2019-01-14", "task": "Vacaciones"};
-            datos.push(cadena);
-            alert( datos );
-
-        });
-
         am4core.ready(function() {
             // Themes begin
             am4core.useTheme(am4themes_animated);
@@ -83,7 +71,13 @@
                   "task": "Vacaciones"
                 },
             ];
-            // chart.data = '{{ parametro }}';
+
+            // reemplazamos los datos
+            var chartData = '{{parametro}}'
+            chartData = chartData.replace(/\&#39;/g,'"');
+            chart.data = jQuery.parseJSON(chartData);
+
+            // chart.data = jQuery.parseJSON('{{ parametro }}');
             // alert(chart.data);
             // chart.data = [{'category': 'Oliva', 'start': '2019-07-01', 'end': '2019-07-14', 'task': 'Vacaciones'}, {'category': 'Oliva', 'start': '2019-08-17', 'end': '2019-08-18', 'task': 'Vacaciones'}, {'category': 'Perez Barot', 'start': '2019-10-14', 'end': '2019-10-27', 'task': 'Vacaciones'}, {'category': 'Acevedo', 'start': '2019-10-23', 'end': '2019-10-24', 'task': 'Vacaciones'}, {'category': 'Oliva', 'start': '2019-11-16', 'end': '2019-11-30', 'task': 'Vacaciones'}];
             // chart.data = [{'category': 'Acevedo', 'start': '2018-10-25', 'end': '2018-10-28', 'task': 'Vacaciones'}, {'category': 'Oliva', 'start': '2019-07-01', 'end': '2019-07-14', 'task': 'Vacaciones'}, {'category': 'Oliva', 'start': '2019-08-17', 'end': '2019-08-18', 'task': 'Vacaciones'}, {'category': 'Perez Barot', 'start': '2019-10-14', 'end': '2019-10-27', 'task': 'Vacaciones'}, {'category': 'Acevedo', 'start': '2019-10-23', 'end': '2019-10-24', 'task': 'Vacaciones'}, {'category': 'Oliva', 'start': '2019-11-16', 'end': '2019-11-30', 'task': 'Vacaciones'}, {'category': 'Acevedo', 'start': '2020-01-01', 'end': '2020-01-06', 'task': 'Vacaciones'}, {'category': 'Acevedo', 'start': '2020-01-01', 'end': '2020-01-02', 'task': 'Vacaciones'}, {'category': 'Ramos', 'start': '2020-01-02', 'end': '2020-01-15', 'task': 'Vacaciones'}];

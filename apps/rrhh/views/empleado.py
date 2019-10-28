@@ -259,27 +259,19 @@ def CalcularVacaciones(request, anio):
 
 class VacacionesView(ListView, FormView):
     def get_context_data(self, **kwargs):
+        # datos = super(VacacionesView, self).get_queryset().order_by('fec_inicio')
         # datos = super(VacacionesView, self).get_queryset().filter(fec_inicio__year=2019).order_by('fec_inicio')
-        datos = super(VacacionesView, self).get_queryset().order_by('fec_inicio')
+        datos = super(VacacionesView, self).get_queryset().filter(periodo=2019).order_by('fec_inicio')
 
-        convert = []
+        dataSource = []
         for dato in datos:
-            convert.append({'category': dato.empleado.persona.apellido,
-                            'start': dato.fec_inicio.strftime('%Y-%m-%d'),
-                            'end': dato.fec_fin.strftime('%Y-%m-%d'),
-                            'task': 'Vacaciones'})
-            # {
-            #     "category": "Guillermo",
-            #     "start": "2019-01-25",
-            #     "end": "2019-02-14",
-            #     "color": colorSet.getIndex(6).brighten(0),
-            #     "task": "Vacaciones"
-            # },
-
-        # datos2json = serializers.serialize('json', convert)
+            dataSource.append({'category': dato.empleado.persona.apellido,
+                               'start': dato.fec_inicio.strftime('%Y-%m-%d'),
+                               'end': dato.fec_fin.strftime('%Y-%m-%d'),
+                               'task': 'Vacaciones'})
 
         context = super(VacacionesView, self).get_context_data(**kwargs)
-        context['parametro'] = convert  # json.dumps(convert)
+        context['parametro'] = dataSource  # json.dumps(dataSource)
         return context
 
     def get_queryset(self):
