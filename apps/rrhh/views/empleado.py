@@ -57,21 +57,47 @@ class EmpleadoShow(LoginRequiredMixin, ListView, FormView):
 
 
 class EmpleadoDetail(LoginRequiredMixin, DetailView):
+    model = models.Empleado
+    template_name = 'empleado/detalle.html'
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # context['comunicaciones'] = context['empleado'].comunicaciones.all()
-        context['domicilio'] = \
-            models.Domicilio.objects.filter(empleado_id=context['empleado'].persona_id)
+        context['tab'] = self.request.session['tab']
+        # # context['comunicaciones'] = context['empleado'].comunicaciones.all()
+        # context['domicilio'] = \
+        #     models.Domicilio.objects.filter(empleado_id=context['empleado'].persona_id)
         context['comunicaciones'] = \
             models.Comunicacion.objects.filter(empleado_id=context['empleado'].persona_id).order_by('tipo')
-        context['denuncias'] = models.Denuncia_ART.objects.filter(empleado_id=context['empleado'].persona_id)
-        context['activos'] = models.ActivoMantenimientoView.objects.filter(responsable_id=context['empleado'].persona_id)
+        # # context['denuncias'] = models.Denuncia_ART.objects.filter(empleado_id=context['empleado'].persona_id)
+        # # context['activos'] = models.ActivoMantenimientoView.objects.filter(responsable_id=context['empleado'].persona_id)
         return context
 
-    model = models.Empleado
-    # form_class = Empleado
-    template_name = 'empleado/detalle.html'
-    # template_name = 'empleado/activos.html'
+
+def EmpleadoDetailAjax(request):
+    empleadoId = request.GET['pk']
+    solapa = request.GET['tab']
+    request.session['tab'] = solapa
+
+    if solapa == 'datos':
+        template = 'empleado/detalle/_info.html'
+        info = models.Empleado.objects.get(persona_id=empleadoId)
+        context = {'object': info}
+        return render(request, template, context)
+        # domi = models.Domicilio.objects.filter(empleado_id=empleadoId)
+
+    elif solapa == 'denuncias':
+        data = models.Denuncia_ART.objects.filter(empleado_id=empleadoId).filter(active=True)
+        template = 'empleado/detalle/_denuncias.html'
+
+    elif solapa == 'activos':
+        data = models.Activo.objects.filter(responsable_id=empleadoId).filter(active=True)
+        template = 'empleado/detalle/_activos.html'
+
+    elif solapa == 'vacaciones':
+        data = models.Vacaciones.objects.filter(empleado_id=empleadoId).filter(active=True)
+        template = 'empleado/detalle/_vacaciones.html'
+
+    return render(request, template, {'object_list': data})
 
 
 class EmpleadoCreate(LoginRequiredMixin, CreateView):
@@ -167,11 +193,12 @@ class VacacionesDeleteView(LoginRequiredMixin, BSModalDeleteView):
 
 
 def VacacionesAceptar(request, empl_id, pk):
-    vaca = models.Vacaciones.objects.get(id=pk)
-    vaca.estado = 'A'
-    vaca.save()
+    # vaca = models.Vacaciones.objects.get(id=pk)
+    # vaca.estado = 'A'
+    # vaca.save()
 
-    url = reverse_lazy('rrhh:empl_vaca', kwargs={'empl_id':empl_id, 'anio':date.today().year})
+    # url = reverse_lazy('rrhh:empl_vaca', kwargs={'empl_id':empl_id, 'anio':date.today().year})
+    url = reverse_lazy('rrhh:empl_detail', kwargs={'pk': empl_id})
     return redirect( url )
 
 

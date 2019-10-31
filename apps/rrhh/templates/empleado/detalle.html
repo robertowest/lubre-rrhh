@@ -11,36 +11,42 @@
         </div>
     </div>
     <hr>
+    tab: {{tab}}
+
     <div class="row">
         <div class="col-md-9 col-sm-12">
             <ul class="nav nav-tabs" id="myTab">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#datos" data-toggle="tab">Datos Personales</a>
+                    <a class="nav-link active" href="#div_datos" id="datos" data-toggle="tab">Datos Personales</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#denuncias" data-toggle="tab">Denuncias ART</a>
+                    <a class="nav-link" href="#div_denuncias" id="denuncias" data-toggle="tab">Denuncias ART</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#activos" data-toggle="tab">Activos</a>
+                    <a class="nav-link" href="#div_activos" id="activos" data-toggle="tab">Activos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#div_vacaciones" id="vacaciones" data-toggle="tab">Vacaciones</a>
                 </li>
             </ul>
 
             <div class="tab-content">
-                <div class="tab-pane active" id="datos">
-                    {% include 'empleado/detalle_campos.html' %}
+                <div class="tab-pane active" id="div_datos">
+                    {# include 'empleado/detalle/_info.html' #}
                 </div>
 
-                <div class="tab-pane fade" id="denuncias">
-                    {% include 'empleado/denuncias.html' %}
+                <div class="tab-pane fade" id="div_denuncias">
                 </div>
 
-                <div class="tab-pane fade" id="activos">
-                    {% include 'empleado/activos.html' %}
+                <div class="tab-pane fade" id="div_activos">
+                </div>
+
+                <div class="tab-pane fade" id="div_vacaciones">
                 </div>
             </div>
         </div>
 
-        <!--  style="max-width: 255px;"
+        <!-- style="max-width: 255px;"
         <div class="col-sm-3 hidden-xs">
         style="max-width: 300px;"
         -->
@@ -141,44 +147,44 @@
     <!-- JS necesarios para que funcione #modal -->
     <script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
     <script type="text/javascript">
-        $(function() {
-            $(".create-modal").each(function() {
-                $(this).modalForm({
-                    formURL: $(this).data('url'),
-                });
-            });
-
-            $(".read-modal").each(function() {
-                $(this).modalForm({
-                    formURL: $(this).data('url'),
-                    modalContent: ".modal-dialog",
-                    modalForm: ".modal-dialog form",
-                });
-            });
-
-            $(".update-modal").each(function () {
-                $(this).modalForm({
-                    formURL: $(this).data('url'),
-                    modalContent: ".modal-dialog",
-                    modalForm: ".modal-dialog form",
-                });
-            });
-
-            $(".delete-modal").each(function () {
-                $(this).modalForm({
-                    formURL: $(this).data('url'),
-                });
-            });
-
-            // hide message
-            $(".alert").fadeTo(2000, 500).slideUp(500, function() {
-                $(".alert").slideUp(500);
-            });
-
-            // autofocus to first input field of a modal
-            $('.modal').on('shown.bs.modal', function() {
-                $('form').find('input[type=text]').filter(':visible:first').focus();
-            });
+        $(document).ready(function() {
+            submitRequest('{{tab}}');
         });
+
+        // JS para captura de navegación en solapas
+        $('.nav-link').on('click', function() {
+            var urlPath = '{% url 'rrhh:empl_detail_ajax' %}';
+            var pkID = '{{ object.pk }}';
+            var href = $(this).attr('href');
+            var tab = $(this).attr('id');
+
+            if (href != '#datos') {
+                $.ajax({
+                    url: urlPath,
+                    data: {pk: pkID, tab: tab},
+                    success: function(response) {
+                        $(href).html(response);
+                    },
+                    error: function(xhr, status, error) {
+                        // $(href).html(xhr.responseText);
+                        $(href).html('<br><b style="color: red">Error al visualizar los datos !<b>');
+                    }
+                });
+            }
+        });
+
+        function submitRequest(buttonId) {
+            if (document.getElementById(buttonId) == null
+                    || document.getElementById(buttonId) == undefined) {
+                return;
+            }
+            if (document.getElementById(buttonId).dispatchEvent) {
+                var e = document.createEvent("MouseEvents");
+                e.initEvent("click", true, true);
+                document.getElementById(buttonId).dispatchEvent(e);
+            } else {
+                document.getElementById(buttonId).click();
+            }
+        }
     </script>
 {% endblock %}

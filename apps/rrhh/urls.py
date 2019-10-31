@@ -18,6 +18,7 @@ urlpatterns = [
 
     # detalle del empleado
     path('empleado/detalle/<int:pk>', views.EmpleadoDetail.as_view(), name='empl_detail'),
+    path('empleado/detalle/ajax/', views.EmpleadoDetailAjax, name='empl_detail_ajax'),
 
     # vacaciones
     path('empleado/<int:empl_id>/vacaciones/<int:anio>/', views.VacacionesReadView.as_view(), name='empl_vaca'),
