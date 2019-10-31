@@ -23,6 +23,10 @@ class Persona(AuditoriaMixin):
     def nombre_apellido(self):
         return '{} {}'.format(self.nombre, self.apellido)
 
+    @property
+    def apellido_nombre(self):
+        return '{}, {}'.format(self.apellido, self.nombre)
+
     SEXO = (('M', 'Masculino'), ('F', 'Femenino'))
 
     apellido = models.CharField(max_length=30, blank=False, null=False)

@@ -258,30 +258,65 @@ def CalcularVacaciones(request, anio):
 #     return HttpResponse(json.dumps(response_data), content_type='application/json')
 
 class VacacionesView(ListView, FormView):
+    model = models.Vacaciones
+    form_class = forms.VacacionesFiltro
+    template_name = 'vacaciones/grafico.html'
+
     def get_context_data(self, **kwargs):
-        # datos = super(VacacionesView, self).get_queryset().order_by('fec_inicio')
-        # datos = super(VacacionesView, self).get_queryset().filter(fec_inicio__year=2019).order_by('fec_inicio')
-        datos = super(VacacionesView, self).get_queryset().filter(periodo=2019).order_by('fec_inicio')
+        # datos = super(VacacionesView, self).get_queryset().filter(periodo=2019).order_by('fec_inicio')
+        datos = super(VacacionesView, self).get_context_data()['object_list']
 
         dataSource = []
         for dato in datos:
             dataSource.append({'category': dato.empleado.persona.apellido,
                                'start': dato.fec_inicio.strftime('%Y-%m-%d'),
                                'end': dato.fec_fin.strftime('%Y-%m-%d'),
-                               'task': 'Vacaciones'})
+                               'color': ('green' if dato.estado == 'A' else 'red'),
+                               'task': dato.empleado.persona.nombre})
 
         context = super(VacacionesView, self).get_context_data(**kwargs)
-        context['parametro'] = dataSource  # json.dumps(dataSource)
+        context['parametro'] = dataSource
         return context
 
     def get_queryset(self):
         form = self.form_class(self.request.POST or None)
         if form.is_valid():
-            queryset = super(VacacionesView, self).get_queryset()
+            queryset = super(VacacionesView, self).get_queryset().order_by('fec_inicio')
         else:
             queryset = super(VacacionesView, self).get_queryset()\
                 .filter(periodo=form.fields['periodo'].initial)\
-                .filter(active=True)
+                .filter(active=True).order_by('fec_inicio')
+        return queryset
+
+    def post(self, request, *args, **kwargs):
+        self.object_list = self.get_queryset()
+        form = self.form_class(self.request.POST or None)
+        if form.is_valid():
+            if form.cleaned_data['empleado']:
+                self.object_list = self.object_list.filter(empleado=form.cleaned_data['empleado'])
+            if form.cleaned_data['periodo']:
+                self.object_list = self.object_list.filter(periodo=form.cleaned_data['periodo'])
+            if form.cleaned_data['estado']:
+                self.object_list = self.object_list.filter(estado=form.cleaned_data['estado'])
+            if form.cleaned_data['mes']:
+                self.object_list = self.object_list.filter(fec_inicio__month=form.cleaned_data['mes'])
+            self.object_list = self.object_list.filter(active=True).order_by('fec_inicio')
+        return self.render_to_response(self.get_context_data(object_list=self.object_list, form=form))
+
+
+class VacacionesListadoView(ListView, FormView):
+    model = models.Vacaciones
+    form_class = forms.VacacionesFiltro
+    template_name = 'vacaciones/listado.html'
+
+    def get_queryset(self):
+        form = self.form_class(self.request.POST or None)
+        if form.is_valid():
+            queryset = super(VacacionesListadoView, self).get_queryset().order_by('fec_inicio')
+        else:
+            queryset = super(VacacionesListadoView, self).get_queryset()\
+                .filter(periodo=form.fields['periodo'].initial)\
+                .filter(active=True).order_by('fec_inicio')
         # return queryset.order_by('persona')
         # queryset = models.Vacaciones.objects.filter(active=True)
         return queryset
@@ -296,49 +331,8 @@ class VacacionesView(ListView, FormView):
                 self.object_list = self.object_list.filter(periodo=form.cleaned_data['periodo'])
             if form.cleaned_data['estado']:
                 self.object_list = self.object_list.filter(estado=form.cleaned_data['estado'])
-            self.object_list = self.object_list.filter(active=True)
-
-        self.exportCVS()
+            if form.cleaned_data['mes']:
+                self.object_list = self.object_list.filter(fec_inicio__month=form.cleaned_data['mes'])
+            self.object_list = self.object_list.filter(active=True).order_by('fec_inicio')
         return self.render_to_response(self.get_context_data(object_list=self.object_list, form=form))
 
-    def exportCVS(self):
-        buffer = io.StringIO()
-        wr = csv.writer(buffer, quoting=csv.QUOTE_ALL)
-        for objeto in self.object_list:
-            row = [
-                objeto.empleado.legajo,
-                objeto.empleado,
-                objeto.periodo,
-                objeto.fec_inicio,
-                objeto.fec_fin,
-                objeto.dias_solicitados,
-                objeto.estado
-            ]
-            wr.writerow(row)
-
-        buffer.seek(0)
-        response = HttpResponse(buffer, content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="reporte.csv"'
-
-        # # crear el objeto HttpResponse con sus cabeceras
-        # response = HttpResponse(content_type='text/csv')
-        # response['Content-Disposition'] = 'attachment; filename="reporte.csv"'
-        # # Se usa el response como un archivo destino
-        # writer = csv.writer(response)
-        # for objeto in self.object_list:
-        #     row = [
-        #         objeto.empleado.legajo,
-        #         objeto.empleado,
-        #         objeto.periodo,
-        #         objeto.fec_inicio,
-        #         objeto.fec_fin,
-        #         objeto.dias_solicitados,
-        #         objeto.estado
-        #     ]
-        #     writer.writerow(row)
-        return response
-
-    model = models.Vacaciones
-    form_class = forms.VacacionesFiltro
-    # template_name = 'vacaciones/index.html'
-    template_name = 'vacaciones/grafico.html'

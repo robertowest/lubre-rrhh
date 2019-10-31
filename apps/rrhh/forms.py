@@ -225,6 +225,9 @@ class VacacionesForm(MyBSModelForm):
 
 
 class VacacionesFiltro(MyModelForm):
+    # empleado = forms.ChoiceField(models.Empleado)
+    periodo = forms.IntegerField(label='Período', required=False)
+
     class Meta:
         model = models.Vacaciones
         fields = ('empleado', 'periodo', 'estado')
@@ -236,5 +239,14 @@ class VacacionesFiltro(MyModelForm):
         self.fields['estado'].initial = None
         self.fields['estado'].required = False
 
-    # empleado = forms.ChoiceField(models.Empleado)
-    periodo = forms.IntegerField(label='Período', required=False)
+        # agregamos un campo que no existe en el modelo
+        CHOICES = ((None, 'Todos'),
+                   (1, 'Enero'), (2, 'Febrero'), (3, 'Marzo'), (4, 'Abril'),
+                   (5, 'Mayo'), (6, 'Junio'), (7, 'Julio'), (8, 'Agosto'),
+                   (9, 'Septiembre'), (10, 'Octubre'), (11, 'Noviembre'), (12, 'Diciembre'))
+        self.fields['mes'] = forms.ChoiceField(choices=CHOICES)
+
+        # obtenemos el mes siguiente de la fecha actual
+        # (nos vamos al primer día del mes y le sumamos 32 días para llegar al próximo mes)
+        mes = ((datetime.date.today().replace(day=1)) + datetime.timedelta(days=32)).month
+        self.fields['mes'].initial = mes

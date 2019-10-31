@@ -64,4 +64,5 @@ urlpatterns = [
 
     # listado de vacaciones
     path('vacaciones/', views.VacacionesView.as_view(), name='vaca_index'),
+    path('vacaciones/listado/', views.VacacionesListadoView.as_view(), name='vaca_listado'),
 ]

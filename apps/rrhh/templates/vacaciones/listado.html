@@ -1,0 +1,46 @@
+{% extends "vacaciones/index.html" %}
+
+{% load static %}
+
+{% block content2 %}
+    <table class="table table-hover" id="autotabla" data-col="3">
+        <thead>
+            <tr>
+                <th>Legajo</th>
+                <th>Empleado</th>
+                <th>Período</th>
+                <th>F. Inicio</th>
+                <th>F. Fin</th>
+                <th>Días</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for object in object_list %}
+            <tr>
+                <td>{{object.empleado.legajo}}</td>
+                <td>{{object.empleado}}</td>
+                <td>{{object.periodo}}</td>
+                <td>{{object.fec_inicio|date:"d/m/Y"}}</td>
+                <td>{{object.fec_fin|date:"d/m/Y"}}</td>
+                <td class="text-center">{{object.dias_solicitados}}</td>
+                <td class="text-center">
+                    {% if object.estado == 'A' %}
+                    <span class="mr-1 glyphicon glyphicon-thumbs-up text-success" data-toggle="tooltip" title="Aprobadas"></span>
+                    {% else %}
+                    <span class="mr-1 glyphicon glyphicon-thumbs-down text-danger" data-toggle="tooltip" title="Pendientes"></span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {# paginación #}
+    {% include 'paginator.html' %}
+{% endblock %}
+
+{% block js2 %}
+    <!-- JS necesarios para que funcione autotabla -->
+    <script src="{% static 'js/autotabla-col.js' %}"></script>
+{% endblock js2 %}
