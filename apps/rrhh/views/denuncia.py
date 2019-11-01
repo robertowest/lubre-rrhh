@@ -8,6 +8,7 @@ from apps.rrhh import models, forms
 class DenunciaCreateView(LoginRequiredMixin, BSModalCreateView):
     template_name = 'denuncia/formulario.html'
     form_class = forms.DenunciaForm
+    success_message = 'La denuncia fue creada correctamente.'
 
     def get_success_url(self):
         return reverse_lazy('rrhh:empl_detail', kwargs={'pk': self.kwargs['empl_id']})
@@ -22,6 +23,7 @@ class DenunciaUpdateView(LoginRequiredMixin, BSModalUpdateView):
     model = models.Denuncia_ART
     template_name = 'denuncia/formulario.html'
     form_class = forms.DenunciaForm
+    success_message = 'La denuncia fue modificada correctamente.'
 
     def get_success_url(self):
         return reverse_lazy('rrhh:empl_detail', kwargs={'pk': self.kwargs['empl_id']})
@@ -30,7 +32,7 @@ class DenunciaUpdateView(LoginRequiredMixin, BSModalUpdateView):
 class DenunciaDeleteView(LoginRequiredMixin, BSModalDeleteView):
     model = models.Denuncia_ART
     template_name = 'denuncia/confirmar_borrado.html'
-    success_message = 'La denuncia fue eliminada correctamente.'
+    success_message = 'La denuncia fue eliminada/desactivada correctamente.'
 
     def get_success_url(self):
         return reverse_lazy('rrhh:empl_detail', kwargs={'pk': self.kwargs['empl_id']})

@@ -11,10 +11,18 @@
         </div>
     </div>
     <hr>
-    tab: {{tab}}
 
     <div class="row">
         <div class="col-md-9 col-sm-12">
+            <!-- mensajes del sistema -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
             <ul class="nav nav-tabs" id="myTab">
                 <li class="nav-item">
                     <a class="nav-link active" href="#div_datos" id="datos" data-toggle="tab">Datos Personales</a>
@@ -32,7 +40,6 @@
 
             <div class="tab-content">
                 <div class="tab-pane active" id="div_datos">
-                    {# include 'empleado/detalle/_info.html' #}
                 </div>
 
                 <div class="tab-pane fade" id="div_denuncias">
@@ -50,85 +57,7 @@
         <div class="col-sm-3 hidden-xs">
         style="max-width: 300px;"
         -->
-        <div class="col-md-3 hidden-sm hidden-xs">
-            <div class="card card-info">
-                <div class="card-header">
-                    Foto <i class="fa fa-photo fa-1x"></i>
-                </div>
-                <div class="card-body" style="text-align: center;">
-                    {% if object.imagen %}
-                    <img class="rounded-circle img-fluid" src="{{ object.imagen.url }}">
-                    {% else %}
-                    <img class="rounded-circle img-responsive" src="https://bootdey.com/img/Content/avatar/avatar1.png">
-                    {% endif %}
-                </div>
-            </div>
-            <br>
-
-            {% if comunicaciones %}
-            <div class="card">
-                <div class="card-header">
-                    Comunicación <i class="fa fa-phone fa-1x"></i>
-                </div>
-                <div class="list-group list-group-flush">
-                    {% for obj in comunicaciones %}
-                        {% if obj.tipo|in_list:'movil,tel,sms,wa,email' %}
-                        <div class="list-group-item">
-                            {{obj.get_tipo_display}}
-                            <spam class="pull-right">{{obj.texto}}</spam>
-                        </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            </div>
-            <br>
-
-            <div class="card">
-                <div class="card-header">Social <i class="fa fa-link fa-1x"></i></div>
-                <div class="card-body">
-                    {# https://lipis.github.io/bootstrap-social/ #}
-
-                    {% for obj in comunicaciones %}
-                        {% if obj.tipo == "link"  %}
-                        <a href="https://www.facebook.com/{{obj.texto}}" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a>&nbsp;
-                        {% endif %}
-                        {% if obj.tipo == "face"  %}
-                        <a href="https://www.facebook.com/{{obj.texto}}" target="_blank"><i class="fa fa-facebook fa-2x"></i></a>&nbsp;
-                        {% endif %}
-                        {% if obj.tipo == "twitt" %}
-                        <a href="https://twitter.com/{{obj.texto}}" target="_blank"><i class="fa fa-twitter fa-2x"></i></a>&nbsp;
-                        {% endif %}
-                        {% if obj.tipo == "ytube" %}
-                        <a href="https://www.youtube.com/channel/{{obj.texto}}" target="_blank"><i class="fa fa-youtube fa-2x"></i></a>&nbsp;
-                        {% endif %}
-                        {% if obj.tipo == "git"   %}
-                        <a href="https://github.com/{{obj.texto}}" target="_blank"><i class="fa fa-github fa-2x"></i></a>&nbsp;
-                        {% endif %}
-                        {% if obj.tipo == "pint"  %}
-                        <a href="https://ar.pinterest.com/{{obj.texto}}" target="_blank"><i class="fa fa-pinterest fa-2x"></i></a>&nbsp;
-                        {% endif %}
-                        {% if obj.tipo == "gmail" %}
-                        <a href="https://aboutme.google.com/u/0/?referer=gplus" target="_blank"><i class="fa fa-google-plus fa-2x"></i></a>&nbsp;
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            </div>
-            {% endif  %}
-
-            {% comment %}
-            <div class="panel panel-success">
-                <div class="panel-heading">Website <i class="fa fa-link fa-1x"></i></div>
-                <div class="panel-body"><a href="https://bootdey.com">https://bootdey.com</a></div>
-            </div>
-
-            <ul class="list-group">
-                <li class="list-group-item text-muted">Activity <i class="fa fa-dashboard fa-1x"></i></li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Shares</strong></span> 125</li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span> 13</li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Posts</strong></span> 37</li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>Followers</strong></span> 78</li>
-            </ul>
-            {% endcomment %}
+        <div class="col-md-3 hidden-sm hidden-xs" id="panel_derecho">
         </div>
     </div>
 {% endblock %}
@@ -151,6 +80,21 @@
             submitRequest('{{tab}}');
         });
 
+        // emula pulsación de click en solapa la primera vez
+        function submitRequest(buttonId) {
+            if (document.getElementById(buttonId) == null
+                    || document.getElementById(buttonId) == undefined) {
+                return;
+            }
+            if (document.getElementById(buttonId).dispatchEvent) {
+                var e = document.createEvent("MouseEvents");
+                e.initEvent("click", true, true);
+                document.getElementById(buttonId).dispatchEvent(e);
+            } else {
+                document.getElementById(buttonId).click();
+            }
+        };
+
         // JS para captura de navegación en solapas
         $('.nav-link').on('click', function() {
             var urlPath = '{% url 'rrhh:empl_detail_ajax' %}';
@@ -164,27 +108,36 @@
                     data: {pk: pkID, tab: tab},
                     success: function(response) {
                         $(href).html(response);
+                        cargarInfoPanel(tab);
                     },
                     error: function(xhr, status, error) {
                         // $(href).html(xhr.responseText);
-                        $(href).html('<br><b style="color: red">Error al visualizar los datos !<b>');
+                        $(href).html('<br><b style="color: red">Error en ajax!<b>');
                     }
                 });
             }
         });
 
-        function submitRequest(buttonId) {
-            if (document.getElementById(buttonId) == null
-                    || document.getElementById(buttonId) == undefined) {
-                return;
-            }
-            if (document.getElementById(buttonId).dispatchEvent) {
-                var e = document.createEvent("MouseEvents");
-                e.initEvent("click", true, true);
-                document.getElementById(buttonId).dispatchEvent(e);
-            } else {
-                document.getElementById(buttonId).click();
-            }
-        }
+        function cargarInfoPanel(tabName) {
+            var urlPath = '{% url 'rrhh:empl_detail_info_ajax' %}';
+            var href = '#panel_derecho';
+            var pkID = '{{ object.pk }}';
+
+            $.ajax({
+                url: urlPath,
+                data: {pk: pkID},
+                success: function(response) {
+                    $(href).html(response);
+                },
+                error: function(xhr, status, error) {
+                    $(href).html('<br><b style="color: red">Error en ajax!<b>');
+                }
+            });
+        };
+
+        // hide message
+        $(".alert").fadeTo(2000, 500).slideUp(500, function() {
+            $(".alert").slideUp(500);
+        });
     </script>
 {% endblock %}

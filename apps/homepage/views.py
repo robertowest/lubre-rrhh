@@ -5,9 +5,12 @@ from django.urls import reverse
 from apps.rrhh.models import Empleado
 
 def a_donde_voy(request):
-    url = reverse('homepage:index')
+    # url = reverse('homepage:index')
 
-    if not request.user.is_anonymous:
+    if request.user.is_anonymous:
+        url = reverse('usuarios:login')
+
+    else:
         # obtenemos todos los grupos del usuario
         groups = request.user.groups.filter(user=request.user)
 
