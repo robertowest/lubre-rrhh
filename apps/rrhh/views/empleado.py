@@ -1,11 +1,8 @@
-import csv, io, json
-
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView, BSModalDeleteView
 from datetime import date
 
 from dateutil.relativedelta import relativedelta
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core import serializers
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -66,8 +63,8 @@ class EmpleadoDetail(LoginRequiredMixin, DetailView):
         # # context['comunicaciones'] = context['empleado'].comunicaciones.all()
         # context['domicilio'] = \
         #     models.Domicilio.objects.filter(empleado_id=context['empleado'].persona_id)
-        context['comunicaciones'] = \
-            models.Comunicacion.objects.filter(empleado_id=context['empleado'].persona_id).order_by('tipo')
+        # context['comunicaciones'] = \
+        #     models.Comunicacion.objects.filter(empleado_id=context['empleado'].persona_id).order_by('tipo')
         # # context['denuncias'] = models.Denuncia_ART.objects.filter(empleado_id=context['empleado'].persona_id)
         # # context['activos'] = models.ActivoMantenimientoView.objects.filter(responsable_id=context['empleado'].persona_id)
         return context
@@ -97,7 +94,22 @@ def EmpleadoDetailAjax(request):
         data = models.Vacaciones.objects.filter(empleado_id=empleadoId).filter(active=True)
         template = 'empleado/detalle/_vacaciones.html'
 
-    return render(request, template, {'object_list': data})
+    return render(request, template, {'object_list': data, 'info_panel': 'panel'})
+
+
+def EmpleadoDetailPanelAjax(request):
+    empleadoId = request.GET['pk']
+
+    if request.session['tab'] != 'vacaciones':
+        data = models.Comunicacion.objects.filter(empleado_id=empleadoId).order_by('tipo')
+        context = {'object_list': data }
+        template = 'empleado/detalle/_info_panel.html'
+    else:
+        data = models.Empleado.objects.get(persona_id=empleadoId)
+        context = {'empleado': data}
+        template = 'empleado/detalle/_vacaciones_panel.html'
+
+    return render(request, template, context)
 
 
 class EmpleadoCreate(LoginRequiredMixin, CreateView):
@@ -170,7 +182,8 @@ class VacacionesCreateView(LoginRequiredMixin, BSModalCreateView):
         return super(VacacionesCreateView, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('rrhh:empl_vaca', args=(self.kwargs['empl_id'], date.today().year))
+        # return reverse_lazy('rrhh:empl_vaca', args=(self.kwargs['empl_id'], date.today().year))
+        return reverse_lazy('rrhh:empl_detail', kwargs={'pk': self.kwargs['empl_id']})
 
 
 class VacacionesUpdateView(LoginRequiredMixin, BSModalUpdateView):
@@ -180,7 +193,8 @@ class VacacionesUpdateView(LoginRequiredMixin, BSModalUpdateView):
     success_message = 'Registro actualizado correctamente.'
 
     def get_success_url(self):
-        return reverse_lazy('rrhh:empl_vaca', args=(self.kwargs['empl_id'], date.today().year))
+        # return reverse_lazy('rrhh:empl_vaca', args=(self.kwargs['empl_id'], date.today().year))
+        return reverse_lazy('rrhh:empl_detail', kwargs={'pk': self.kwargs['empl_id']})
 
 
 class VacacionesDeleteView(LoginRequiredMixin, BSModalDeleteView):
@@ -189,13 +203,14 @@ class VacacionesDeleteView(LoginRequiredMixin, BSModalDeleteView):
     success_message = 'Registro eliminado correctamente.'
 
     def get_success_url(self):
-        return reverse_lazy('rrhh:empl_vaca', args=(self.kwargs['empl_id'], date.today().year))
+        # return reverse_lazy('rrhh:empl_vaca', args=(self.kwargs['empl_id'], date.today().year))
+        return reverse_lazy('rrhh:empl_detail', kwargs={'pk': self.kwargs['empl_id']})
 
 
 def VacacionesAceptar(request, empl_id, pk):
-    # vaca = models.Vacaciones.objects.get(id=pk)
-    # vaca.estado = 'A'
-    # vaca.save()
+    vaca = models.Vacaciones.objects.get(id=pk)
+    vaca.estado = 'A'
+    vaca.save()
 
     # url = reverse_lazy('rrhh:empl_vaca', kwargs={'empl_id':empl_id, 'anio':date.today().year})
     url = reverse_lazy('rrhh:empl_detail', kwargs={'pk': empl_id})
@@ -207,7 +222,8 @@ def VacacionesPendiente(request, empl_id, pk):
     vaca.estado = 'P'
     vaca.save()
 
-    url = reverse_lazy('rrhh:empl_vaca', kwargs={'empl_id':empl_id, 'anio':date.today().year})
+    # url = reverse_lazy('rrhh:empl_vaca', kwargs={'empl_id':empl_id, 'anio':date.today().year})
+    url = reverse_lazy('rrhh:empl_detail', kwargs={'pk': empl_id})
     return redirect( url )
 
 
@@ -362,4 +378,3 @@ class VacacionesListadoView(ListView, FormView):
                 self.object_list = self.object_list.filter(fec_inicio__month=form.cleaned_data['mes'])
             self.object_list = self.object_list.filter(active=True).order_by('fec_inicio')
         return self.render_to_response(self.get_context_data(object_list=self.object_list, form=form))
-
