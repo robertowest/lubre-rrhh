@@ -43,16 +43,17 @@
                             {% if request.user|has_group:"RRHH" %}
                             <a href="{{object.get_update_url}}" target="_blank" data-toggle="tooltip" title="Modificación">
                                 <span class="glyphicon glyphicon-pencil"></span>
-                            </a> |
+                            </a> 
                             {% comment %}
-                            <a onclick="return abrir_modal('{% url 'rrhh:empl_delete' object.pk %}')">
-                                <span class="glyphicon glyphicon-trash"></span>
-                            </a> |
+                                |
+                                <a onclick="return abrir_modal('{% url 'rrhh:empl_delete' object.pk %}')">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </a> |
+                                {% now "Y" as current_year %}
+                                <a href="{% url 'rrhh:empl_vaca' object.pk current_year %}" data-toggle="tooltip" title="Vacaciones">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </a>
                             {% endcomment %}
-                            {% now "Y" as current_year %}
-                            <a href="{% url 'rrhh:empl_vaca' object.pk current_year %}" data-toggle="tooltip" title="Vacaciones">
-                                <span class="glyphicon glyphicon-time"></span>
-                            </a>
                             {% endif %}
                         </td>
                         {% endif %}

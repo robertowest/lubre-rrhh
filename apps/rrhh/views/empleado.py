@@ -11,7 +11,6 @@ from django.urls import reverse_lazy
 
 from apps.rrhh import models, forms
 
-
 def index(request):
     empl_id = 0
     if not request.user.is_anonymous:
@@ -59,7 +58,13 @@ class EmpleadoDetail(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['tab'] = self.request.session['tab']
+        # comprobamos la existencia de la variable de sesion 'tab'
+        if 'tab' in self.request.session.keys():
+            context['tab'] = self.request.session['tab']
+        else:
+            context['tab'] = 'datos'
+
+
         # # context['comunicaciones'] = context['empleado'].comunicaciones.all()
         # context['domicilio'] = \
         #     models.Domicilio.objects.filter(empleado_id=context['empleado'].persona_id)
