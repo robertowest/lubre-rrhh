@@ -185,11 +185,11 @@ class VacacionesForm(MyBSModelForm):
     class Meta:
         model = models.Vacaciones
         fields = ('__all__')
-        exclude = ('active', 'created', 'created_by', 'modified', 'modified_by', )
+        # exclude = ('active', 'created', 'created_by', 'modified', 'modified_by', )
         widgets = {
             'fec_inicio': forms.DateInput(format='%Y-%m-%d', attrs={'type': 'date'}),
             'fec_fin': forms.DateInput(format='%Y-%m-%d', attrs={'type': 'date'}),
-            'observacion': forms.Textarea(attrs={'rows': 4}),
+            'observacion': forms.Textarea(attrs={'rows': 2}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -200,15 +200,15 @@ class VacacionesForm(MyBSModelForm):
             # obtenemos el valor de empl_id pasado por la url
             empl_id = self.request.resolver_match.kwargs['empl_id']
             empleado = models.Empleado.objects.get(persona_id=empl_id)
-            self.fields['empleado'].initial = empleado
+            self.fields["empleado"].initial = empleado
             self.fields["fec_solicitud"].initial = datetime.date.today()
             self.fields["fec_inicio"].initial = datetime.date.today()
             self.fields["fec_fin"].initial = datetime.date.today()
-            self.fields["periodo"].initial = self.request.resolver_match.kwargs['anio']
+            self.fields["periodo"].initial = self.request.resolver_match.kwargs["anio"]
 
-        self.fields['empleado'].disabled = True
+        self.fields["empleado"].disabled = True
         self.fields["fec_solicitud"].disabled = True
-        self.fields['estado'].disabled = True
+        self.fields["estado"].disabled = True
 
     def clean(self):
         cleaned_data = super(VacacionesForm, self).clean()
@@ -240,7 +240,7 @@ class VacacionesFiltro(MyModelForm):
         self.fields['estado'].required = False
 
         # agregamos un campo que no existe en el modelo
-        CHOICES = ((None, 'Todos'),
+        CHOICES = ((0, 'Todos'),
                    (1, 'Enero'), (2, 'Febrero'), (3, 'Marzo'), (4, 'Abril'),
                    (5, 'Mayo'), (6, 'Junio'), (7, 'Julio'), (8, 'Agosto'),
                    (9, 'Septiembre'), (10, 'Octubre'), (11, 'Noviembre'), (12, 'Diciembre'))
