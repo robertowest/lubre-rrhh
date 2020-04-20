@@ -19,3 +19,6 @@ Utiliza acceso a base de datos Firebird 2.5
         'OPTIONS': {'charset': 'ISO8859_1'}
     },
 ```
+
+![alt text](pantalla.png)
+
