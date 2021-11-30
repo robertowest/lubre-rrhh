@@ -1,6 +1,9 @@
+wheel==0.37.0
+pylint==2.12.1
 business-calendar==0.2.1
 fdb==2.0.1
 reportlab==3.5.31
+python-dateutil==2.8.2
 
 django==2.2.4
 django-betterforms==1.2
@@ -9,6 +12,7 @@ django-crispy-forms==1.7.2
 django-datetimepicker==3.14
 django-debug-toolbar==2.0
 django-extensions==2.2.1
+django-filter==21.1
 django_mathfilters==0.4.0
 django-widget-tweaks==1.4.5
 
@@ -21,3 +25,7 @@ django-widget-tweaks==1.4.5
 # ejecutamos el comando `python setup.py install`
 # esto nos dejará instalado en nuestro directorio virtual el controlador firebird-2.0
 # despues hacemos lo que dice el archivo notas.txt ...
+
+# sudo apt-get install python3-dev python3-mysqldb libmysqlclient-dev libmariadbclient-dev
+# sudo apt-get install mariadb-client
+mysqlclient==2.1.0

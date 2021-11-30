@@ -1,4 +1,5 @@
 {% extends "vacaciones/index.html" %}
+{% load static %}
 
 {% block css2 %}
     <style>
@@ -17,10 +18,21 @@
 
 {% block js2 %}
     <!-- Resources -->
+    <!--
     <script src="https://www.amcharts.com/lib/4/core.js"></script>
     <script src="https://www.amcharts.com/lib/4/charts.js"></script>
     <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
     <script src="https://www.amcharts.com/lib/4/lang/es_ES.js"></script>
+
+    <script src="{% static 'js/amcharts/core.js' %}"></script>
+    <script src="{% static 'js/amcharts/charts.js' %}"></script>
+    <script src="{% static 'js/amcharts/themes/animated.js' %}"></script>
+    <script src="{% static 'js/amcharts/lang/es_ES.js' %}"></script>
+    -->
+    <script src="{% static 'js/amcharts/core.js' %}"></script>
+    <script src="{% static 'js/amcharts/charts.js' %}"></script>
+    <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+    <script src="{% static 'js/amcharts/lang/es_ES.js' %}"></script>
 
     <!-- Chart code -->
     <script>
@@ -37,44 +49,12 @@
             var colorSet = new am4core.ColorSet();
             colorSet.saturation = 0.4;
 
-            chart.data = [
-                {
-                  "category": "Eleonora",
-                  "start": "2019-01-01",
-                  "end": "2019-01-14",
-                  "color": colorSet.getIndex(0).brighten(0),
-                  "task": "Vacaciones"
-                },
-                {
-                  "category": "Matias",
-                  "start": "2019-01-15",
-                  "end": "2019-01-30",
-                  "color": colorSet.getIndex(2).brighten(0),
-                  "task": "Vacaciones"
-                },
-                {
-                  "category": "Cristian",
-                  "start": "2019-01-07",
-                  "end": "2019-01-21",
-                  "color": colorSet.getIndex(4).brighten(0),
-                  "task": "Vacaciones"
-                },
-                {
-                  "category": "Guillermo",
-                  "start": "2019-01-25",
-                  "end": "2019-02-14",
-                  "color": colorSet.getIndex(6).brighten(0),
-                  "task": "Vacaciones"
-                },
-            ];
-
-            // reemplazamos los datos
             var chartData = '{{parametro}}'
             chartData = chartData.replace(/\&#39;/g,'"');
             chart.data = jQuery.parseJSON(chartData);
 
+            chart.dateFormatter.inputDateFormat = "yyyy-MM-dd";
             chart.dateFormatter.dateFormat = "dd/MM/yyyy";
-            chart.dateFormatter.inputDateFormat = "dd/MM/yyyy";
 
             var categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
             categoryAxis.dataFields.category = "category";

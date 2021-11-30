@@ -1,5 +1,5 @@
 <div class="modal-content">
-    <form action="." method="post" data-control-form>
+    <form method="post" action="." >    <!-- data-control-form -->
         {% csrf_token %}
 
         <!-- Modal Header -->
@@ -20,6 +20,5 @@
             <button type="button" class="submit-btn btn btn-primary">Confirmar</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         </div>
-
     </form>
 </div>

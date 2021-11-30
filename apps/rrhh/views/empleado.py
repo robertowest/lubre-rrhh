@@ -99,7 +99,10 @@ def EmpleadoDetailAjax(request):
         data = models.Vacaciones.objects.filter(empleado_id=empleadoId).filter(active=True)
         template = 'empleado/detalle/_vacaciones.html'
 
-    return render(request, template, {'object_list': data, 'info_panel': 'panel'})
+    return render(request, template, {'object_list': data, 
+                                      'info_panel': 'panel', 
+                                      'empleadoId': empleadoId,
+                                      'anio': date.today().year})
 
 
 def EmpleadoDetailPanelAjax(request):
@@ -180,10 +183,10 @@ class VacacionesCreateView(LoginRequiredMixin, BSModalCreateView):
     form_class = forms.VacacionesForm
     template_name = 'empleado/vacaciones/forms/vacaciones.html'
     success_message = 'Nuevo registro dado de alta.'
-    # success_url = reverse_lazy('rrhh:empl_vaca')
 
     def form_valid(self, form):
         form.instance.periodo = self.kwargs['anio']
+        form.instance.active = True
         return super(VacacionesCreateView, self).form_valid(form)
 
     def get_success_url(self):

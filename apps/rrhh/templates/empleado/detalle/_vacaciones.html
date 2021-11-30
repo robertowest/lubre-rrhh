@@ -53,13 +53,21 @@
     </tbody>
 </table>
 <hr>
-{% if object_list.0.empleado.vacaciones.faltan > 0 %}
-    {% with empl_id=request.GET.pk anio=object_list.0.empleado.anio %}
-        <a href="#" class="open-modal btn btn-success pull-right"
-                    data-url="{% url 'rrhh:empl_vaca_create' empl_id anio %}">
-            <span class="fa fa-plus"></span> Solicitar vacaciones
-        </a>
-    {% endwith %}
+
+{% if object_list.0.empleado.vacaciones %}
+    {% if object_list.0.empleado.vacaciones.faltan > 0 %}
+        {% with empl_id=request.GET.pk anio=object_list.0.empleado.anio %}
+            <a href="#" class="open-modal btn btn-success pull-right"
+                        data-url="{% url 'rrhh:empl_vaca_create' empl_id anio %}">
+                <span class="fa fa-plus"></span> Solicitar vacaciones
+            </a>
+        {% endwith %}
+    {% endif %}
+{% else %}
+    <a href="#" class="open-modal btn btn-success pull-right"
+                data-url="{% url 'rrhh:empl_vaca_create' empleadoId anio %}">
+        <span class="fa fa-plus"></span> Solicitar vacaciones
+    </a>
 {% endif %}
 
 

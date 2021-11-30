@@ -216,9 +216,10 @@ class VacacionesForm(MyBSModelForm):
         fec_fin = cleaned_data.get("fec_fin")
 
         if cleaned_data.get("periodo") == datetime.date.today().year:
-            if fec_inicio <= datetime.date.today():
-                raise forms.ValidationError("La fecha inicial debe ser posterior al día de hoy.")
-            elif fec_inicio > fec_fin:
+            # TODO: me solicitaron permitir cargar vacaciones viejas. No controlaré la fecha de inicio
+            # if fec_inicio <= datetime.date.today():
+            #     raise forms.ValidationError("La fecha inicial debe ser posterior al día de hoy.")
+            if fec_inicio > fec_fin:
                 raise forms.ValidationError("La fecha de inicio no puede ser posterior a la de finalización.")
 
         return cleaned_data
