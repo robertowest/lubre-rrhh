@@ -1,2 +1,9 @@
 conda activate lubre
 
+
+./manage.py dumpdata --format yaml -o /tmp/activo.yaml rrhh.activo
+./manage.py dumpdata --format yaml -o /tmp/mantenimiento.yaml rrhh.mantenimiento
+./manage.py dumpdata --format yaml -o /tmp/diccionario.yaml rrhh.diccionario_art
+
+
+./manage.py dumpdata --format yaml -o /home/roberto/Programacion/django/lubresrl/apps/rrhh/fixtures/diccionario.yaml rrhh.denuncia_art
