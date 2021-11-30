@@ -2,7 +2,7 @@ wheel==0.37.0
 pylint==2.12.1
 business-calendar==0.2.1
 fdb==2.0.1
-reportlab==3.5.31
+reportlab==3.5.55
 python-dateutil==2.8.2
 
 django==2.2.4
