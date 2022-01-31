@@ -25,7 +25,7 @@ urlpatterns = [
     path('empleado/<int:empl_id>/vacaciones/<int:anio>/', views.VacacionesReadView.as_view(), name='empl_vaca'),
     path('empleado/<int:empl_id>/vacaciones/solicitar/<int:anio>/', views.VacacionesCreateView.as_view(), name='empl_vaca_create'),
     path('empleado/<int:empl_id>/vacaciones/modificar/<int:pk>/', views.VacacionesUpdateView.as_view(), name='empl_vaca_update'),
-    path('empleado/vacaciones/eliminar/<int:pk>/', views.VacacionesDeleteView.as_view(), name='empl_vaca_delete'),
+    path('empleado/<int:empl_id>/vacaciones/eliminar/<int:pk>/', views.VacacionesDeleteView.as_view(), name='empl_vaca_delete'),
 
     path('empleado/<int:empl_id>/vacaciones/aceptar/<int:pk>/', views.VacacionesAceptar, name='empl_vaca_aceptar'),
     path('empleado/<int:empl_id>/vacaciones/pendiente/<int:pk>/', views.VacacionesPendiente, name='empl_vaca_pendiente'),

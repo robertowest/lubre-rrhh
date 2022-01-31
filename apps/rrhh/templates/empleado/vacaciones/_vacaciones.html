@@ -40,7 +40,7 @@
                     <a href="#" class="open-modal" data-url="{% url 'rrhh:empl_vaca_update' empl_id vac.pk %}">
                         <span class="mr-1 glyphicon glyphicon-pencil"></span>
                     </a>
-                    <a href="#" class="open-modal" data-url="{% url 'rrhh:empl_vaca_delete' vac.pk %}">
+                    <a href="#" class="open-modal" data-url="{% url 'rrhh:empl_vaca_delete' empl_id vac.pk %}">
                         <span class="mr-1 glyphicon glyphicon-trash text-danger"></span>
                     </a>
                 {% endif %}

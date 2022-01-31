@@ -193,7 +193,7 @@ class VacacionesForm(MyBSModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        instance = super(VacacionesForm, self).__init__(*args, **kwargs)
+        instance = super().__init__(*args, **kwargs)
 
         if not self.instance.id:
             # asignamos el empleado al registro actual

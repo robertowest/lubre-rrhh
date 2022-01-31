@@ -42,7 +42,7 @@
                         <a href="#" class="open-modal" data-url="{% url 'rrhh:empl_vaca_update' empl_id obj.pk %}">
                             <span class="mr-1 glyphicon glyphicon-pencil"></span>
                         </a>
-                        <a href="#" class="open-modal" data-url="{% url 'rrhh:empl_vaca_delete' obj.pk %}">
+                        <a href="#" class="open-modal" data-url="{% url 'rrhh:empl_vaca_delete' empl_id obj.pk %}">
                             <span class="mr-1 glyphicon glyphicon-trash text-danger"></span>
                         </a>
                     {% endif %}
@@ -54,6 +54,7 @@
 </table>
 <hr>
 
+{% comment "este contenido sirve para colocar el botón cuando hay pendientes" %}
 {% if object_list.0.empleado.vacaciones %}
     {% if object_list.0.empleado.vacaciones.faltan > 0 %}
         {% with empl_id=request.GET.pk anio=object_list.0.empleado.anio %}
@@ -69,7 +70,11 @@
         <span class="fa fa-plus"></span> Solicitar vacaciones
     </a>
 {% endif %}
-
+{% endcomment %}
+<a href="#" class="open-modal btn btn-success pull-right"
+    data-url="{% url 'rrhh:empl_vaca_create' empleadoId anio %}">
+    <span class="fa fa-plus"></span> Solicitar vacaciones
+</a>
 
 <script type="text/javascript">
     $(".open-modal").each(function() {

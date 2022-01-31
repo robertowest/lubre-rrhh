@@ -63,15 +63,6 @@ class EmpleadoDetail(LoginRequiredMixin, DetailView):
             context['tab'] = self.request.session['tab']
         else:
             context['tab'] = 'datos'
-
-
-        # # context['comunicaciones'] = context['empleado'].comunicaciones.all()
-        # context['domicilio'] = \
-        #     models.Domicilio.objects.filter(empleado_id=context['empleado'].persona_id)
-        # context['comunicaciones'] = \
-        #     models.Comunicacion.objects.filter(empleado_id=context['empleado'].persona_id).order_by('tipo')
-        # # context['denuncias'] = models.Denuncia_ART.objects.filter(empleado_id=context['empleado'].persona_id)
-        # # context['activos'] = models.ActivoMantenimientoView.objects.filter(responsable_id=context['empleado'].persona_id)
         return context
 
 
@@ -184,14 +175,14 @@ class VacacionesCreateView(LoginRequiredMixin, BSModalCreateView):
     template_name = 'empleado/vacaciones/forms/vacaciones.html'
     success_message = 'Nuevo registro dado de alta.'
 
-    def form_valid(self, form):
-        form.instance.periodo = self.kwargs['anio']
-        form.instance.active = True
-        return super(VacacionesCreateView, self).form_valid(form)
-
     def get_success_url(self):
         # return reverse_lazy('rrhh:empl_vaca', args=(self.kwargs['empl_id'], date.today().year))
         return reverse_lazy('rrhh:empl_detail', kwargs={'pk': self.kwargs['empl_id']})
+
+    def form_valid(self, form):
+        form.instance.periodo = self.kwargs['anio']
+        form.instance.active = True
+        return super().form_valid(form)
 
 
 class VacacionesUpdateView(LoginRequiredMixin, BSModalUpdateView):
@@ -204,6 +195,10 @@ class VacacionesUpdateView(LoginRequiredMixin, BSModalUpdateView):
         # return reverse_lazy('rrhh:empl_vaca', args=(self.kwargs['empl_id'], date.today().year))
         return reverse_lazy('rrhh:empl_detail', kwargs={'pk': self.kwargs['empl_id']})
 
+    def form_valid(self, form):
+        form.instance.active = True
+        return super().form_valid(form)
+
 
 class VacacionesDeleteView(LoginRequiredMixin, BSModalDeleteView):
     model = models.Vacaciones
@@ -213,6 +208,10 @@ class VacacionesDeleteView(LoginRequiredMixin, BSModalDeleteView):
     def get_success_url(self):
         # return reverse_lazy('rrhh:empl_vaca', args=(self.kwargs['empl_id'], date.today().year))
         return reverse_lazy('rrhh:empl_detail', kwargs={'pk': self.kwargs['empl_id']})
+
+    def form_valid(self, form):
+        form.instance.active = False
+        return super().form_valid(form)
 
 
 def VacacionesAceptar(request, empl_id, pk):

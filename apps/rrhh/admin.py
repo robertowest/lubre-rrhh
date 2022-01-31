@@ -161,7 +161,7 @@ class VacacionesAdmin(admin.ModelAdmin):
     fld_empleado.admin_order_field = 'empleado'   # ordenado
     fld_empleado.short_description = 'Empleado'
 
-    list_display = ['fld_empleado', 'fec_inicio', 'fec_fin', 'fec_solicitud', 'estado']
+    list_display = ['fld_empleado', 'fec_inicio', 'fec_fin', 'fec_solicitud', 'estado', 'active']
     list_filter = ['estado']
     search_fields = ['empleado__persona__apellido', 'empleado__persona__nombre']
     list_per_page = 20

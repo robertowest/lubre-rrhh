@@ -25,7 +25,7 @@ SECRET_KEY = 'cn1-^op%h5-tz-j!apcs_3w5rim#pa!v+5%@#bc_1lin%)y3+n'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition

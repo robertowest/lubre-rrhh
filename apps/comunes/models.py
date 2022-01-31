@@ -53,7 +53,7 @@ class AuditoriaMixin(models.Model):
         # self.modified_by = get_current_user()
         super(AuditoriaMixin, self).save(*args, **kwargs)
 
-    active = models.BooleanField('Activo', default=1)
+    active = models.BooleanField('Activo', default=True)
     created = models.DateTimeField('Creado', auto_now_add=True, editable=False, null=True, blank=True)
     created_by = models.CharField('Creado por', max_length=15, editable=False, null=True, blank=True)
     modified = models.DateTimeField('Modificado', auto_now=True, editable=False, null=True, blank=True)

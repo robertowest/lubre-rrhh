@@ -142,7 +142,7 @@ class Empleado(AuditoriaMixin):
         #                                 .filter(fec_inicio__year = self.get_anio())\
         #                                 .filter(active = True)
         filtro = Q(empleado_id = self.persona.id) & Q(fec_inicio__year = self.get_anio()) & Q(active = True)
-        solicitadas = Vacaciones.objects.filter(filtro)
+        solicitadas = Vacaciones.objects.filter(filtro).order_by('fec_inicio')
         for vac in solicitadas:
             if vac.estado == 'A':
                 aprobadas += vac.dias_habiles
